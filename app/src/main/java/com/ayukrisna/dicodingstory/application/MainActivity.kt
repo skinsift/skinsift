@@ -11,37 +11,19 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
+import com.ayukrisna.dicodingstory.application.ui.screen.LoginScreen
 import com.ayukrisna.dicodingstory.application.ui.theme.DicodingStoryTheme
+import com.ayukrisna.dicodingstory.application.viewmodel.LoginViewModel
 
 class MainActivity : ComponentActivity() {
+    private val viewModel: LoginViewModel = LoginViewModel()
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
         setContent {
             DicodingStoryTheme {
-                Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
-                    Greeting(
-                        name = "Android",
-                        modifier = Modifier.padding(innerPadding)
-                    )
-                }
+                    LoginScreen(viewModel = viewModel)
             }
         }
-    }
-}
-
-@Composable
-fun Greeting(name: String, modifier: Modifier = Modifier) {
-    Text(
-        text = "Hello $name!",
-        modifier = modifier
-    )
-}
-
-@Preview(showBackground = true)
-@Composable
-fun GreetingPreview() {
-    DicodingStoryTheme {
-        Greeting("Android")
     }
 }
