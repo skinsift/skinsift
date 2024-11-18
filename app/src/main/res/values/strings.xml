@@ -1,0 +1,7 @@
+<resources>
+    <string name="app_name">DicodingStory</string>
+    <string name="emailCannotBeBlank">Eits! Emailmu tidak boleh kosong.</string>
+    <string name="emailIsNotValid">Emailmu tidak valid, nih.</string>
+    <string name="passwordLessThanEightChars">Pastikan passwordmu terdiri dari 8 karakter atau lebih, ya!</string>
+    <string name="testing_error">Testing error</string>
+</resources>
