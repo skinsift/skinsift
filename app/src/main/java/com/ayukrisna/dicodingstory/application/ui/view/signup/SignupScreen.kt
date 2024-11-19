@@ -1,5 +1,6 @@
 package com.ayukrisna.dicodingstory.application.ui.view.signup
 
+import android.content.Context
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -14,25 +15,44 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.viewmodel.compose.LocalViewModelStoreOwner
 import com.ayukrisna.dicodingstory.R
 import com.ayukrisna.dicodingstory.application.ui.view.login.LoginEvent
 import com.ayukrisna.dicodingstory.application.ui.component.CustomTextField
 import com.ayukrisna.dicodingstory.application.ui.theme.DicodingStoryTheme
 import androidx.lifecycle.viewmodel.compose.viewModel
+import com.ayukrisna.dicodingstory.application.ui.component.SignupViewModelFactory
+import com.ayukrisna.dicodingstory.di.Injection
+import com.ayukrisna.dicodingstory.domain.usecase.RegisterUseCase
 
 
 @Composable
 fun SignupScreen(
-    viewModel: SignupViewModel = viewModel<SignupViewModel>(),
+    context: Context,
     modifier: Modifier = Modifier,
 ) {
+    val registerUseCase = Injection.provideRegisterUseCase(context)
+    val factory = SignupViewModelFactory(registerUseCase)
+    val viewModel = ViewModelProvider(
+        LocalViewModelStoreOwner.current!!,
+        factory
+    )[SignupViewModel::class.java]
+
+    val signUpState by viewModel.signUpState.collectAsState()
+    val errorState by viewModel.errorState.collectAsState()
+
     Surface {
         Column (
             verticalArrangement = Arrangement.Top,
@@ -58,14 +78,39 @@ fun SignupScreen(
             //Password Input Field
             PasswordTextField(viewModel)
             //Sign up Button
-            SignupButton()
+            SignupButton(viewModel)
         }
+
+        when {
+            signUpState != null -> {
+                Text("Sign Up Successful: $signUpState")
+                LaunchedEffect(signUpState) {
+                    println("Resetting signUpState")
+                    kotlinx.coroutines.delay(3000)
+                    viewModel.resetStates()
+                }
+            }
+            errorState != null -> {
+                Text("Error: $errorState", color = Color.Red)
+                LaunchedEffect(errorState) {
+                    println("Resetting errorState")
+                    kotlinx.coroutines.delay(3000)
+                    viewModel.resetStates()
+                }
+            }
+        }
+
     }
 }
 
 @Composable
-fun SignupButton(modifier: Modifier = Modifier){
-    Button(onClick = {  },
+fun SignupButton(
+    viewModel: SignupViewModel,
+    modifier: Modifier = Modifier
+){
+    Button(onClick = {
+        viewModel.onEvent(SignupEvent.Submit)
+    },
         modifier = Modifier.fillMaxWidth()
             .padding(0.dp, 16.dp, 0.dp, 8.dp)) {
         Text("Sign Up")
