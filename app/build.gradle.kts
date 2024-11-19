@@ -60,6 +60,9 @@ dependencies {
     implementation(libs.androidx.constraintlayout)
     implementation (libs.play.services.base)
     implementation(libs.androidx.espresso.core)
+    implementation(libs.androidx.lifecycle.viewmodel.compose)
+    implementation(libs.androidx.datastore.core.android)
+    implementation (libs.androidx.datastore.preferences)
 
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)

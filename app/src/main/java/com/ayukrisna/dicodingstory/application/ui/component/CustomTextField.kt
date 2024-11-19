@@ -1,4 +1,4 @@
-package com.ayukrisna.dicodingstory.application.component
+package com.ayukrisna.dicodingstory.application.ui.component
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
@@ -115,7 +115,7 @@ fun CustomTextField(
                 .shadow(elevation = 1.dp, shape = RoundedCornerShape(20.dp))
                 .background(MaterialTheme.colorScheme.surface)
                 .height(48.dp)
-                .border(0.dp, colorBorder, RoundedCornerShape(20.dp))
+                .border(1.dp, colorBorder, RoundedCornerShape(20.dp))
                 .padding(8.dp)
                 .focusRequester(focusRequester),
             decorationBox = { innerTextField ->

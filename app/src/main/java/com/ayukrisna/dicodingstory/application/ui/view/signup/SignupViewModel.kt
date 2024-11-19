@@ -1,40 +1,55 @@
-package com.ayukrisna.dicodingstory.application.viewmodel
+package com.ayukrisna.dicodingstory.application.ui.view.signup
 
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
+import com.ayukrisna.dicodingstory.application.ui.view.signup.SignupEvent
+import com.ayukrisna.dicodingstory.application.ui.view.signup.SignupState
 import com.ayukrisna.dicodingstory.domain.usecase.ValidateEmailUseCase
+import com.ayukrisna.dicodingstory.domain.usecase.ValidateNameUseCase
 import com.ayukrisna.dicodingstory.domain.usecase.ValidatePasswordUseCase
 
-class LoginViewModel : ViewModel() {
+class SignupViewModel : ViewModel() {
+    private val validateNameUseCase = ValidateNameUseCase()
     private val validateEmailUseCase = ValidateEmailUseCase()
     private val validatePasswordUseCase = ValidatePasswordUseCase()
 
-    var formState by mutableStateOf(AuthState()) //initialize with default state values
+    var formState by mutableStateOf(SignupState()) //initialize with default state values
 
-    fun onEvent(event: AuthEvent) {
+    fun onEvent(event: SignupEvent) {
         when (event) {
-            is AuthEvent.EmailChanged -> {
+            is SignupEvent.NameChanged -> {
+                formState = formState.copy(name = event.name)
+                validateName()
+            }
+
+            is SignupEvent.EmailChanged -> {
                 formState = formState.copy(email = event.email)
                 validateEmail()
             }
 
-            is AuthEvent.PasswordChanged -> {
+            is SignupEvent.PasswordChanged -> {
                 formState = formState.copy(password = event.password)
                 validatePassword()
             }
 
-            is AuthEvent.VisiblePassword -> {
+            is SignupEvent.VisiblePassword -> {
                 formState = formState.copy(isVisiblePassword = event.isVisiblePassword)
             }
 
-            is AuthEvent.Submit -> {
-                if (validateEmail() && validatePassword()) {
+            is SignupEvent.Submit -> {
+                if (validateName() && validateEmail() && validatePassword()) {
                     //go to next page
                 }
             }
         }
+    }
+
+    private fun validateName(): Boolean {
+        val nameResult = validateNameUseCase.execute(formState.name)
+        formState = formState.copy(nameError = nameResult.errorMessage)
+        return nameResult.successful
     }
 
     private fun validateEmail(): Boolean {

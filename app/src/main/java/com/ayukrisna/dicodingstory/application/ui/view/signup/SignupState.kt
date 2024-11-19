@@ -1,8 +1,10 @@
-package com.ayukrisna.dicodingstory.application.viewmodel
+package com.ayukrisna.dicodingstory.application.ui.view.signup
 
 import com.ayukrisna.dicodingstory.util.UiText
 
-data class AuthState(
+data class SignupState(
+    val name: String = "",
+    val nameError: UiText? = null,
     val email: String = "",
     val emailError: UiText? = null,
     val password: String = "",
