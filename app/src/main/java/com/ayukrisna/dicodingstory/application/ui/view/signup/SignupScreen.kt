@@ -26,30 +26,17 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
-import androidx.lifecycle.ViewModelProvider
-import androidx.lifecycle.viewmodel.compose.LocalViewModelStoreOwner
 import com.ayukrisna.dicodingstory.R
-import com.ayukrisna.dicodingstory.application.ui.view.login.LoginEvent
 import com.ayukrisna.dicodingstory.application.ui.component.CustomTextField
 import com.ayukrisna.dicodingstory.application.ui.theme.DicodingStoryTheme
-import androidx.lifecycle.viewmodel.compose.viewModel
-import com.ayukrisna.dicodingstory.application.ui.component.SignupViewModelFactory
-import com.ayukrisna.dicodingstory.di.Injection
-import com.ayukrisna.dicodingstory.domain.usecase.RegisterUseCase
+import org.koin.androidx.compose.koinViewModel
 
 
 @Composable
 fun SignupScreen(
-    context: Context,
+    viewModel: SignupViewModel = koinViewModel(),
     modifier: Modifier = Modifier,
 ) {
-    val registerUseCase = Injection.provideRegisterUseCase(context)
-    val factory = SignupViewModelFactory(registerUseCase)
-    val viewModel = ViewModelProvider(
-        LocalViewModelStoreOwner.current!!,
-        factory
-    )[SignupViewModel::class.java]
-
     val signUpState by viewModel.signUpState.collectAsState()
     val errorState by viewModel.errorState.collectAsState()
 
@@ -79,27 +66,26 @@ fun SignupScreen(
             PasswordTextField(viewModel)
             //Sign up Button
             SignupButton(viewModel)
-        }
 
-        when {
-            signUpState != null -> {
-                Text("Sign Up Successful: $signUpState")
-                LaunchedEffect(signUpState) {
-                    println("Resetting signUpState")
-                    kotlinx.coroutines.delay(3000)
-                    viewModel.resetStates()
+            when {
+                signUpState != null -> {
+                    Text("Sign Up Successful: $signUpState")
+                    LaunchedEffect(signUpState) {
+                        println("Resetting signUpState")
+                        kotlinx.coroutines.delay(3000)
+                        viewModel.resetStates()
+                    }
+                }
+                errorState != null -> {
+                    Text("Error: $errorState", color = Color.Red)
+                    LaunchedEffect(errorState) {
+                        println("Resetting errorState")
+                        kotlinx.coroutines.delay(3000)
+                        viewModel.resetStates()
+                    }
                 }
             }
-            errorState != null -> {
-                Text("Error: $errorState", color = Color.Red)
-                LaunchedEffect(errorState) {
-                    println("Resetting errorState")
-                    kotlinx.coroutines.delay(3000)
-                    viewModel.resetStates()
-                }
-            }
         }
-
     }
 }
 
