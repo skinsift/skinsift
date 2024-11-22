@@ -15,8 +15,12 @@ import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.ImeAction
@@ -26,12 +30,18 @@ import com.ayukrisna.dicodingstory.R
 import com.ayukrisna.dicodingstory.application.ui.component.CustomTextField
 import com.ayukrisna.dicodingstory.application.ui.theme.DicodingStoryTheme
 import androidx.lifecycle.viewmodel.compose.viewModel
+import com.ayukrisna.dicodingstory.application.ui.view.signup.SignupViewModel
+import org.koin.androidx.compose.koinViewModel
 
 @Composable
 fun LoginScreen(
-    viewModel: LoginViewModel = viewModel<LoginViewModel>(),
+    viewModel: LoginViewModel = koinViewModel(),
     modifier: Modifier = Modifier,
 ) {
+    val loginState by viewModel.loginState.collectAsState()
+    val errorState by viewModel.errorState.collectAsState()
+
+
     Surface {
         Column (
             verticalArrangement = Arrangement.Top,
@@ -56,14 +66,38 @@ fun LoginScreen(
             //Password Input Field
             PasswordTextField(viewModel)
             //Log In Button
-            LoginButton()
+            LoginButton(viewModel)
+
+            when {
+                loginState != null -> {
+                    Text("Login Successful: $loginState")
+                    LaunchedEffect(loginState) {
+                        println("Resetting loginState")
+                        kotlinx.coroutines.delay(3000)
+                        viewModel.resetStates()
+                    }
+                }
+                errorState != null -> {
+                    Text("Error: $errorState", color = Color.Red)
+                    LaunchedEffect(errorState) {
+                        println("Resetting errorState")
+                        kotlinx.coroutines.delay(3000)
+                        viewModel.resetStates()
+                    }
+                }
+            }
         }
     }
 }
 
 @Composable
-fun LoginButton(modifier: Modifier = Modifier){
-    Button(onClick = {  },
+fun LoginButton(
+    viewModel: LoginViewModel,
+    modifier: Modifier = Modifier
+){
+    Button(onClick = {
+        viewModel.onEvent(LoginEvent.Submit)
+    },
         modifier = Modifier.fillMaxWidth()
             .padding(0.dp, 16.dp, 0.dp, 8.dp)) {
         Text("Log In")

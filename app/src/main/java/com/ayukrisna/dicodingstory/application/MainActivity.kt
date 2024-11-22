@@ -6,6 +6,7 @@ import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import com.ayukrisna.dicodingstory.MyApp
 import com.ayukrisna.dicodingstory.application.ui.theme.DicodingStoryTheme
+import com.ayukrisna.dicodingstory.application.ui.view.login.LoginScreen
 import com.ayukrisna.dicodingstory.application.ui.view.signup.SignupScreen
 import org.koin.core.annotation.KoinExperimentalAPI
 
@@ -17,7 +18,7 @@ class MainActivity : ComponentActivity() {
         setContent {
             DicodingStoryTheme {
                 MyApp()
-                SignupScreen()
+                LoginScreen()
             }
         }
     }

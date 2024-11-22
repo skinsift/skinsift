@@ -8,7 +8,7 @@ import com.ayukrisna.dicodingstory.domain.repository.UserRepository
 class LoginUseCase(private val userRepository: UserRepository) {
     suspend fun execute(email: String, password: String): LoginResponse {
         val response = userRepository.login(email, password)
-        if (!response.error) {
+        if (!response.error!!) {
             val loginResult = response.loginResult!!
             val userModel = createUserModel(loginResult, email)
             userRepository.saveSession(userModel)

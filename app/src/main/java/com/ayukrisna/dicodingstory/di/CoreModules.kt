@@ -5,6 +5,7 @@ import com.ayukrisna.dicodingstory.application.ui.view.signup.SignupViewModel
 import com.ayukrisna.dicodingstory.data.local.pref.UserPreference
 import com.ayukrisna.dicodingstory.data.repository.UserRepositoryImp
 import com.ayukrisna.dicodingstory.domain.repository.UserRepository
+import com.ayukrisna.dicodingstory.domain.usecase.LoginUseCase
 import com.ayukrisna.dicodingstory.util.provideDataStore
 import org.koin.core.module.Module
 import org.koin.dsl.module
@@ -33,9 +34,11 @@ var repositoryModules : Module = module {
 // Use Case
 val useCaseModules = module {
     single { RegisterUseCase(get()) }
+    single { LoginUseCase(get()) }
 }
 
 //View Model
 val viewModelModules = module {
     viewModel{ SignupViewModel(get()) }
+    viewModel{ LoginViewModel(get()) }
 }
