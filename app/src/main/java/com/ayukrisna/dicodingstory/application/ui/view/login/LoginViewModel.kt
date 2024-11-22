@@ -4,10 +4,13 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
+import com.ayukrisna.dicodingstory.domain.usecase.LoginUseCase
 import com.ayukrisna.dicodingstory.domain.usecase.ValidateEmailUseCase
 import com.ayukrisna.dicodingstory.domain.usecase.ValidatePasswordUseCase
 
-class LoginViewModel : ViewModel() {
+class LoginViewModel(
+    private val loginUseCase: LoginUseCase
+) : ViewModel() {
     private val validateEmailUseCase = ValidateEmailUseCase()
     private val validatePasswordUseCase = ValidatePasswordUseCase()
 
