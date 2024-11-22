@@ -44,7 +44,7 @@ class LoginViewModel(
 
             is LoginEvent.Submit -> {
                 if (validateEmail() && validatePassword()) {
-                    //go to next page
+                    login(formState.email, formState.password )
                 }
             }
         }
