@@ -1,4 +1,4 @@
-package com.ayukrisna.dicodingstory.application.ui.view.welcome
+package com.ayukrisna.dicodingstory.view.ui.screen.welcome
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -16,9 +16,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.ayukrisna.dicodingstory.application.ui.theme.DicodingStoryTheme
-import com.ayukrisna.dicodingstory.application.ui.view.login.LoginButton
-import com.ayukrisna.dicodingstory.application.ui.view.login.SignupButton
+import com.ayukrisna.dicodingstory.view.ui.theme.DicodingStoryTheme
+import com.ayukrisna.dicodingstory.view.ui.screen.login.SignupButton
 
 @Composable
 fun WelcomeScreen(

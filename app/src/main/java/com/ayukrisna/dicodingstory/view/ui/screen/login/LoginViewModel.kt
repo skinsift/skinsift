@@ -1,63 +1,53 @@
-package com.ayukrisna.dicodingstory.application.ui.view.signup
+package com.ayukrisna.dicodingstory.view.ui.screen.login
 
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.ayukrisna.dicodingstory.domain.usecase.RegisterUseCase
+import com.ayukrisna.dicodingstory.domain.usecase.LoginUseCase
 import com.ayukrisna.dicodingstory.domain.usecase.ValidateEmailUseCase
-import com.ayukrisna.dicodingstory.domain.usecase.ValidateNameUseCase
 import com.ayukrisna.dicodingstory.domain.usecase.ValidatePasswordUseCase
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
 
-class SignupViewModel(private val registerUseCase: RegisterUseCase) : ViewModel() {
-    private val validateNameUseCase = ValidateNameUseCase()
+class LoginViewModel(
+    private val loginUseCase: LoginUseCase
+) : ViewModel() {
     private val validateEmailUseCase = ValidateEmailUseCase()
     private val validatePasswordUseCase = ValidatePasswordUseCase()
 
-    var formState by mutableStateOf(SignupState()) //initialize with default state values
-    private val _signUpState = MutableStateFlow<String?>(null)
-    val signUpState: StateFlow<String?> = _signUpState
+    var formState by mutableStateOf(LoginState()) //initialize with default state values
+
+    private val _loginState = MutableStateFlow<String?>(null)
+    val loginState: StateFlow<String?> = _loginState
 
     private val _errorState = MutableStateFlow<String?>(null)
     val errorState: StateFlow<String?> = _errorState
 
-    fun onEvent(event: SignupEvent) {
+    fun onEvent(event: LoginEvent) {
         when (event) {
-            is SignupEvent.NameChanged -> {
-                formState = formState.copy(name = event.name)
-                validateName()
-            }
-
-            is SignupEvent.EmailChanged -> {
+            is LoginEvent.EmailChanged -> {
                 formState = formState.copy(email = event.email)
                 validateEmail()
             }
 
-            is SignupEvent.PasswordChanged -> {
+            is LoginEvent.PasswordChanged -> {
                 formState = formState.copy(password = event.password)
                 validatePassword()
             }
 
-            is SignupEvent.VisiblePassword -> {
+            is LoginEvent.VisiblePassword -> {
                 formState = formState.copy(isVisiblePassword = event.isVisiblePassword)
             }
 
-            is SignupEvent.Submit -> {
-                if (validateName() && validateEmail() && validatePassword()) {
-                    signUp(formState.name, formState.email, formState.password )
+            is LoginEvent.Submit -> {
+                if (validateEmail() && validatePassword()) {
+                    login(formState.email, formState.password )
                 }
             }
         }
-    }
-
-    private fun validateName(): Boolean {
-        val nameResult = validateNameUseCase.execute(formState.name)
-        formState = formState.copy(nameError = nameResult.errorMessage)
-        return nameResult.successful
     }
 
     private fun validateEmail(): Boolean {
@@ -72,11 +62,12 @@ class SignupViewModel(private val registerUseCase: RegisterUseCase) : ViewModel(
         return passwordResult.successful
     }
 
-    private fun signUp(name: String, email: String, password: String) {
+    private fun login(email: String, password: String){
         viewModelScope.launch {
             try {
-                val response = registerUseCase.execute(name, email, password)
-                _signUpState.value = response.message
+                val response = loginUseCase.execute(email, password)
+                _loginState.value = response.message
+
             } catch (e: Exception) {
                 _errorState.value = e.message
             }
@@ -84,7 +75,7 @@ class SignupViewModel(private val registerUseCase: RegisterUseCase) : ViewModel(
     }
 
     fun resetStates() {
-        _signUpState.value = null
+        _loginState.value = null
         _errorState.value = null
     }
 }

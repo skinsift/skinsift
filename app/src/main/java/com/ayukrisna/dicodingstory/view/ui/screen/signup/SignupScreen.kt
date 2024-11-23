@@ -1,4 +1,4 @@
-package com.ayukrisna.dicodingstory.application.ui.view.login
+package com.ayukrisna.dicodingstory.view.ui.screen.signup
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -27,20 +27,19 @@ import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import com.ayukrisna.dicodingstory.R
-import com.ayukrisna.dicodingstory.application.ui.component.CustomTextField
-import com.ayukrisna.dicodingstory.application.ui.theme.DicodingStoryTheme
-import androidx.lifecycle.viewmodel.compose.viewModel
-import com.ayukrisna.dicodingstory.application.ui.view.signup.SignupViewModel
+import com.ayukrisna.dicodingstory.view.ui.component.CustomTextField
+import com.ayukrisna.dicodingstory.view.ui.theme.DicodingStoryTheme
 import org.koin.androidx.compose.koinViewModel
 
+
 @Composable
-fun LoginScreen(
-    viewModel: LoginViewModel = koinViewModel(),
+fun SignupScreen(
+    viewModel: SignupViewModel = koinViewModel(),
+    onNavigateToLogin: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
-    val loginState by viewModel.loginState.collectAsState()
+    val signUpState by viewModel.signUpState.collectAsState()
     val errorState by viewModel.errorState.collectAsState()
-
 
     Surface {
         Column (
@@ -51,28 +50,31 @@ fun LoginScreen(
                 .padding(horizontal = 16.dp, vertical = 42.dp)
         ) {
             // Greetings
-            Text("Log In", style = MaterialTheme.typography.headlineMedium, fontWeight = FontWeight.Bold,
+            Text("Hai!", style = MaterialTheme.typography.headlineMedium, fontWeight = FontWeight.Bold,
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(0.dp, 8.dp, 0.dp, 8.dp))
-            Text("Ayo Login",
+            Text("Ayo Signup",
                 style = MaterialTheme.typography.bodyMedium,
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(0.dp, 0.dp, 0.dp, 42.dp))
-
+            //Name Input Field
+            NameTextField(viewModel)
             //Email Input Field
             EmailTextField(viewModel)
             //Password Input Field
             PasswordTextField(viewModel)
-            //Log In Button
-            LoginButton(viewModel)
+            //Sign up Button
+            SignupButton(viewModel)
+            //Login Button
+            LoginButton({ onNavigateToLogin() })
 
             when {
-                loginState != null -> {
-                    Text("Login Successful: $loginState")
-                    LaunchedEffect(loginState) {
-                        println("Resetting loginState")
+                signUpState != null -> {
+                    Text("Sign Up Successful: $signUpState")
+                    LaunchedEffect(signUpState) {
+                        println("Resetting signUpState")
                         kotlinx.coroutines.delay(3000)
                         viewModel.resetStates()
                     }
@@ -91,22 +93,24 @@ fun LoginScreen(
 }
 
 @Composable
-fun LoginButton(
-    viewModel: LoginViewModel,
+fun SignupButton(
+    viewModel: SignupViewModel,
     modifier: Modifier = Modifier
 ){
     Button(onClick = {
-        viewModel.onEvent(LoginEvent.Submit)
+        viewModel.onEvent(SignupEvent.Submit)
     },
         modifier = Modifier.fillMaxWidth()
             .padding(0.dp, 16.dp, 0.dp, 8.dp)) {
-        Text("Log In")
+        Text("Sign Up")
     }
 }
 
 @Composable
-fun SignupButton(modifier: Modifier = Modifier){
-    OutlinedButton(onClick = {  },
+fun LoginButton(onNavigateToLogin: () -> Unit, modifier: Modifier = Modifier){
+    OutlinedButton(onClick = {
+        onNavigateToLogin()
+    },
         modifier = Modifier.fillMaxWidth()
             .padding(0.dp, 0.dp, 0.dp, 8.dp)) {
         Text("Sign Up")
@@ -114,12 +118,28 @@ fun SignupButton(modifier: Modifier = Modifier){
 }
 
 @Composable
-fun EmailTextField(viewModel: LoginViewModel) {
+fun NameTextField(viewModel: SignupViewModel) {
+    CustomTextField(
+        title = "Nama",
+        text = viewModel.formState.name,
+        onValueChange = {
+            viewModel.onEvent(SignupEvent.NameChanged(it))
+        },
+        keyboardType = KeyboardType.Text,
+        imeAction = ImeAction.Next,
+        isError = viewModel.formState.nameError != null,
+        errorMessage = viewModel.formState.nameError,
+        singleLine = true,
+    )
+}
+
+@Composable
+fun EmailTextField(viewModel: SignupViewModel) {
     CustomTextField(
         title = "Email",
         text = viewModel.formState.email,
         onValueChange = {
-            viewModel.onEvent(LoginEvent.EmailChanged(it))
+            viewModel.onEvent(SignupEvent.EmailChanged(it))
         },
         leadingIcon = painterResource(id = R.drawable.ic_email),
         keyboardType = KeyboardType.Email,
@@ -132,23 +152,24 @@ fun EmailTextField(viewModel: LoginViewModel) {
 
 @Composable
 fun PasswordTextField(
-    viewModel: LoginViewModel
+    viewModel: SignupViewModel
 ) {
     DicodingStoryTheme {
         CustomTextField(
             title = "Password",
             text = viewModel.formState.password,
             onValueChange = {
-                viewModel.onEvent(LoginEvent.PasswordChanged(it))
+                viewModel.onEvent(SignupEvent.PasswordChanged(it))
             },
             leadingIcon = painterResource(id = R.drawable.ic_lock),
             trailingIcon = {
                 Box(
-                    modifier = Modifier) {
+                    modifier = Modifier
+                ) {
                     IconButton(
                         onClick =
                         {
-                            viewModel.onEvent(LoginEvent.VisiblePassword(!(viewModel.formState.isVisiblePassword)))
+                            viewModel.onEvent(SignupEvent.VisiblePassword(!(viewModel.formState.isVisiblePassword)))
                         }
                     ) {
                         Icon(

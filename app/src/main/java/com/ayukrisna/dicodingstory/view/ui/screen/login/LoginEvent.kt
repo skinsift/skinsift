@@ -1,4 +1,4 @@
-package com.ayukrisna.dicodingstory.application.ui.view.login
+package com.ayukrisna.dicodingstory.view.ui.screen.login
 
 sealed class LoginEvent {
     data class EmailChanged(val email: String) : LoginEvent()

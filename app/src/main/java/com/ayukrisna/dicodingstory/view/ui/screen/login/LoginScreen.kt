@@ -1,6 +1,5 @@
-package com.ayukrisna.dicodingstory.application.ui.view.signup
+package com.ayukrisna.dicodingstory.view.ui.screen.login
 
-import android.content.Context
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -12,6 +11,7 @@ import androidx.compose.material3.Button
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -27,17 +27,17 @@ import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import com.ayukrisna.dicodingstory.R
-import com.ayukrisna.dicodingstory.application.ui.component.CustomTextField
-import com.ayukrisna.dicodingstory.application.ui.theme.DicodingStoryTheme
+import com.ayukrisna.dicodingstory.view.ui.component.CustomTextField
+import com.ayukrisna.dicodingstory.view.ui.theme.DicodingStoryTheme
 import org.koin.androidx.compose.koinViewModel
 
-
 @Composable
-fun SignupScreen(
-    viewModel: SignupViewModel = koinViewModel(),
+fun LoginScreen(
+    viewModel: LoginViewModel = koinViewModel(),
+    onNavigateToSignup: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
-    val signUpState by viewModel.signUpState.collectAsState()
+    val loginState by viewModel.loginState.collectAsState()
     val errorState by viewModel.errorState.collectAsState()
 
     Surface {
@@ -49,29 +49,30 @@ fun SignupScreen(
                 .padding(horizontal = 16.dp, vertical = 42.dp)
         ) {
             // Greetings
-            Text("Hai!", style = MaterialTheme.typography.headlineMedium, fontWeight = FontWeight.Bold,
+            Text("Log In", style = MaterialTheme.typography.headlineMedium, fontWeight = FontWeight.Bold,
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(0.dp, 8.dp, 0.dp, 8.dp))
-            Text("Ayo Signup",
+            Text("Ayo Login",
                 style = MaterialTheme.typography.bodyMedium,
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(0.dp, 0.dp, 0.dp, 42.dp))
-            //Name Input Field
-            NameTextField(viewModel)
+
             //Email Input Field
             EmailTextField(viewModel)
             //Password Input Field
             PasswordTextField(viewModel)
-            //Sign up Button
-            SignupButton(viewModel)
+            //Log In Button
+            LoginButton(viewModel)
+            //Signup Button
+            SignupButton({ onNavigateToSignup() })
 
             when {
-                signUpState != null -> {
-                    Text("Sign Up Successful: $signUpState")
-                    LaunchedEffect(signUpState) {
-                        println("Resetting signUpState")
+                loginState != null -> {
+                    Text("Login Successful: $loginState")
+                    LaunchedEffect(loginState) {
+                        println("Resetting loginState")
                         kotlinx.coroutines.delay(3000)
                         viewModel.resetStates()
                     }
@@ -90,42 +91,37 @@ fun SignupScreen(
 }
 
 @Composable
-fun SignupButton(
-    viewModel: SignupViewModel,
+fun LoginButton(
+    viewModel: LoginViewModel,
     modifier: Modifier = Modifier
 ){
     Button(onClick = {
-        viewModel.onEvent(SignupEvent.Submit)
+        viewModel.onEvent(LoginEvent.Submit)
     },
         modifier = Modifier.fillMaxWidth()
             .padding(0.dp, 16.dp, 0.dp, 8.dp)) {
+        Text("Log In")
+    }
+}
+
+@Composable
+fun SignupButton(onNavigateToSignup: () -> Unit, modifier: Modifier = Modifier){
+    OutlinedButton(onClick = {
+        onNavigateToSignup()
+    },
+        modifier = Modifier.fillMaxWidth()
+            .padding(0.dp, 0.dp, 0.dp, 8.dp)) {
         Text("Sign Up")
     }
 }
 
 @Composable
-fun NameTextField(viewModel: SignupViewModel) {
-    CustomTextField(
-        title = "Nama",
-        text = viewModel.formState.name,
-        onValueChange = {
-            viewModel.onEvent(SignupEvent.NameChanged(it))
-        },
-        keyboardType = KeyboardType.Text,
-        imeAction = ImeAction.Next,
-        isError = viewModel.formState.nameError != null,
-        errorMessage = viewModel.formState.nameError,
-        singleLine = true,
-    )
-}
-
-@Composable
-fun EmailTextField(viewModel: SignupViewModel) {
+fun EmailTextField(viewModel: LoginViewModel) {
     CustomTextField(
         title = "Email",
         text = viewModel.formState.email,
         onValueChange = {
-            viewModel.onEvent(SignupEvent.EmailChanged(it))
+            viewModel.onEvent(LoginEvent.EmailChanged(it))
         },
         leadingIcon = painterResource(id = R.drawable.ic_email),
         keyboardType = KeyboardType.Email,
@@ -138,24 +134,23 @@ fun EmailTextField(viewModel: SignupViewModel) {
 
 @Composable
 fun PasswordTextField(
-    viewModel: SignupViewModel
+    viewModel: LoginViewModel
 ) {
     DicodingStoryTheme {
         CustomTextField(
             title = "Password",
             text = viewModel.formState.password,
             onValueChange = {
-                viewModel.onEvent(SignupEvent.PasswordChanged(it))
+                viewModel.onEvent(LoginEvent.PasswordChanged(it))
             },
             leadingIcon = painterResource(id = R.drawable.ic_lock),
             trailingIcon = {
                 Box(
-                    modifier = Modifier
-                ) {
+                    modifier = Modifier) {
                     IconButton(
                         onClick =
                         {
-                            viewModel.onEvent(SignupEvent.VisiblePassword(!(viewModel.formState.isVisiblePassword)))
+                            viewModel.onEvent(LoginEvent.VisiblePassword(!(viewModel.formState.isVisiblePassword)))
                         }
                     ) {
                         Icon(

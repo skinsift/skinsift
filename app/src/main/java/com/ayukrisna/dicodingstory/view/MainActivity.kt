@@ -1,13 +1,14 @@
-package com.ayukrisna.dicodingstory.application
+package com.ayukrisna.dicodingstory.view
 
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
+import androidx.navigation.compose.rememberNavController
 import com.ayukrisna.dicodingstory.MyApp
-import com.ayukrisna.dicodingstory.application.ui.theme.DicodingStoryTheme
-import com.ayukrisna.dicodingstory.application.ui.view.login.LoginScreen
-import com.ayukrisna.dicodingstory.application.ui.view.signup.SignupScreen
+import com.ayukrisna.dicodingstory.navigation.NavGraph
+import com.ayukrisna.dicodingstory.view.ui.theme.DicodingStoryTheme
+import com.ayukrisna.dicodingstory.view.ui.screen.login.LoginScreen
 import org.koin.core.annotation.KoinExperimentalAPI
 
 class MainActivity : ComponentActivity() {
@@ -18,7 +19,8 @@ class MainActivity : ComponentActivity() {
         setContent {
             DicodingStoryTheme {
                 MyApp()
-                LoginScreen()
+                val navController = rememberNavController()
+                NavGraph(navController = navController)
             }
         }
     }

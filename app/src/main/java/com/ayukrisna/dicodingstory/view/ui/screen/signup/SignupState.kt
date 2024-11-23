@@ -1,4 +1,4 @@
-package com.ayukrisna.dicodingstory.application.ui.view.signup
+package com.ayukrisna.dicodingstory.view.ui.screen.signup
 
 import com.ayukrisna.dicodingstory.util.UiText
 

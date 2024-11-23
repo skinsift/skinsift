@@ -1,4 +1,4 @@
-package com.ayukrisna.dicodingstory.application.ui.theme
+package com.ayukrisna.dicodingstory.view.ui.theme
 
 import androidx.compose.ui.graphics.Color
 

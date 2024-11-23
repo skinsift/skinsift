@@ -1,8 +1,8 @@
-package com.ayukrisna.dicodingstory.application.ui.component
+package com.ayukrisna.dicodingstory.view.ui.component
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
-import com.ayukrisna.dicodingstory.application.ui.view.signup.SignupViewModel
+import com.ayukrisna.dicodingstory.view.ui.screen.signup.SignupViewModel
 import com.ayukrisna.dicodingstory.domain.usecase.RegisterUseCase
 
 class SignupViewModelFactory(private val registerUseCase: RegisterUseCase) : ViewModelProvider.Factory {

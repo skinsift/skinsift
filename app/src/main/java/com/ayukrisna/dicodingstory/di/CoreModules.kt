@@ -1,7 +1,7 @@
 package com.ayukrisna.dicodingstory.di
 
-import com.ayukrisna.dicodingstory.application.ui.view.login.LoginViewModel
-import com.ayukrisna.dicodingstory.application.ui.view.signup.SignupViewModel
+import com.ayukrisna.dicodingstory.view.ui.screen.login.LoginViewModel
+import com.ayukrisna.dicodingstory.view.ui.screen.signup.SignupViewModel
 import com.ayukrisna.dicodingstory.data.local.pref.UserPreference
 import com.ayukrisna.dicodingstory.data.repository.UserRepositoryImp
 import com.ayukrisna.dicodingstory.domain.repository.UserRepository
@@ -11,7 +11,6 @@ import org.koin.core.module.Module
 import org.koin.dsl.module
 import com.ayukrisna.dicodingstory.domain.usecase.RegisterUseCase
 import org.koin.androidx.viewmodel.dsl.viewModel
-import org.koin.androidx.viewmodel.dsl.viewModelOf
 import org.koin.core.module.dsl.singleOf
 import org.koin.dsl.bind
 
