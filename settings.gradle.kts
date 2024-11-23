@@ -19,6 +19,6 @@ dependencyResolutionManagement {
     }
 }
 
-rootProject.name = "DicodingStory"
+rootProject.name = "SkinSift"
 include(":app")
  

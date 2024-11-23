@@ -7,11 +7,11 @@ plugins {
 }
 
 android {
-    namespace = "com.ayukrisna.dicodingstory"
+    namespace = "com.ayukrisna.skinsift"
     compileSdk = 35
 
     defaultConfig {
-        applicationId = "com.ayukrisna.dicodingstory"
+        applicationId = "com.ayukrisna.skinsift"
         minSdk = 24
         targetSdk = 34
         versionCode = 1
