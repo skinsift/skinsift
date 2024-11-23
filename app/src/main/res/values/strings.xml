@@ -5,4 +5,11 @@
     <string name="emailIsNotValid">Emailmu tidak valid, nih.</string>
     <string name="passwordLessThanEightChars">Pastikan passwordmu terdiri dari 8 karakter atau lebih, ya!</string>
     <string name="testing_error">Testing error</string>
+    <string name="home_intro1">"Scan dan temukan "</string>
+    <string name="home_intro2">skincare</string>
+    <string name="home_intro3">" yang sesuai denganmu."</string>
+    <string name="ingredients_scanner">Ingredients Scanner</string>
+    <string name="lihat_selengkapnya">Lihat Selengkapnya</string>
+    <string name="review_scanner">Review Scanner</string>
+    <string name="artikel_menarik">Artikel Menarik</string>
 </resources>
