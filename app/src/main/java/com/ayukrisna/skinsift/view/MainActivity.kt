@@ -7,21 +7,19 @@ import androidx.activity.enableEdgeToEdge
 import androidx.navigation.compose.rememberNavController
 import com.ayukrisna.skinsift.MyApp
 import com.ayukrisna.skinsift.navigation.NavGraph
-import com.ayukrisna.skinsift.view.ui.screen.home.HomeScreen
 import com.ayukrisna.skinsift.view.ui.theme.SkinSiftTheme
 import org.koin.core.annotation.KoinExperimentalAPI
 
 class MainActivity : ComponentActivity() {
-    @OptIn(KoinExperimentalAPI::class)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
         setContent {
             SkinSiftTheme {
                 MyApp()
-                HomeScreen()
-//                val navController = rememberNavController()
-//                NavGraph(navController = navController)
+//                HomeScreen()
+                val navController = rememberNavController()
+                NavGraph(navController = navController)
             }
         }
     }
