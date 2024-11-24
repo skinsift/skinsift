@@ -69,13 +69,13 @@ fun HomeScreen(
             Spacer(modifier = Modifier.height(12.dp))
             ScannerCard()
             Spacer(modifier = Modifier.height(24.dp))
-            TitleHome(stringResource(R.string.review_scanner))
+            TitleHome(stringResource(R.string.ingredients_saved))
             Spacer(modifier = Modifier.height(12.dp))
             ScannerHistoryItem()
             Spacer(modifier = Modifier.height(12.dp))
             ScannerHistoryItem()
             Spacer(modifier = Modifier.height(24.dp))
-            TitleHome(stringResource(R.string.artikel_menarik))
+            TitleHome(stringResource(R.string.interesting_articles))
             Spacer(modifier = Modifier.height(6.dp))
             ArticleCardList()
         }
@@ -114,10 +114,10 @@ fun Profile(modifier: Modifier = Modifier) {
         horizontalArrangement = Arrangement.Start,
         verticalAlignment = Alignment.CenterVertically,
     ) {
-        CircleImageView()
+//        CircleImageView()
         Text("Hai, Ayu Krisna ✨",
             style = MaterialTheme.typography.titleSmall, modifier = Modifier
-                .padding(8.dp, 0.dp, 0.dp, 0.dp)
+                .padding(0.dp, 0.dp, 0.dp, 0.dp)
         )
     }
 }
@@ -160,7 +160,7 @@ fun TitleHome(
             style = MaterialTheme.typography.titleMedium,
             fontWeight = FontWeight.Bold,
             modifier = Modifier
-                .padding(8.dp, 0.dp, 0.dp, 0.dp)
+                .padding(0.dp, 0.dp, 0.dp, 0.dp)
         )
         Text(
             stringResource(R.string.lihat_selengkapnya),

@@ -10,6 +10,12 @@
     <string name="home_intro3">" yang sesuai denganmu."</string>
     <string name="ingredients_scanner">Ingredients Scanner</string>
     <string name="lihat_selengkapnya">Lihat Selengkapnya</string>
-    <string name="review_scanner">Review Scanner</string>
-    <string name="artikel_menarik">Artikel Menarik</string>
+    <string name="ingredients_saved">Ingredients Tersimpan</string>
+    <string name="interesting_articles">Artikel Menarik</string>
+    <string name="hai">Hai!</string>
+    <string name="login_instruction">Sebelum memulai, yuk masukkan username dan passwordmu di bawah ini!</string>
+    <string name="login_btn">Masuk</string>
+    <string name="signup_btn">Buat Akun</string>
+    <string name="welcome">Selamat Datang!</string>
+    <string name="signup_instruction">Sebelum memulai, yuk buat akunmu terlebih dahulu di bawah ini!</string>
 </resources>

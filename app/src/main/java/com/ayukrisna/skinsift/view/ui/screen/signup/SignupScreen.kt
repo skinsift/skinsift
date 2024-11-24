@@ -22,6 +22,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
@@ -50,11 +51,13 @@ fun SignupScreen(
                 .padding(horizontal = 16.dp, vertical = 42.dp)
         ) {
             // Greetings
-            Text("Hai!", style = MaterialTheme.typography.headlineMedium, fontWeight = FontWeight.Bold,
+            Text(
+                stringResource(R.string.welcome), style = MaterialTheme.typography.headlineMedium, fontWeight = FontWeight.Bold,
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(0.dp, 8.dp, 0.dp, 8.dp))
-            Text("Ayo Signup",
+            Text(
+                stringResource(R.string.signup_instruction),
                 style = MaterialTheme.typography.bodyMedium,
                 modifier = Modifier
                     .fillMaxWidth()
@@ -100,9 +103,10 @@ fun SignupButton(
     Button(onClick = {
         viewModel.onEvent(SignupEvent.Submit)
     },
-        modifier = Modifier.fillMaxWidth()
+        modifier = Modifier
+            .fillMaxWidth()
             .padding(0.dp, 16.dp, 0.dp, 8.dp)) {
-        Text("Sign Up")
+        Text(stringResource(R.string.signup_btn))
     }
 }
 
@@ -111,9 +115,10 @@ fun LoginButton(onNavigateToLogin: () -> Unit, modifier: Modifier = Modifier){
     OutlinedButton(onClick = {
         onNavigateToLogin()
     },
-        modifier = Modifier.fillMaxWidth()
+        modifier = Modifier
+            .fillMaxWidth()
             .padding(0.dp, 0.dp, 0.dp, 8.dp)) {
-        Text("Sign Up")
+        Text(stringResource(R.string.login_btn))
     }
 }
 
@@ -181,7 +186,8 @@ fun PasswordTextField(
                             contentDescription = "Visible",
                             tint = MaterialTheme.colorScheme.primary,
                             modifier = Modifier
-                                .requiredSize(48.dp).padding(16.dp)
+                                .requiredSize(48.dp)
+                                .padding(16.dp)
                         )
                     }
                 }
