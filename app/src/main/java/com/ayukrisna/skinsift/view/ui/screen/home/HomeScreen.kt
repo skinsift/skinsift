@@ -6,6 +6,7 @@ import androidx.compose.foundation.horizontalScroll
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.aspectRatio
@@ -48,6 +49,7 @@ import com.ayukrisna.skinsift.view.ui.theme.SkinSiftTheme
 
 @Composable
 fun HomeScreen(
+    paddingValues: PaddingValues,
     modifier: Modifier = Modifier,
 ) {
     Surface {
@@ -56,7 +58,7 @@ fun HomeScreen(
             horizontalAlignment = Alignment.Start,
             modifier = Modifier
                 .fillMaxSize()
-                .padding(horizontal = 16.dp, vertical = 42.dp)
+                .padding(paddingValues)
                 .verticalScroll(rememberScrollState())
         ) {
             HomeTopBar()
@@ -432,7 +434,7 @@ fun NotificationButtonPreview() {
 @Composable
 fun HomeScreenPreview() {
     SkinSiftTheme {
-        HomeScreen(modifier = Modifier)
+        HomeScreen(paddingValues = PaddingValues(horizontal = 16.dp, vertical = 42.dp))
     }
 }
 

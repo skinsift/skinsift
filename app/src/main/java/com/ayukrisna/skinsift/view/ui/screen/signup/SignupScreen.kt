@@ -3,6 +3,7 @@ package com.ayukrisna.skinsift.view.ui.screen.signup
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
@@ -37,6 +38,7 @@ import org.koin.androidx.compose.koinViewModel
 fun SignupScreen(
     viewModel: SignupViewModel = koinViewModel(),
     onNavigateToLogin: () -> Unit,
+    paddingValues: PaddingValues,
     modifier: Modifier = Modifier,
 ) {
     val signUpState by viewModel.signUpState.collectAsState()
@@ -48,7 +50,7 @@ fun SignupScreen(
             horizontalAlignment = Alignment.CenterHorizontally,
             modifier = Modifier
                 .fillMaxSize()
-                .padding(horizontal = 16.dp, vertical = 42.dp)
+                .padding(paddingValues)
         ) {
             // Greetings
             Text(

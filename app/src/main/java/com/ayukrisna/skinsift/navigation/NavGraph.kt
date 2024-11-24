@@ -5,6 +5,7 @@ import androidx.compose.animation.ExitTransition
 import androidx.compose.animation.core.tween
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.runtime.Composable
 import androidx.navigation.compose.composable
 import androidx.navigation.NavHostController
@@ -15,6 +16,7 @@ import com.ayukrisna.skinsift.view.ui.screen.signup.SignupScreen
 @Composable
 fun NavGraph (
     navController: NavHostController,
+    paddingValues: PaddingValues,
 ) {
     NavHost(
         navController,
@@ -28,14 +30,16 @@ fun NavGraph (
             LoginScreen(
                 onNavigateToSignup = {
                     navController.navigate(AuthScreen.SignupScreen)
-                }
+                },
+                paddingValues = paddingValues
             )
         }
         composable<AuthScreen.SignupScreen> {
             SignupScreen(
                 onNavigateToLogin = {
                     navController.navigate(AuthScreen.LoginScreen)
-                }
+                },
+                paddingValues = paddingValues
             )
         }
     }
