@@ -28,13 +28,14 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.ayukrisna.skinsift.R
+import com.ayukrisna.skinsift.view.ui.component.CenterAppBar
 import com.ayukrisna.skinsift.view.ui.theme.SkinSiftTheme
 
 @Composable
-fun DetailIngredientScreen() {
+fun DetailIngredientScreen(modifier: Modifier = Modifier) {
     Scaffold(
         topBar = {
-            DetailIngredientAppBar()
+            DetailIngredientAppBar("Detail Ingredients")
         },
         content = { paddingValues->
             // Padding values should be applied if needed
@@ -170,33 +171,15 @@ fun DetailIngredientPreview() {
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun DetailIngredientAppBar() {
-    CenterAlignedTopAppBar(
-        title = {
-            Text(text = "Detail Ingredients",
-                style = MaterialTheme.typography.titleMedium,
-                fontWeight = FontWeight.ExtraBold,
-                color = MaterialTheme.colorScheme.primary
-            )
-        },
-        navigationIcon = {
-            IconButton(onClick = { /* do something */ }) {
-                Icon(
-                    imageVector = Icons.AutoMirrored.Filled.ArrowBack,
-                    contentDescription = "Localized description",
-                    tint = MaterialTheme.colorScheme.primary
-                )
-            }
-        },
-
-    )
+fun DetailIngredientAppBar(title: String) {
+    CenterAppBar(title)
 }
 
 @Preview(showBackground = true)
 @Composable
 fun PreviewAppBar() {
     SkinSiftTheme {
-        DetailIngredientAppBar()
+        DetailIngredientAppBar("Detail Ingredients")
     }
 }
 

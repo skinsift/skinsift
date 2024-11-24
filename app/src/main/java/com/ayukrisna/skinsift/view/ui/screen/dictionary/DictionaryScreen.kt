@@ -31,12 +31,13 @@ import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.unit.dp
+import com.ayukrisna.skinsift.view.ui.component.AppBar
 
 @Composable
 fun DictionaryScreen() {
     Scaffold(
         topBar = {
-            DictionaryAppBar() // This should be your custom AppBar composable
+            DictionaryAppBar("Daftar Ingredients", "Cari yang kamu butuhkan") // This should be your custom AppBar composable
         },
         content = { paddingValues->
             // Padding values should be applied if needed
@@ -109,38 +110,8 @@ fun IngredientsItem(ratingColor: Color, rating: String, title: String, descripti
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun DictionaryAppBar() {
-    TopAppBar(
-        title = {
-            Column(
-                modifier = Modifier
-            ) {
-                Text(text = "Daftar Ingredients",
-                    fontWeight = FontWeight.ExtraBold,
-                    style = MaterialTheme.typography.titleLarge
-                )
-                Text(
-                    text = "Cari yang kamu butuhkan",
-                    style = MaterialTheme.typography.bodyMedium.copy(
-                        color = Color.Gray
-                    )
-                )
-            }
-        },
-        colors = TopAppBarDefaults.topAppBarColors(
-            containerColor = MaterialTheme.colorScheme.surface,
-            titleContentColor = MaterialTheme.colorScheme.primary,
-        ),
-        actions = {
-            IconButton(onClick = { /* do something */ }) {
-                Icon(
-                    painter = painterResource(id = R.drawable.ic_filter),
-                    tint = MaterialTheme.colorScheme.primary,
-                    contentDescription = "Filter"
-                )
-            }
-        },
-    )
+fun DictionaryAppBar(title: String, subtitle: String) {
+    AppBar(title, subtitle)
 }
 
 @Preview(showBackground = true)
@@ -169,6 +140,6 @@ fun PreviewIngredientItem() {
 @Composable
 fun AppBarPreview() {
     SkinSiftTheme {
-        DictionaryAppBar()
+        DictionaryAppBar("Daftar Ingredients", "Cari yang kamu butuhkan")
     }
 }
