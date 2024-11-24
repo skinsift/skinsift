@@ -36,7 +36,7 @@ import androidx.compose.ui.unit.dp
 fun DictionaryScreen() {
     Scaffold(
         topBar = {
-            AppBar() // This should be your custom AppBar composable
+            DictionaryAppBar() // This should be your custom AppBar composable
         },
         content = { paddingValues->
             // Padding values should be applied if needed
@@ -109,7 +109,7 @@ fun IngredientsItem(ratingColor: Color, rating: String, title: String, descripti
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun AppBar() {
+fun DictionaryAppBar() {
     TopAppBar(
         title = {
             Column(
@@ -156,7 +156,7 @@ fun DictionaryPreview() {
 fun PreviewIngredientItem() {
     SkinSiftTheme {
         IngredientsItem(
-            ratingColor = Color.Green,
+            ratingColor = Color(0xFF298A4B),
             rating = "Best",
             title = "Acai",
             description = "Pronounced \"ah-sigh-ee\", this small berry has a deep " +
@@ -169,6 +169,6 @@ fun PreviewIngredientItem() {
 @Composable
 fun AppBarPreview() {
     SkinSiftTheme {
-        AppBar()
+        DictionaryAppBar()
     }
 }

@@ -9,6 +9,7 @@ import androidx.compose.ui.unit.dp
 import androidx.navigation.compose.rememberNavController
 import com.ayukrisna.skinsift.MyApp
 import com.ayukrisna.skinsift.navigation.NavGraph
+import com.ayukrisna.skinsift.view.ui.screen.dictionary.DetailIngredientScreen
 import com.ayukrisna.skinsift.view.ui.screen.dictionary.DictionaryScreen
 import com.ayukrisna.skinsift.view.ui.theme.SkinSiftTheme
 
@@ -19,7 +20,7 @@ class MainActivity : ComponentActivity() {
         setContent {
             SkinSiftTheme {
                 MyApp()
-                DictionaryScreen()
+                DetailIngredientScreen()
 //                val navController = rememberNavController()
 //                NavGraph(navController = navController,
 //                    paddingValues = PaddingValues(horizontal = 16.dp, vertical = 42.dp))

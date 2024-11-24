@@ -18,4 +18,8 @@
     <string name="signup_btn">Buat Akun</string>
     <string name="welcome">Selamat Datang!</string>
     <string name="signup_instruction">Sebelum memulai, yuk buat akunmu terlebih dahulu di bawah ini!</string>
+    <string name="more_about_ingre">Sekilas tentang Ingredients</string>
+    <string name="rating">Rating</string>
+    <string name="use">Kegunaan</string>
+    <string name="category">Kategori</string>
 </resources>
