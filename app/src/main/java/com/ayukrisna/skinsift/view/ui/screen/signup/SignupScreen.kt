@@ -64,8 +64,8 @@ fun SignupScreen(
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(0.dp, 0.dp, 0.dp, 42.dp))
-            //Name Input Field
-            NameTextField(viewModel)
+            //Username Input Field
+            UsernameTextField(viewModel)
             //Email Input Field
             EmailTextField(viewModel)
             //Password Input Field
@@ -125,17 +125,17 @@ fun LoginButton(onNavigateToLogin: () -> Unit, modifier: Modifier = Modifier){
 }
 
 @Composable
-fun NameTextField(viewModel: SignupViewModel) {
+fun UsernameTextField(viewModel: SignupViewModel) {
     CustomTextField(
-        title = "Nama",
-        text = viewModel.formState.name,
+        title = "Username",
+        text = viewModel.formState.username,
         onValueChange = {
-            viewModel.onEvent(SignupEvent.NameChanged(it))
+            viewModel.onEvent(SignupEvent.UsernameChanged(it))
         },
         keyboardType = KeyboardType.Text,
         imeAction = ImeAction.Next,
-        isError = viewModel.formState.nameError != null,
-        errorMessage = viewModel.formState.nameError,
+        isError = viewModel.formState.usernameError != null,
+        errorMessage = viewModel.formState.usernameError,
         singleLine = true,
     )
 }

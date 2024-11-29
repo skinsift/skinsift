@@ -1,9 +1,10 @@
 package com.ayukrisna.skinsift.domain.usecase
 
-import android.util.Patterns
 import com.ayukrisna.skinsift.R
 import com.ayukrisna.skinsift.domain.model.ValidationResult
 import com.ayukrisna.skinsift.util.UiText
+
+import android.util.Patterns
 
 class ValidateEmailUseCase: BaseUseCase<String, ValidationResult>() {
     override fun execute(input: String): ValidationResult {

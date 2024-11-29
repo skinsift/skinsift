@@ -33,6 +33,7 @@ import com.ayukrisna.skinsift.view.ui.component.CustomTextField
 import com.ayukrisna.skinsift.view.ui.theme.SkinSiftTheme
 import org.koin.androidx.compose.koinViewModel
 
+
 @Composable
 fun LoginScreen(
     viewModel: LoginViewModel = koinViewModel(),
@@ -64,8 +65,8 @@ fun LoginScreen(
                     .fillMaxWidth()
                     .padding(0.dp, 0.dp, 0.dp, 42.dp))
 
-            //Email Input Field
-            EmailTextField(viewModel)
+            //Username and Email Input Field
+            UsernameAndEmailTextField(viewModel)
             //Password Input Field
             PasswordTextField(viewModel)
             //Log In Button
@@ -123,12 +124,12 @@ fun SignupButton(onNavigateToSignup: () -> Unit, modifier: Modifier = Modifier){
 }
 
 @Composable
-fun EmailTextField(viewModel: LoginViewModel) {
+fun UsernameAndEmailTextField(viewModel: LoginViewModel) {
     CustomTextField(
-        title = "Email",
-        text = viewModel.formState.email,
+        title = "Username/Email",
+        text = viewModel.formState.unameOrEmail,
         onValueChange = {
-            viewModel.onEvent(LoginEvent.EmailChanged(it))
+            viewModel.onEvent(LoginEvent.UnameOrEmailChanged(it))
         },
         leadingIcon = painterResource(id = R.drawable.ic_email),
         keyboardType = KeyboardType.Email,

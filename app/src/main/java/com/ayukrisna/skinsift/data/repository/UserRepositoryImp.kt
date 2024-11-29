@@ -24,13 +24,13 @@ class UserRepositoryImp (
         userPreference.logout()
     }
 
-    override suspend fun login(email: String, password: String): LoginResponse {
+    override suspend fun login(unameOrEmail: String, password: String): LoginResponse {
         val apiService = ApiConfig.getApiService()
-        return apiService.loginUser(email, password)
+        return apiService.loginUser(unameOrEmail, password)
     }
 
-    override suspend fun register(name:String, email: String, password: String): RegisterResponse {
+    override suspend fun register(username:String, email: String, password: String): RegisterResponse {
         val apiService = ApiConfig.getApiService()
-        return apiService.registerUser(name, email, password)
+        return apiService.registerUser(username, email, password)
     }
 }

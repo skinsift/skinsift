@@ -8,7 +8,7 @@ import kotlinx.coroutines.flow.Flow
 interface UserRepository {
     suspend fun saveSession(user: UserModel)
     fun getSession(): Flow<UserModel>
-    suspend fun register(name:String, email: String, password: String): RegisterResponse
-    suspend fun login(email: String, password: String): LoginResponse
+    suspend fun register(username:String, email: String, password: String): RegisterResponse
+    suspend fun login(unameOrEmail: String, password: String): LoginResponse
     suspend fun logout()
 }

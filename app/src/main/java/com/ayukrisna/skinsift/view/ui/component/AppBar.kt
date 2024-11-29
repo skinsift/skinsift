@@ -14,14 +14,22 @@ import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import com.ayukrisna.skinsift.R
 
 
+/**
+ * AppBar
+ */
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun AppBar(title: String, subtitle: String) {
+fun AppBar(
+    title: String,
+    subtitle: String,
+    actionIcon: ImageVector,
+    onActionClick: () -> Unit,) {
     TopAppBar(
         title = {
             Column(
@@ -44,11 +52,11 @@ fun AppBar(title: String, subtitle: String) {
             titleContentColor = MaterialTheme.colorScheme.primary,
         ),
         actions = {
-            IconButton(onClick = { /* do something */ }) {
+            IconButton(onClick = { onActionClick() }) {
                 Icon(
-                    painter = painterResource(id = R.drawable.ic_filter),
-                    tint = MaterialTheme.colorScheme.primary,
-                    contentDescription = "Filter"
+                    imageVector = actionIcon,
+                    contentDescription = "Action",
+                    tint = MaterialTheme.colorScheme.primary
                 )
             }
         },
@@ -57,7 +65,9 @@ fun AppBar(title: String, subtitle: String) {
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun CenterAppBar(title: String) {
+fun CenterAppBar(
+    title: String
+) {
     CenterAlignedTopAppBar(
         title = {
             Text(text = title,

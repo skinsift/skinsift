@@ -7,14 +7,14 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.ayukrisna.skinsift.domain.usecase.RegisterUseCase
 import com.ayukrisna.skinsift.domain.usecase.ValidateEmailUseCase
-import com.ayukrisna.skinsift.domain.usecase.ValidateNameUseCase
 import com.ayukrisna.skinsift.domain.usecase.ValidatePasswordUseCase
+import com.ayukrisna.skinsift.domain.usecase.ValidateUnameOrEmailUseCase
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
 
 class SignupViewModel(private val registerUseCase: RegisterUseCase) : ViewModel() {
-    private val validateNameUseCase = ValidateNameUseCase()
+    private val validateUsernameUseCase = ValidateUnameOrEmailUseCase()
     private val validateEmailUseCase = ValidateEmailUseCase()
     private val validatePasswordUseCase = ValidatePasswordUseCase()
 
@@ -27,9 +27,9 @@ class SignupViewModel(private val registerUseCase: RegisterUseCase) : ViewModel(
 
     fun onEvent(event: SignupEvent) {
         when (event) {
-            is SignupEvent.NameChanged -> {
-                formState = formState.copy(name = event.name)
-                validateName()
+            is SignupEvent.UsernameChanged -> {
+                formState = formState.copy(username = event.username)
+                validateUsername()
             }
 
             is SignupEvent.EmailChanged -> {
@@ -47,16 +47,16 @@ class SignupViewModel(private val registerUseCase: RegisterUseCase) : ViewModel(
             }
 
             is SignupEvent.Submit -> {
-                if (validateName() && validateEmail() && validatePassword()) {
-                    signUp(formState.name, formState.email, formState.password )
+                if (validateUsername() && validateEmail() && validatePassword()) {
+                    signUp(formState.username, formState.email, formState.password )
                 }
             }
         }
     }
 
-    private fun validateName(): Boolean {
-        val nameResult = validateNameUseCase.execute(formState.name)
-        formState = formState.copy(nameError = nameResult.errorMessage)
+    private fun validateUsername(): Boolean {
+        val nameResult = validateUsernameUseCase.execute(formState.username)
+        formState = formState.copy(usernameError = nameResult.errorMessage)
         return nameResult.successful
     }
 
@@ -67,7 +67,7 @@ class SignupViewModel(private val registerUseCase: RegisterUseCase) : ViewModel(
     }
 
     private fun validatePassword(): Boolean {
-        val passwordResult = validatePasswordUseCase.execute(formState.password)
+        val passwordResult = validatePasswordUseCase.execute(formState.password, true)
         formState = formState.copy(passwordError = passwordResult.errorMessage)
         return passwordResult.successful
     }

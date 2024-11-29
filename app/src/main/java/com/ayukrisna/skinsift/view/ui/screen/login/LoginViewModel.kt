@@ -6,8 +6,8 @@ import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.ayukrisna.skinsift.domain.usecase.LoginUseCase
-import com.ayukrisna.skinsift.domain.usecase.ValidateEmailUseCase
 import com.ayukrisna.skinsift.domain.usecase.ValidatePasswordUseCase
+import com.ayukrisna.skinsift.domain.usecase.ValidateUnameOrEmailUseCase
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
@@ -15,10 +15,10 @@ import kotlinx.coroutines.launch
 class LoginViewModel(
     private val loginUseCase: LoginUseCase
 ) : ViewModel() {
-    private val validateEmailUseCase = ValidateEmailUseCase()
+    private val validateUnameOrEmailUseCase = ValidateUnameOrEmailUseCase()
     private val validatePasswordUseCase = ValidatePasswordUseCase()
 
-    var formState by mutableStateOf(LoginState()) //initialize with default state values
+    var formState by mutableStateOf(LoginState())
 
     private val _loginState = MutableStateFlow<String?>(null)
     val loginState: StateFlow<String?> = _loginState
@@ -28,14 +28,13 @@ class LoginViewModel(
 
     fun onEvent(event: LoginEvent) {
         when (event) {
-            is LoginEvent.EmailChanged -> {
-                formState = formState.copy(email = event.email)
-                validateEmail()
+            is LoginEvent.UnameOrEmailChanged -> {
+                formState = formState.copy(unameOrEmail = event.unameOrEmail)
+                validateUnameOrEmail()
             }
 
             is LoginEvent.PasswordChanged -> {
                 formState = formState.copy(password = event.password)
-                validatePassword()
             }
 
             is LoginEvent.VisiblePassword -> {
@@ -43,29 +42,29 @@ class LoginViewModel(
             }
 
             is LoginEvent.Submit -> {
-                if (validateEmail() && validatePassword()) {
-                    login(formState.email, formState.password )
+                if (validateUnameOrEmail() && validatePassword()) {
+                    login(formState.unameOrEmail, formState.password )
                 }
             }
         }
     }
 
-    private fun validateEmail(): Boolean {
-        val emailResult = validateEmailUseCase.execute(formState.email)
+    private fun validateUnameOrEmail(): Boolean {
+        val emailResult = validateUnameOrEmailUseCase.execute(formState.unameOrEmail)
         formState = formState.copy(emailError = emailResult.errorMessage)
         return emailResult.successful
     }
 
     private fun validatePassword(): Boolean {
-        val passwordResult = validatePasswordUseCase.execute(formState.password)
+        val passwordResult = validatePasswordUseCase.execute(formState.password, false)
         formState = formState.copy(passwordError = passwordResult.errorMessage)
         return passwordResult.successful
     }
 
-    private fun login(email: String, password: String){
+    private fun login(unameOrEmail: String, password: String){
         viewModelScope.launch {
             try {
-                val response = loginUseCase.execute(email, password)
+                val response = loginUseCase.execute(unameOrEmail, password)
                 _loginState.value = response.message
 
             } catch (e: Exception) {

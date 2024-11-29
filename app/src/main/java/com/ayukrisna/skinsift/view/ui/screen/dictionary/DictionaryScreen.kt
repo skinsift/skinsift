@@ -30,14 +30,19 @@ import com.ayukrisna.skinsift.view.ui.theme.SkinSiftTheme
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.unit.dp
 import com.ayukrisna.skinsift.view.ui.component.AppBar
+import androidx.compose.material.icons.Icons
 
 @Composable
 fun DictionaryScreen() {
     Scaffold(
         topBar = {
-            DictionaryAppBar("Daftar Ingredients", "Cari yang kamu butuhkan") // This should be your custom AppBar composable
+            DictionaryAppBar(
+                "Daftar Ingredients",
+                "Cari yang kamu butuhkan",
+                )
         },
         content = { paddingValues->
             // Padding values should be applied if needed
@@ -110,8 +115,14 @@ fun IngredientsItem(ratingColor: Color, rating: String, title: String, descripti
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun DictionaryAppBar(title: String, subtitle: String) {
-    AppBar(title, subtitle)
+fun DictionaryAppBar(
+    title: String,
+    subtitle: String,
+    ) {
+    AppBar(
+        title,
+        subtitle,
+        )
 }
 
 @Preview(showBackground = true)

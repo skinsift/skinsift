@@ -1,7 +1,7 @@
 package com.ayukrisna.skinsift.domain.model
 
 data class UserModel(
-    val name: String,
+    val username: String,
     val email: String,
     val id: String,
     val token: String,
