@@ -35,6 +35,7 @@ import androidx.compose.material.icons.Icons
 
 @Composable
 fun DictionaryScreen(
+    paddingValues: PaddingValues,
     modifier : Modifier = Modifier
 ) {
     Scaffold(
@@ -44,12 +45,11 @@ fun DictionaryScreen(
                 "Cari yang kamu butuhkan",
                 )
         },
-        content = { paddingValues ->
-            // Padding values should be applied if needed
+        content = { innerPadding ->
             Column(modifier = Modifier
                 .fillMaxHeight()
                 .padding(paddingValues)
-                .padding(horizontal = 16.dp)
+                .padding(innerPadding)
             ) {
                 Spacer(modifier = Modifier.height(10.dp))
                 IngredientsItem(Color(0xFF298A4B), "Best", "Acai", "Pronounced \"ah-sigh-ee\", this small berry has a deep purple color and is a rich source of antioxidants.")
@@ -129,7 +129,7 @@ fun DictionaryAppBar(
 @Composable
 fun DictionaryPreview() {
     SkinSiftTheme {
-        DictionaryScreen( )
+        DictionaryScreen(PaddingValues(horizontal = 16.dp, vertical = 42.dp))
     }
 }
 

@@ -7,9 +7,11 @@ import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.runtime.Composable
+import androidx.navigation.NavGraphBuilder
 import androidx.navigation.compose.composable
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
+import androidx.navigation.navigation
 import com.ayukrisna.skinsift.view.ui.screen.dictionary.DictionaryScreen
 import com.ayukrisna.skinsift.view.ui.screen.home.HomeScreen
 import com.ayukrisna.skinsift.view.ui.screen.login.LoginScreen
@@ -24,40 +26,98 @@ fun NavGraph (
 ) {
     NavHost(
         navController,
-        startDestination = AuthScreen.LoginScreen,
+        startDestination = RootScreen.HomeNav,
         enterTransition = { fadeIn(tween(100))},
         popEnterTransition = {EnterTransition.None},
         exitTransition = { fadeOut(tween(100))},
         popExitTransition = {ExitTransition.None}
     ) {
-        composable<AuthScreen.LoginScreen> {
+        authNavGraph(navController, paddingValues)
+        homeNavGraph(navController, paddingValues)
+        dictionaryNavGraph(navController, paddingValues)
+        productNavGraph(navController, paddingValues)
+        profileNavGraph(navController, paddingValues)
+    }
+}
+
+
+fun NavGraphBuilder.authNavGraph(
+    navController: NavHostController,
+    paddingValues: PaddingValues,
+) {
+    navigation<RootScreen.AuthNav>(
+        startDestination = AuthScreen.Login
+    ) {
+        composable<AuthScreen.Login> {
             LoginScreen(
                 onNavigateToSignup = {
-                    navController.navigate(AuthScreen.SignupScreen)
+                    navController.navigate(AuthScreen.Signup)
                 },
                 paddingValues = paddingValues
             )
         }
-        composable<AuthScreen.SignupScreen> {
+        composable<AuthScreen.Signup> {
             SignupScreen(
                 onNavigateToLogin = {
-                    navController.navigate(AuthScreen.LoginScreen)
+                    navController.navigate(AuthScreen.Login)
                 },
                 paddingValues = paddingValues
             )
         }
-        composable<AppScreen.HomeScreen> {
+    }
+}
+
+fun NavGraphBuilder.homeNavGraph(
+    navController: NavHostController,
+    paddingValues: PaddingValues,
+) {
+    navigation<RootScreen.HomeNav>(
+        startDestination = HomeScreen.Home
+    ) {
+        composable<HomeScreen.Home> {
             HomeScreen(
                 paddingValues = paddingValues
             )
         }
-        composable<AppScreen.DictionaryScreen> {
-            DictionaryScreen()
+    }
+}
+
+fun NavGraphBuilder.dictionaryNavGraph(
+    navController: NavHostController,
+    paddingValues: PaddingValues,
+) {
+    navigation<RootScreen.DictionaryNav>(
+        startDestination = DictionaryScreen.Dictionary
+    ) {
+        composable<DictionaryScreen.Dictionary> {
+            DictionaryScreen(
+                paddingValues = paddingValues
+            )
         }
-        composable<AppScreen.ProductScreen> {
+    }
+}
+
+fun NavGraphBuilder.productNavGraph(
+    navController: NavHostController,
+    paddingValues: PaddingValues,
+) {
+    navigation<RootScreen.ProductNav>(
+        startDestination = ProductScreen.Product
+    ) {
+        composable<ProductScreen.Product> {
             ProductScreen()
         }
-        composable<AppScreen.ProfileScreen> {
+    }
+}
+
+fun NavGraphBuilder.profileNavGraph(
+    navController: NavHostController,
+    paddingValues: PaddingValues,
+) {
+    navigation<RootScreen.ProfileNav>(
+        startDestination = ProfileScreen.Profile
+    ) {
+        composable<ProfileScreen.Profile> {
             ProfileScreen()
         }
     }
