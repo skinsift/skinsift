@@ -1,4 +1,4 @@
-package com.ayukrisna.skinsift.view.ui.screen.skincare
+package com.ayukrisna.skinsift.view.ui.screen.product
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Column
@@ -28,11 +28,10 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.ayukrisna.skinsift.R
 import com.ayukrisna.skinsift.view.ui.component.AppBar
-import com.ayukrisna.skinsift.view.ui.screen.home.ArticleCard
 import com.ayukrisna.skinsift.view.ui.theme.SkinSiftTheme
 
 @Composable
-fun SkincareScreen (modifier: Modifier = Modifier){
+fun ProductScreen (modifier: Modifier = Modifier){
     Scaffold(
         topBar = {
             SkincareAppBar("Daftar Skincare", "Cari yang kamu butuhkan")
@@ -133,8 +132,8 @@ fun SkincareCardPreview(modifier: Modifier = Modifier) {
 
 @Preview(showBackground = true)
 @Composable
-fun SkincareScreenPreview() {
+fun ProductScreenPreview() {
     SkinSiftTheme {
-        SkincareScreen()
+        ProductScreen()
     }
 }

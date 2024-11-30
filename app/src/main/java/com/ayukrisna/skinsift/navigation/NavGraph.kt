@@ -10,7 +10,11 @@ import androidx.compose.runtime.Composable
 import androidx.navigation.compose.composable
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
+import com.ayukrisna.skinsift.view.ui.screen.dictionary.DictionaryScreen
+import com.ayukrisna.skinsift.view.ui.screen.home.HomeScreen
 import com.ayukrisna.skinsift.view.ui.screen.login.LoginScreen
+import com.ayukrisna.skinsift.view.ui.screen.product.ProductScreen
+import com.ayukrisna.skinsift.view.ui.screen.profile.ProfileScreen
 import com.ayukrisna.skinsift.view.ui.screen.signup.SignupScreen
 
 @Composable
@@ -41,6 +45,20 @@ fun NavGraph (
                 },
                 paddingValues = paddingValues
             )
+        }
+        composable<AppScreen.HomeScreen> {
+            HomeScreen(
+                paddingValues = paddingValues
+            )
+        }
+        composable<AppScreen.DictionaryScreen> {
+            DictionaryScreen()
+        }
+        composable<AppScreen.ProductScreen> {
+            ProductScreen()
+        }
+        composable<AppScreen.ProfileScreen> {
+            ProfileScreen()
         }
     }
 }

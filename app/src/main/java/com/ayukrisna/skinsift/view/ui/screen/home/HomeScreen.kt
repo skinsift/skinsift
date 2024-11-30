@@ -21,9 +21,11 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowForward
+import androidx.compose.material.icons.filled.KeyboardArrowRight
 import androidx.compose.material.icons.filled.Notifications
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
+import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
@@ -33,6 +35,8 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
@@ -69,13 +73,20 @@ fun HomeScreen(
             Spacer(modifier = Modifier.height(24.dp))
             TitleHome(stringResource(R.string.ingredients_scanner))
             Spacer(modifier = Modifier.height(12.dp))
-            ScannerCard()
+            ScannerRow()
+//            ScannerCard()
             Spacer(modifier = Modifier.height(24.dp))
             TitleHome(stringResource(R.string.ingredients_saved))
             Spacer(modifier = Modifier.height(12.dp))
-            ScannerHistoryItem()
+            ScannerHistoryItem(
+                "Cocok Denganmu \uD83D\uDC90",
+                "Niacinamide, Retinoid, Hexylresorcinol"
+            )
             Spacer(modifier = Modifier.height(12.dp))
-            ScannerHistoryItem()
+            ScannerHistoryItem(
+                "Wajib Dihindari ☠",
+                "Polyacrylamide, PTFE, Petrolatum"
+            )
             Spacer(modifier = Modifier.height(24.dp))
             TitleHome(stringResource(R.string.interesting_articles))
             Spacer(modifier = Modifier.height(6.dp))
@@ -133,7 +144,7 @@ fun HomeIntro(modifier : Modifier = Modifier
             append(stringResource(R.string.home_intro1))
             withStyle(
                 style = SpanStyle(
-                    fontWeight = FontWeight.Bold,
+                    fontWeight = FontWeight.ExtraBold,
                     color = MaterialTheme.colorScheme.primary
                 )
             ) {
@@ -142,7 +153,7 @@ fun HomeIntro(modifier : Modifier = Modifier
             append(stringResource(R.string.home_intro3))
         },
         style = MaterialTheme.typography.titleLarge,
-        fontWeight = FontWeight.Medium,
+        fontWeight = FontWeight.Bold,
         modifier = Modifier
     )
 }
@@ -150,6 +161,7 @@ fun HomeIntro(modifier : Modifier = Modifier
 @Composable
 fun TitleHome(
     title: String,
+    subtitle: String? = null,
     modifier: Modifier = Modifier
 ) {
     Row(
@@ -164,14 +176,16 @@ fun TitleHome(
             modifier = Modifier
                 .padding(0.dp, 0.dp, 0.dp, 0.dp)
         )
-        Text(
-            stringResource(R.string.lihat_selengkapnya),
-            style = MaterialTheme.typography.titleSmall,
-            color = MaterialTheme.colorScheme.primary,
-            fontWeight = FontWeight.Bold,
-            modifier = Modifier
-                .padding(8.dp, 0.dp, 0.dp, 0.dp)
-        )
+        if (subtitle != null) {
+            Text(
+                subtitle,
+                style = MaterialTheme.typography.titleSmall,
+                color = MaterialTheme.colorScheme.primary,
+                fontWeight = FontWeight.Bold,
+                modifier = Modifier
+                    .padding(8.dp, 0.dp, 0.dp, 0.dp)
+            )
+        }
     }
 }
 
@@ -298,8 +312,13 @@ fun ScannerCard(modifier: Modifier = Modifier) {
     }
 }
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun ScannerHistoryItem(modifier: Modifier = Modifier) {
+fun ScannerHistoryItem(
+    title: String,
+    ingredients: String,
+    modifier: Modifier = Modifier
+) {
     Card(
         modifier = Modifier
             .fillMaxWidth(),
@@ -313,31 +332,27 @@ fun ScannerHistoryItem(modifier: Modifier = Modifier) {
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(12.dp),
+            horizontalArrangement = Arrangement.SpaceBetween,
             verticalAlignment = Alignment.CenterVertically
         ) {
-            Image(
-                painter = painterResource(id = R.drawable.userprofile),
-                contentDescription = "Product Image",
-                modifier = Modifier
-                    .size(64.dp)
-                    .clip(RoundedCornerShape(8.dp))
-                    .background(MaterialTheme.colorScheme.surfaceBright),
-                contentScale = ContentScale.Crop
-            )
-            Spacer(modifier = Modifier.width(16.dp))
             Column {
                 Text(
-                    text = "My Holy Grail 🌺",
+                    text = title,
                     style = MaterialTheme.typography.titleMedium,
                     fontWeight = FontWeight.Bold
                 )
                 Spacer(modifier = Modifier.height(8.dp))
                 Text(
-                    text = "Niacinamide, Retinoid, Hexylresorcinol",
+                    text = ingredients,
                     style = MaterialTheme.typography.bodySmall,
                     color = MaterialTheme.colorScheme.onSurface
                 )
             }
+            Icon(
+                imageVector = Icons.Default.KeyboardArrowRight,
+                contentDescription = null,
+                tint = MaterialTheme.colorScheme.primary
+            )
         }
     }
 }
@@ -415,9 +430,123 @@ fun ArticleCard(
     }
 }
 
+@Preview(showBackground = true)
+@Composable
+fun ScannerRowPreview() {
+    ScannerRow()
+}
+
+@Composable
+fun ScannerRow(modifier: Modifier = Modifier) {
+    Row(
+        Modifier.fillMaxWidth(),
+        horizontalArrangement = Arrangement.SpaceBetween,
+    ){
+        SkincareScannerCard(
+            Modifier.fillMaxWidth()
+        )
+        Spacer(modifier = Modifier.height(4.dp))
+        PersonalizedCard(
+            Modifier.fillMaxWidth()
+        )
+    }
+}
+
+@Composable
+fun SkincareScannerCard(modifier: Modifier = Modifier) {
+    SquareCard(
+        bgImage = painterResource(id = R.drawable.card_bg_dark),
+        icon = painterResource(id = R.drawable.line_scan_small),
+        title = "Pindai Bahan Skincare",
+        subtitle = "Pahami komposisi dari skincaremu dengan sekali foto.",
+        textColor = MaterialTheme.colorScheme.onPrimary
+    )
+}
+
+@Composable
+fun PersonalizedCard(modifier: Modifier = Modifier) {
+    SquareCard(
+        bgImage = painterResource(id = R.drawable.card_bg_light),
+        icon = painterResource(id = R.drawable.skincare_icon),
+        title = "Personalisasi Skincare",
+        subtitle = "Dapatkan rekomendasi produk sesuai dengan kebutuhanmu.",
+        textColor = MaterialTheme.colorScheme.onSurface
+    )
+}
+
+@Composable
+fun SquareCard(
+    bgImage: Painter,
+    icon: Painter,
+    title: String,
+    subtitle: String,
+    textColor: Color
+) {
+    Card(
+        modifier = Modifier
+            .width(178.dp),
+        shape = RoundedCornerShape(16.dp),
+        colors = CardDefaults.cardColors(
+            containerColor = MaterialTheme.colorScheme.surfaceBright
+        ),
+        elevation = CardDefaults.cardElevation(1.dp)
+    ) {
+        Box(
+            modifier = Modifier.fillMaxWidth(),
+            contentAlignment = Alignment.Center
+        ) {
+            Image(
+                painter = bgImage,
+                contentDescription = null,
+                contentScale = ContentScale.Crop,
+                modifier = Modifier.matchParentSize()
+            )
+            Column(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(12.dp),
+            ) {
+                Image(
+                    painter = icon,
+                    contentDescription = null,
+                    contentScale = ContentScale.Crop,
+                    modifier = Modifier.size(32.dp)
+                )
+                Spacer(modifier = Modifier.height(42.dp))
+                Text(
+                    text = title,
+                    style = MaterialTheme.typography.titleMedium,
+                    fontWeight = FontWeight.Bold,
+                    color = textColor,
+                )
+                Spacer(modifier = Modifier.height(4.dp))
+                Text(
+                    text = subtitle,
+                    style = MaterialTheme.typography.bodySmall,
+                    fontWeight = FontWeight.Medium,
+                    color = textColor.copy(alpha = 0.7f),
+                )
+            }
+        }
+    }
+}
+
 /***
  * PREVIEW
  */
+
+@Preview(showBackground = true)
+@Composable
+fun SkincareScannerCardPreview() {
+    SkincareScannerCard()
+}
+
+@Preview(showBackground = true)
+@Composable
+fun PersonalizedCardPreview() {
+    PersonalizedCard()
+}
+
 @Preview(showBackground = true)
 @Composable
 fun HomeTopBarPreview() {
@@ -453,7 +582,10 @@ fun ScannerCardPreview() {
 @Preview(showBackground = true)
 @Composable
 fun ScannerHistoryItemPreview(modifier: Modifier = Modifier) {
-    ScannerHistoryItem()
+    ScannerHistoryItem(
+        "Wajib Dihindari ☠",
+        "Polyacrylamide, PTFE, Petrolatum"
+    )
 }
 
 @Preview(showBackground = true)

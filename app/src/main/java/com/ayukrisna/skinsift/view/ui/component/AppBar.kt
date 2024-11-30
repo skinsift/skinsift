@@ -15,9 +15,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
-import com.ayukrisna.skinsift.R
 
 
 /**
@@ -28,8 +26,8 @@ import com.ayukrisna.skinsift.R
 fun AppBar(
     title: String,
     subtitle: String,
-    actionIcon: ImageVector,
-    onActionClick: () -> Unit,) {
+    actionIcon: ImageVector? = null,
+    onActionClick: (() -> Unit)? = null) {
     TopAppBar(
         title = {
             Column(
@@ -52,21 +50,26 @@ fun AppBar(
             titleContentColor = MaterialTheme.colorScheme.primary,
         ),
         actions = {
-            IconButton(onClick = { onActionClick() }) {
-                Icon(
-                    imageVector = actionIcon,
-                    contentDescription = "Action",
-                    tint = MaterialTheme.colorScheme.primary
-                )
+            if (actionIcon != null && onActionClick != null) {
+                IconButton(onClick = { onActionClick() }) {
+                    Icon(
+                        imageVector = actionIcon,
+                        contentDescription = "Action",
+                        tint = MaterialTheme.colorScheme.primary
+                    )
+                }
             }
-        },
+        }
     )
 }
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun CenterAppBar(
-    title: String
+    title: String,
+    actionIcon: ImageVector? = null,
+    onActionClick: (() -> Unit)? = null,
+    onBackClick: (() -> Unit)?  = null
 ) {
     CenterAlignedTopAppBar(
         title = {
@@ -77,7 +80,11 @@ fun CenterAppBar(
             )
         },
         navigationIcon = {
-            IconButton(onClick = { /* do something */ }) {
+            IconButton(onClick = {
+                if (onBackClick != null) {
+                    onBackClick()
+                }
+            }) {
                 Icon(
                     imageVector = Icons.AutoMirrored.Filled.ArrowBack,
                     contentDescription = "Localized description",
@@ -85,6 +92,16 @@ fun CenterAppBar(
                 )
             }
         },
-
-        )
+        actions = {
+            if (actionIcon != null && onActionClick != null) {
+                IconButton(onClick = { onActionClick() }) {
+                    Icon(
+                        imageVector = actionIcon,
+                        contentDescription = "Action",
+                        tint = MaterialTheme.colorScheme.primary
+                    )
+                }
+            }
+        }
+    )
 }
