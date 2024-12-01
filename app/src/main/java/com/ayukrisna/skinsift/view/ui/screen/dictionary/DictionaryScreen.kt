@@ -5,6 +5,7 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.calculateStartPadding
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -31,10 +32,10 @@ import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.platform.LocalLayoutDirection
 import androidx.compose.ui.unit.dp
 import com.ayukrisna.skinsift.view.ui.component.AppBar
 import com.ayukrisna.skinsift.domain.model.IngredientModel
-import com.ayukrisna.skinsift.domain.model.getIngredientDummy
 import com.ayukrisna.skinsift.view.ui.component.getRatingColor
 
 @Composable
@@ -137,15 +138,18 @@ fun DictionaryScreen(
     Scaffold(
         topBar = {
             DictionaryAppBar(
-                "Daftar Ingredients",
+                "Kamus Bahan Skincare",
                 "Cari yang kamu butuhkan",
                 )
         },
         content = { innerPadding ->
             Column(modifier = Modifier
                 .fillMaxHeight()
-                .padding(bottom = paddingValues.calculateBottomPadding())
-//                .padding(innerPadding)
+                .padding(
+                    start = paddingValues.calculateStartPadding(LocalLayoutDirection.current),
+                    end = paddingValues.calculateStartPadding(LocalLayoutDirection.current),
+                    bottom = paddingValues.calculateBottomPadding()
+                )
             ) {
                 LazyColumn {
                     items(dummyDictionaryList) { item ->
@@ -179,22 +183,9 @@ fun IngredientsItem(item: IngredientModel) {
             Text(
                     text = item.rating,
                     style = MaterialTheme.typography.labelSmall,
-                    fontWeight = FontWeight.Bold,
+                    fontWeight = FontWeight.ExtraBold,
                     color = ratingColor
                 )
-//            Box(
-//                modifier = Modifier
-//                    .wrapContentWidth()
-//                    .clip(RoundedCornerShape(30.dp))
-//                    .background(ratingColor)
-//                    .padding(horizontal = 8.dp)
-//            ) {
-//                Text(
-//                    text = item.rating,
-//                    style = MaterialTheme.typography.labelSmall,
-//                    color = Color(0xFFFFFFFF)
-//                )
-//            }
             Spacer(modifier = Modifier.height(2.dp))
             Text(
                 text = item.name,
@@ -233,24 +224,10 @@ fun DictionaryPreview() {
     }
 }
 
-//@Preview(showBackground = true)
-//@Composable
-//fun PreviewIngredientItem() {
-//    SkinSiftTheme {
-//        IngredientsItem(
-//            ratingColor = Color(0xFF298A4B),
-//            rating = "Best",
-//            title = "Acai",
-//            description = "Pronounced \"ah-sigh-ee\", this small berry has a deep " +
-//                    "purple color and is a rich source of antioxidants."
-//        )
-//    }
-//}
-
 @Preview(showBackground = true)
 @Composable
 fun AppBarPreview() {
     SkinSiftTheme {
-        DictionaryAppBar("Daftar Ingredients", "Cari yang kamu butuhkan")
+        DictionaryAppBar("Kamus Ingredients", "Cari yang kamu butuhkan")
     }
 }

@@ -1,14 +1,20 @@
 package com.ayukrisna.skinsift.view.ui.screen.product
 
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.aspectRatio
+import androidx.compose.foundation.layout.calculateStartPadding
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.lazy.grid.GridCells
+import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
+import androidx.compose.foundation.lazy.grid.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
@@ -21,29 +27,87 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalLayoutDirection
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import coil.compose.AsyncImage
 import com.ayukrisna.skinsift.R
+import com.ayukrisna.skinsift.domain.model.ProductModel
 import com.ayukrisna.skinsift.view.ui.component.AppBar
 import com.ayukrisna.skinsift.view.ui.theme.SkinSiftTheme
 
 @Composable
-fun ProductScreen (modifier: Modifier = Modifier){
+fun ProductScreen (
+    paddingValues: PaddingValues,
+    modifier: Modifier = Modifier
+){
+    val skincareProducts = listOf(
+        ProductModel(
+            id = 1,
+            name = "Hydrating Face Cream",
+            brand = "GlowSkin",
+            description = "A deeply hydrating cream that nourishes your skin and provides 24-hour moisture.",
+            imageUrl = "https://storage.googleapis.com/skinsift/products/acnes_creamywash.png"
+        ),
+        ProductModel(
+            id = 2,
+            name = "Brightening Serum",
+            brand = "RadiantCare",
+            description = "A serum infused with Vitamin C to brighten your skin and even out skin tone.",
+            imageUrl = "https://storage.googleapis.com/skinsift/products/acnes_creamywash.png"
+        ),
+        ProductModel(
+            id = 3,
+            name = "Sunscreen SPF 50",
+            brand = "SunShield",
+            description = "Lightweight, non-greasy sunscreen that protects your skin from harmful UV rays.",
+            imageUrl = "https://storage.googleapis.com/skinsift/products/acnes_creamywash.png"
+        ),
+        ProductModel(
+            id = 4,
+            name = "Purifying Clay Mask",
+            brand = "PureNature",
+            description = "A detoxifying mask that removes impurities and minimizes pores.",
+            imageUrl = "https://storage.googleapis.com/skinsift/products/acnes_creamywash.png"
+        ),
+    )
+
+
     Scaffold(
         topBar = {
-            SkincareAppBar("Daftar Skincare", "Cari yang kamu butuhkan")
+            SkincareAppBar("Kamus Produk Skincare", "Cari yang kamu butuhkan")
         },
-        content = { paddingValues->
+        content = { innerPadding ->
             // Padding values should be applied if needed
             Column(modifier = Modifier
                 .fillMaxHeight()
-                .padding(paddingValues)
-                .padding(horizontal = 16.dp)
+                .padding(
+                    top = innerPadding.calculateTopPadding(),
+                    start = paddingValues.calculateStartPadding(LocalLayoutDirection.current),
+                    end = paddingValues.calculateStartPadding(LocalLayoutDirection.current),
+                    bottom = paddingValues.calculateBottomPadding()
+                )
             ) {
-
+                LazyVerticalGrid(
+                    columns = GridCells.Fixed(2)
+                ) {
+                    items(skincareProducts) { product ->
+                        Box(
+                            modifier = Modifier
+                                .padding(2.dp)
+                        ) {
+                            SkincareCard(
+                                product.name,
+                                product.brand,
+                                product.description,
+                                product.imageUrl
+                            )
+                        }
+                    }
+                }
             }
         }
     )
@@ -57,16 +121,16 @@ fun SkincareAppBar(title: String, subtitle: String) {
 
 @Composable
 fun SkincareCard(
-    skincareTitle: String,
-    skincareBrand: String,
-    skincareDescription: String,
-    skincarePicture: String? = null,
+    name: String,
+    brand: String,
+    description: String,
+    imageUrl: String? = null,
     modifier: Modifier = Modifier
 ) {
     Card(
-        modifier = Modifier
-            .width(156.dp)
-            .padding(0.dp, 0.dp, 16.dp, 0.dp),
+        modifier = Modifier,
+//            .width(156.dp),
+//            .padding(0.dp, 0.dp, 8.dp, 8.dp),
         shape = RoundedCornerShape(16.dp),
         colors = CardDefaults.cardColors(
             containerColor = MaterialTheme.colorScheme.surfaceBright
@@ -77,9 +141,9 @@ fun SkincareCard(
             modifier = Modifier
                 .fillMaxWidth()
         ) {
-            Image(
-                painter = painterResource(id = R.drawable.skincare),
-                contentDescription = "Skin care products",
+            AsyncImage(
+                model = imageUrl,
+                contentDescription = "Skincare Image",
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(8.dp)
@@ -89,10 +153,10 @@ fun SkincareCard(
             )
             Column(
                 modifier = Modifier
-                    .padding(16.dp)
+                    .padding(horizontal = 16.dp)
             ) {
                 Text(
-                    text = skincareTitle,
+                    text = name,
                     style = MaterialTheme.typography.titleMedium,
                     fontWeight = FontWeight.Bold,
                     color = MaterialTheme.colorScheme.onSurface,
@@ -101,7 +165,7 @@ fun SkincareCard(
                 )
                 Spacer(modifier = Modifier.height(8.dp))
                 Text(
-                    text = skincareBrand,
+                    text = brand,
                     style = MaterialTheme.typography.bodySmall,
                     color = Color.Gray,
                     maxLines = 2,
@@ -109,12 +173,13 @@ fun SkincareCard(
                 )
                 Spacer(modifier = Modifier.height(8.dp))
                 Text(
-                    text = skincareDescription,
+                    text = description,
                     style = MaterialTheme.typography.bodySmall,
                     color = MaterialTheme.colorScheme.onSurface,
                     maxLines = 2,
                     overflow = TextOverflow.Ellipsis
                 )
+                Spacer(modifier = Modifier.height(16.dp))
             }
         }
     }
@@ -130,10 +195,10 @@ fun SkincareCardPreview(modifier: Modifier = Modifier) {
     )
 }
 
-@Preview(showBackground = true)
-@Composable
-fun ProductScreenPreview() {
-    SkinSiftTheme {
-        ProductScreen()
-    }
-}
+//@Preview(showBackground = true)
+//@Composable
+//fun ProductScreenPreview() {
+//    SkinSiftTheme {
+//        ProductScreen()
+//    }
+//}

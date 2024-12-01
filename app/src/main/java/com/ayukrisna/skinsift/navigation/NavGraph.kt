@@ -40,7 +40,6 @@ fun NavGraph (
     }
 }
 
-
 fun NavGraphBuilder.authNavGraph(
     navController: NavHostController,
     paddingValues: PaddingValues,
@@ -105,7 +104,7 @@ fun NavGraphBuilder.productNavGraph(
         startDestination = ProductScreen.Product
     ) {
         composable<ProductScreen.Product> {
-            ProductScreen()
+            ProductScreen(paddingValues)
         }
     }
 }

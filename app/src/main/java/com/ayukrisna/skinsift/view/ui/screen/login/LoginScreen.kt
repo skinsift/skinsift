@@ -127,6 +127,7 @@ fun SignupButton(onNavigateToSignup: () -> Unit, modifier: Modifier = Modifier){
 fun UsernameAndEmailTextField(viewModel: LoginViewModel) {
     CustomTextField(
         title = "Username/Email",
+        placeholder = "Username atau emailmu di sini",
         text = viewModel.formState.unameOrEmail,
         onValueChange = {
             viewModel.onEvent(LoginEvent.UnameOrEmailChanged(it))
@@ -147,6 +148,7 @@ fun PasswordTextField(
     SkinSiftTheme {
         CustomTextField(
             title = "Password",
+            placeholder = "Masukkan password di sini",
             text = viewModel.formState.password,
             onValueChange = {
                 viewModel.onEvent(LoginEvent.PasswordChanged(it))

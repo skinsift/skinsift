@@ -19,11 +19,8 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.BasicTextField
 import androidx.compose.foundation.text.KeyboardOptions
-import androidx.compose.foundation.text.input.rememberTextFieldState
-import androidx.compose.foundation.text.input.setTextAndPlaceCursorAtEnd
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.MoreVert
 import androidx.compose.material.icons.filled.Search
 import androidx.compose.material.icons.filled.Star
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -67,9 +64,19 @@ import com.ayukrisna.skinsift.util.UiText
 import com.ayukrisna.skinsift.util.isNumber
 
 @Composable
+fun CustomSearchBar(
+
+) {
+    CustomTextField(
+        title = ""
+    )
+}
+
+@Composable
 fun CustomTextField(
     title: String,
     text: String = "",
+    placeholder: String = "",
     onValueChange: (String) -> Unit = {},
     keyboardType: KeyboardType = KeyboardType.Text,
     imeAction: ImeAction = ImeAction.Done,
@@ -109,70 +116,87 @@ fun CustomTextField(
             color = MaterialTheme.colorScheme.primary,
             modifier = Modifier.padding(top = 8.dp, bottom = 4.dp)
         )
-        BasicTextField(
-            value = if (isKeyboardTypeNumber) {
-                if (isNumber(text)) text else ""
-            } else text,
-            onValueChange = {
-                if (isKeyboardTypeNumber) {
-                    if (isNumber(it)) onValueChange(it)
-                } else onValueChange(it)
-            },
-            textStyle = TextStyle(color = MaterialTheme.colorScheme.onSurface),
-            maxLines = maxLine,
-            singleLine = singleLine,
-            interactionSource = interactionSource,
-            visualTransformation =
-            if (keyboardType == KeyboardType.Password) {
-                if (isVisible) VisualTransformation.None else PasswordVisualTransformation()
-            } else {
-                VisualTransformation.None
-            },
-            keyboardOptions = KeyboardOptions(
-                keyboardType = keyboardType,
-                imeAction = imeAction
-            ),
-            cursorBrush = SolidColor(MaterialTheme.colorScheme.primary),
-            modifier = Modifier
-                .fillMaxWidth()
-                .shadow(elevation = 1.dp, shape = RoundedCornerShape(20.dp))
-                .background(MaterialTheme.colorScheme.surface)
-                .height(48.dp)
-                .border(1.dp, colorBorder, RoundedCornerShape(20.dp))
-                .padding(8.dp)
-                .focusRequester(focusRequester),
-            decorationBox = { innerTextField ->
-                Box(
-                    modifier = Modifier.fillMaxWidth()
-                ) {
-                    if (leadingIcon != null) {
-                        Icon(
-                            painter = leadingIcon,
-                            contentDescription = null,
-                            tint = MaterialTheme.colorScheme.primary,
-                            modifier = Modifier
-                                .align(Alignment.CenterStart)
-                                .requiredSize(48.dp).padding(16.dp)
-                        )
-                    }
+        Box () {
+            BasicTextField(
+                value = if (isKeyboardTypeNumber) {
+                    if (isNumber(text)) text else ""
+                } else text,
+                onValueChange = {
+                    if (isKeyboardTypeNumber) {
+                        if (isNumber(it)) onValueChange(it)
+                    } else onValueChange(it)
+                },
+                textStyle = TextStyle(color = MaterialTheme.colorScheme.onSurface),
+                maxLines = maxLine,
+                singleLine = singleLine,
+                interactionSource = interactionSource,
+                visualTransformation =
+                if (keyboardType == KeyboardType.Password) {
+                    if (isVisible) VisualTransformation.None else PasswordVisualTransformation()
+                } else {
+                    VisualTransformation.None
+                },
+                keyboardOptions = KeyboardOptions(
+                    keyboardType = keyboardType,
+                    imeAction = imeAction
+                ),
+                cursorBrush = SolidColor(MaterialTheme.colorScheme.primary),
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .shadow(elevation = 1.dp, shape = RoundedCornerShape(20.dp))
+                    .background(MaterialTheme.colorScheme.surface)
+                    .height(48.dp)
+                    .border(1.dp, colorBorder, RoundedCornerShape(20.dp))
+                    .padding(8.dp)
+                    .focusRequester(focusRequester),
+                decorationBox = { innerTextField ->
                     Box(
-                        modifier = Modifier
-                            .padding(start = if (leadingIcon != null) 48.dp else 0.dp)
-                            .align(Alignment.CenterStart)
+                        modifier = Modifier.fillMaxWidth()
                     ) {
-                        innerTextField()
-                    }
-                    if (trailingIcon != null) {
+                        if (leadingIcon != null) {
+                            Icon(
+                                painter = leadingIcon,
+                                contentDescription = null,
+                                tint = MaterialTheme.colorScheme.primary,
+                                modifier = Modifier
+                                    .align(Alignment.CenterStart)
+                                    .requiredSize(48.dp).padding(2.dp, 16.dp, 4.dp, 16.dp)
+                            )
+                        }
                         Box(
                             modifier = Modifier
-                                .align(Alignment.CenterEnd)
+                                .padding(start = if (leadingIcon != null) 48.dp else 0.dp)
+                                .align(Alignment.CenterStart)
                         ) {
-                            trailingIcon()
+                            innerTextField()
+                        }
+                        if (trailingIcon != null) {
+                            Box(
+                                modifier = Modifier
+                                    .align(Alignment.CenterEnd)
+                            ) {
+                                trailingIcon()
+                            }
                         }
                     }
+                },
+            )
+            if(text.isEmpty()) {
+                Box(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .height(48.dp)
+                ) {
+                    Text(
+                        text = placeholder,
+                        color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.5f),
+                        modifier = Modifier
+                            .align(Alignment.CenterStart)
+                            .padding(start = if (leadingIcon != null) 56.dp else 8.dp)
+                    )
                 }
-            },
-        )
+            }
+        }
         Text(
             text = errorMessage?.asString(context).orEmpty(),
             color = MaterialTheme.colorScheme.error,
@@ -180,12 +204,6 @@ fun CustomTextField(
         )
     }
 }
-
-//@Composable
-//fun SearchBar() {
-//    val textFieldState = rememberTextFieldState()
-//    var expanded by rememberSaveable { mutableStateOf(false) }
-//}
 
 @Preview(showBackground = true)
 @Composable
@@ -196,6 +214,7 @@ fun PreviewEmail() {
         CustomTextField(
             title = "Email",
             text = text,
+            placeholder = "emailkamu@example.com",
             onValueChange = { newText -> text = newText },
             leadingIcon = painterResource(id = R.drawable.ic_email),
             keyboardType = KeyboardType.Text,
@@ -218,6 +237,7 @@ fun PreviewText() {
         CustomTextField(
             title = "Username",
             text = text,
+            placeholder = "Enter text...",
             onValueChange = { newText -> text = newText },
             keyboardType = KeyboardType.Text,
             imeAction = ImeAction.Done,
@@ -240,6 +260,7 @@ fun PreviewPassword() {
         CustomTextField(
             title = "Password",
             text = text,
+            placeholder = "Beri password keren",
             onValueChange = { newText -> text = newText },
             leadingIcon = painterResource(id = R.drawable.ic_lock),
             trailingIcon = {
@@ -276,69 +297,74 @@ fun PreviewPassword() {
     }
 }
 
-@Preview(showBackground = true)
-@Composable
-fun PreviewSearchBar() {
-    SkinSiftTheme{
-        SearchBarSample()
-    }
-}
 
-@OptIn(ExperimentalMaterial3Api::class)
-@Composable
-fun SearchBarSample() {
-    var query by rememberSaveable { mutableStateOf("") }
-    var expanded by rememberSaveable { mutableStateOf(false) }
 
-    Box(Modifier.fillMaxSize().semantics { isTraversalGroup = true }) {
-        SearchBar(
-            modifier = Modifier.align(Alignment.TopCenter).semantics { traversalIndex = 0f },
-            inputField = {
-                SearchBarDefaults.InputField(
-                    query = query,
-                    onQueryChange = { query = it },
-                    onSearch = { expanded = false },
-                    expanded = expanded,
-                    onExpandedChange = { expanded = it },
-                    placeholder = { Text("Hinted search text") },
-                    leadingIcon = { Icon(Icons.Default.Search, contentDescription = null) },
-                )
-            },
-            expanded = expanded,
-            onExpandedChange = { expanded = it },
-        ) {
-            Column(Modifier.verticalScroll(rememberScrollState())) {
-                repeat(4) { idx ->
-                    val resultText = "Suggestion $idx"
-                    ListItem(
-                        headlineContent = { Text(resultText) },
-                        supportingContent = { Text("Additional info") },
-                        leadingContent = { Icon(Icons.Filled.Star, contentDescription = null) },
-                        colors = ListItemDefaults.colors(containerColor = Color.Transparent),
-                        modifier =
-                        Modifier.clickable {
-                            query = resultText
-                            expanded = false
-                        }
-                            .fillMaxWidth()
-                            .padding(horizontal = 16.dp, vertical = 4.dp)
-                    )
-                }
-            }
-        }
 
-        LazyColumn(
-            contentPadding = PaddingValues(start = 16.dp, top = 72.dp, end = 16.dp, bottom = 16.dp),
-            verticalArrangement = Arrangement.spacedBy(8.dp),
-            modifier = Modifier.semantics { traversalIndex = 1f },
-        ) {
-            val list = List(100) { "Text $it" }
-            items(count = list.size) {
-                Text(
-                    text = list[it],
-                    modifier = Modifier.fillMaxWidth().padding(horizontal = 16.dp),
-                )
-            }
-        }
-    }
-}
+
+
+//@Preview(showBackground = true)
+//@Composable
+//fun PreviewSearchBar() {
+//    SkinSiftTheme{
+//        SearchBarSample()
+//    }
+//}
+
+//@OptIn(ExperimentalMaterial3Api::class)
+//@Composable
+//fun SearchBarSample() {
+//    var query by rememberSaveable { mutableStateOf("") }
+//    var expanded by rememberSaveable { mutableStateOf(false) }
+//
+//    Box(Modifier.fillMaxSize().semantics { isTraversalGroup = true }) {
+//        SearchBar(
+//            modifier = Modifier.align(Alignment.TopCenter).semantics { traversalIndex = 0f },
+//            inputField = {
+//                SearchBarDefaults.InputField(
+//                    query = query,
+//                    onQueryChange = { query = it },
+//                    onSearch = { expanded = false },
+//                    expanded = expanded,
+//                    onExpandedChange = { expanded = it },
+//                    placeholder = { Text("Hinted search text") },
+//                    leadingIcon = { Icon(Icons.Default.Search, contentDescription = null) },
+//                )
+//            },
+//            expanded = expanded,
+//            onExpandedChange = { expanded = it },
+//        ) {
+//            Column(Modifier.verticalScroll(rememberScrollState())) {
+//                repeat(4) { idx ->
+//                    val resultText = "Suggestion $idx"
+//                    ListItem(
+//                        headlineContent = { Text(resultText) },
+//                        supportingContent = { Text("Additional info") },
+//                        leadingContent = { Icon(Icons.Filled.Star, contentDescription = null) },
+//                        colors = ListItemDefaults.colors(containerColor = Color.Transparent),
+//                        modifier =
+//                        Modifier.clickable {
+//                            query = resultText
+//                            expanded = false
+//                        }
+//                            .fillMaxWidth()
+//                            .padding(horizontal = 16.dp, vertical = 4.dp)
+//                    )
+//                }
+//            }
+//        }
+//
+//        LazyColumn(
+//            contentPadding = PaddingValues(start = 16.dp, top = 72.dp, end = 16.dp, bottom = 16.dp),
+//            verticalArrangement = Arrangement.spacedBy(8.dp),
+//            modifier = Modifier.semantics { traversalIndex = 1f },
+//        ) {
+//            val list = List(100) { "Text $it" }
+//            items(count = list.size) {
+//                Text(
+//                    text = list[it],
+//                    modifier = Modifier.fillMaxWidth().padding(horizontal = 16.dp),
+//                )
+//            }
+//        }
+//    }
+//}

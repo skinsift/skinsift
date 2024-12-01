@@ -5,16 +5,9 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.material.BottomNavigation
 import androidx.compose.material.BottomNavigationItem
 import androidx.compose.material.Icon
-import androidx.compose.material3.AlertDialog
-import androidx.compose.material3.Button
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.saveable.rememberSaveable
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
@@ -40,6 +33,7 @@ fun BottomNavigationBar(
         modifier = Modifier.navigationBarsPadding(),
         backgroundColor = MaterialTheme.colorScheme.surface,
         contentColor = MaterialTheme.colorScheme.primary
+
     ){
         val topLevelRoutes = listOf(
             TopLevelRoute(
@@ -68,8 +62,6 @@ fun BottomNavigationBar(
                 inactiveIcon = R.drawable.outline_profile
             )
         )
-        var showDialog by remember { mutableStateOf(false) }
-        var dialogMessage by remember { mutableStateOf("") }
 
         val navBackStackEntry by navController.currentBackStackEntryAsState()
         val currentDestination = navBackStackEntry?.destination
@@ -100,30 +92,8 @@ fun BottomNavigationBar(
                         launchSingleTop = true
                         restoreState = true
                     }
-
-                    dialogMessage = """
-                        Current Destination: ${currentDestination?.route}
-                        Top Level Route: ${topLevelRoute.route}
-                        Hierarchy: ${currentDestination?.hierarchy?.joinToString { it.route ?: "No route" }}
-                        Is Selected: ${currentDestination?.hierarchy?.any {
-                        it.route == topLevelRoute.route} == true}
-                    """.trimIndent()
-                    showDialog = true
                 }
             )
         }
-        if (showDialog) {
-            AlertDialog(
-                onDismissRequest = { showDialog = false },
-                title = { Text("Debug Information") },
-                text = { Text(dialogMessage) },
-                confirmButton = {
-                    Button(onClick = { showDialog = false }) {
-                        Text("Close")
-                    }
-                }
-            )
-        }
-
     }
 }
