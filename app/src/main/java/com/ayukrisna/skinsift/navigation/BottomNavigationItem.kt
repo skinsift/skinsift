@@ -5,15 +5,17 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.material.BottomNavigation
 import androidx.compose.material.BottomNavigationItem
 import androidx.compose.material.Icon
+import androidx.compose.material3.AlertDialog
+import androidx.compose.material3.Button
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
@@ -21,6 +23,7 @@ import androidx.navigation.NavDestination.Companion.hierarchy
 import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.compose.currentBackStackEntryAsState
 import com.ayukrisna.skinsift.R
+import androidx.navigation.NavDestination.Companion.hasRoute
 
 data class TopLevelRoute<T : Any>(
     val title: String,
@@ -33,9 +36,6 @@ data class TopLevelRoute<T : Any>(
 fun BottomNavigationBar(
     navController: NavController
 ) {
-//    val navBackStackEntry by navController.currentBackStackEntryAsState()
-//    val currentDestination = navBackStackEntry?.destination
-
     BottomNavigation (
         modifier = Modifier.navigationBarsPadding(),
         backgroundColor = MaterialTheme.colorScheme.surface,
@@ -68,16 +68,21 @@ fun BottomNavigationBar(
                 inactiveIcon = R.drawable.outline_profile
             )
         )
-        var selectedItemIndex by rememberSaveable {
-            mutableStateOf(0)
-        }
-        topLevelRoutes.forEachIndexed{ index, topLevelRoute ->
+        var showDialog by remember { mutableStateOf(false) }
+        var dialogMessage by remember { mutableStateOf("") }
+
+        val navBackStackEntry by navController.currentBackStackEntryAsState()
+        val currentDestination = navBackStackEntry?.destination
+
+        topLevelRoutes.map{ topLevelRoute ->
             BottomNavigationItem(
-                selected = selectedItemIndex == index,
+                selected = currentDestination?.hierarchy?.any { current ->
+                    current.hasRoute(topLevelRoute.route::class)} == true,
                 icon = {
                     Icon(
                         painter = painterResource(
-                            id = if (index == selectedItemIndex) {
+                            id = if (currentDestination?.hierarchy?.any { current ->
+                                    current.hasRoute(topLevelRoute.route::class)} == true) {
                                 topLevelRoute.activeIcon
                             } else {
                                 topLevelRoute.inactiveIcon
@@ -87,11 +92,7 @@ fun BottomNavigationBar(
                         modifier = Modifier.size(24.dp)
                     )
                 },
-//                label = {
-//                    Text(text = topLevelRoute.title)
-//                },
                 onClick = {
-                    selectedItemIndex = index
                     navController.navigate(topLevelRoute.route) {
                         popUpTo(navController.graph.findStartDestination().id) {
                             saveState = true
@@ -99,25 +100,30 @@ fun BottomNavigationBar(
                         launchSingleTop = true
                         restoreState = true
                     }
+
+                    dialogMessage = """
+                        Current Destination: ${currentDestination?.route}
+                        Top Level Route: ${topLevelRoute.route}
+                        Hierarchy: ${currentDestination?.hierarchy?.joinToString { it.route ?: "No route" }}
+                        Is Selected: ${currentDestination?.hierarchy?.any {
+                        it.route == topLevelRoute.route} == true}
+                    """.trimIndent()
+                    showDialog = true
+                }
+            )
+        }
+        if (showDialog) {
+            AlertDialog(
+                onDismissRequest = { showDialog = false },
+                title = { Text("Debug Information") },
+                text = { Text(dialogMessage) },
+                confirmButton = {
+                    Button(onClick = { showDialog = false }) {
+                        Text("Close")
+                    }
                 }
             )
         }
 
     }
 }
-
-//@Composable
-//fun DebugBottomBar() {
-//    BottomNavigation {
-//        BottomNavigationItem(
-//            icon = { Icon(Icons.Default.Home, contentDescription = "Home") },
-//            selected = false,
-//            onClick = {}
-//        )
-//        BottomNavigationItem(
-//            icon = { Icon(Icons.Default.Edit, contentDescription = "Profile") },
-//            selected = false,
-//            onClick = {}
-//        )
-//    }
-//}
