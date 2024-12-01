@@ -35,11 +35,11 @@ fun MainScreen() {
 //        Text("Test Content", modifier = Modifier.padding(innerPadding))
         NavGraph(
             navController = navController,
-            paddingValues = PaddingValues(
+            paddingValues = PaddingValues (
                 start = innerPadding.calculateStartPadding(LocalLayoutDirection.current) + 16.dp,
-                top = innerPadding.calculateTopPadding() + 32.dp,
+                top = innerPadding.calculateTopPadding(),
                 end = innerPadding.calculateEndPadding(LocalLayoutDirection.current) + 16.dp,
-                bottom = innerPadding.calculateBottomPadding() + 32.dp
+                bottom = innerPadding.calculateBottomPadding()
             )
         )
     }

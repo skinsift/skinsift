@@ -1,5 +1,6 @@
 package com.ayukrisna.skinsift.navigation
 
+import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.size
 import androidx.compose.material.BottomNavigation
 import androidx.compose.material.BottomNavigationItem
@@ -32,11 +33,12 @@ data class TopLevelRoute<T : Any>(
 fun BottomNavigationBar(
     navController: NavController
 ) {
-    val navBackStackEntry by navController.currentBackStackEntryAsState()
-    val currentDestination = navBackStackEntry?.destination
+//    val navBackStackEntry by navController.currentBackStackEntryAsState()
+//    val currentDestination = navBackStackEntry?.destination
 
     BottomNavigation (
-        backgroundColor = Color(0xFFFFFFFF),
+        modifier = Modifier.navigationBarsPadding(),
+        backgroundColor = MaterialTheme.colorScheme.surface,
         contentColor = MaterialTheme.colorScheme.primary
     ){
         val topLevelRoutes = listOf(
