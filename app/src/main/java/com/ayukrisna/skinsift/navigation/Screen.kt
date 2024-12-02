@@ -41,7 +41,7 @@ sealed class DictionaryScreen() {
     data object Detail : DictionaryScreen()
 
     @Serializable
-    data object SearchResult : DictionaryScreen()
+    data object Filter : DictionaryScreen()
 }
 
 @Serializable

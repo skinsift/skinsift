@@ -14,6 +14,7 @@ import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.text.font.FontWeight
 
@@ -26,7 +27,7 @@ import androidx.compose.ui.text.font.FontWeight
 fun AppBar(
     title: String,
     subtitle: String,
-    actionIcon: ImageVector? = null,
+    actionIcon: Painter? = null,
     onActionClick: (() -> Unit)? = null) {
     TopAppBar(
         title = {
@@ -53,7 +54,7 @@ fun AppBar(
             if (actionIcon != null && onActionClick != null) {
                 IconButton(onClick = { onActionClick() }) {
                     Icon(
-                        imageVector = actionIcon,
+                        painter = actionIcon,
                         contentDescription = "Action",
                         tint = MaterialTheme.colorScheme.primary
                     )

@@ -14,6 +14,7 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.navigation
 import com.ayukrisna.skinsift.domain.model.ProductDetailModel
 import com.ayukrisna.skinsift.view.ui.screen.dictionary.DictDetailScreen
+import com.ayukrisna.skinsift.view.ui.screen.dictionary.DictFilterScreen
 import com.ayukrisna.skinsift.view.ui.screen.dictionary.DictSearchResult
 import com.ayukrisna.skinsift.view.ui.screen.dictionary.DictionaryScreen
 import com.ayukrisna.skinsift.view.ui.screen.home.HomeScreen
@@ -98,10 +99,19 @@ fun NavGraphBuilder.dictionaryNavGraph(
                 onNavigateToDetail = {
                     navController.navigate(DictionaryScreen.Detail)
                 },
+                onNavigateToFilter = {
+                    navController.navigate(DictionaryScreen.Filter)
+                },
             )
         }
         composable<DictionaryScreen.Detail> {
             DictDetailScreen(
+                paddingValues = paddingValues,
+                onBackClick = { navController.popBackStack() }
+            )
+        }
+        composable<DictionaryScreen.Filter> {
+            DictFilterScreen(
                 paddingValues = paddingValues,
                 onBackClick = { navController.popBackStack() }
             )

@@ -42,7 +42,6 @@ fun DictDetailScreen(
                 onBackClick = { onBackClick() }
             )},
         content = { innerPadding ->
-            // Padding values should be applied if needed
             Column(modifier = Modifier
                 .fillMaxHeight()
                 .padding(

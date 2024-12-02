@@ -37,6 +37,7 @@ fun MainScreen() {
         AuthScreen.Login,
         AuthScreen.Signup,
         DictionaryScreen.Detail,
+        DictionaryScreen.Filter,
         ProductScreen.Detail
     )
 
