@@ -2,27 +2,25 @@ package com.ayukrisna.skinsift.view.ui.screen.dictionary
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.calculateStartPadding
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
-import androidx.compose.material3.CenterAlignedTopAppBar
 import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalLayoutDirection
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
@@ -32,17 +30,27 @@ import com.ayukrisna.skinsift.view.ui.component.CenterAppBar
 import com.ayukrisna.skinsift.view.ui.theme.SkinSiftTheme
 
 @Composable
-fun DetailIngredientScreen(modifier: Modifier = Modifier) {
+fun DictDetailScreen(
+    paddingValues: PaddingValues,
+    onBackClick: () -> Unit,
+    modifier: Modifier = Modifier
+) {
     Scaffold(
         topBar = {
-            DetailIngredientAppBar("Detail Ingredients")
-        },
-        content = { paddingValues->
+            DetailIngredientAppBar(
+                title = "Detail Bahan Skincare",
+                onBackClick = { onBackClick() }
+            )},
+        content = { innerPadding ->
             // Padding values should be applied if needed
             Column(modifier = Modifier
                 .fillMaxHeight()
-                .padding(paddingValues)
-                .padding(horizontal = 16.dp)
+                .padding(
+                    top = paddingValues.calculateTopPadding() + 24.dp,
+                    start = paddingValues.calculateStartPadding(LocalLayoutDirection.current),
+                    end = paddingValues.calculateStartPadding(LocalLayoutDirection.current),
+                    bottom = paddingValues.calculateBottomPadding()
+                )
             ) {
                 Text(text = "Acetyl Glucosamine",
                     style = MaterialTheme.typography.titleLarge,
@@ -148,7 +156,7 @@ fun IngredientsOverviewItem(title: String, description: String, color : Color = 
         Text(
             text = title,
             style = MaterialTheme.typography.bodyMedium,
-            fontWeight = FontWeight.Medium,
+            fontWeight = FontWeight.Bold,
             color = MaterialTheme.colorScheme.onSurface,
             modifier = Modifier.weight(1f)
         )
@@ -161,26 +169,30 @@ fun IngredientsOverviewItem(title: String, description: String, color : Color = 
     }
 }
 
-@Preview(showBackground = true)
-@Composable
-fun DetailIngredientPreview() {
-    SkinSiftTheme {
-        DetailIngredientScreen()
-    }
-}
+//@Preview(showBackground = true)
+//@Composable
+//fun DetailIngredientPreview() {
+//    SkinSiftTheme {
+//        DictDetailScreen(
+//
+//        )
+//    }
+//}
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun DetailIngredientAppBar(title: String) {
-    CenterAppBar(title)
+fun DetailIngredientAppBar(title: String, onBackClick: () -> Unit,) {
+    CenterAppBar(
+        title = title,
+        onBackClick = {onBackClick()})
 }
 
-@Preview(showBackground = true)
-@Composable
-fun PreviewAppBar() {
-    SkinSiftTheme {
-        DetailIngredientAppBar("Detail Ingredients")
-    }
-}
+//@Preview(showBackground = true)
+//@Composable
+//fun PreviewAppBar() {
+//    SkinSiftTheme {
+//        DetailIngredientAppBar("Detail Ingredients")
+//    }
+//}
 
 

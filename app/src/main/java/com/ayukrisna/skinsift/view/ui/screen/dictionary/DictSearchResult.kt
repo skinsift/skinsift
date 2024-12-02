@@ -37,24 +37,21 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.vector.ImageVector
-import androidx.compose.ui.input.key.KeyEventType
-import androidx.compose.ui.input.key.key
-import androidx.compose.ui.input.key.onKeyEvent
-import androidx.compose.ui.input.key.type
 import androidx.compose.ui.platform.LocalLayoutDirection
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import com.ayukrisna.skinsift.view.ui.component.AppBar
 import com.ayukrisna.skinsift.domain.model.IngredientModel
+import com.ayukrisna.skinsift.view.ui.component.CenterAppBar
 import com.ayukrisna.skinsift.view.ui.component.CustomTextField
 import com.ayukrisna.skinsift.view.ui.component.getRatingColor
-import androidx.compose.ui.input.key.Key
 
 @Composable
-fun DictionaryScreen(
+fun DictSearchResult(
     onNavigateToDetail: () -> Unit,
-//    onNavigateToSearch: () -> Unit,
+    onNavigateToSearch: () -> Unit,
+    onBackClick: () -> Unit,
     paddingValues: PaddingValues,
     modifier : Modifier = Modifier
 ) {
@@ -152,10 +149,10 @@ fun DictionaryScreen(
     )
     Scaffold(
         topBar = {
-            DictionaryAppBar(
-                "Kamus Bahan Skincare",
-                "Cari yang kamu butuhkan",
-                )
+            DictSearchAppBar (
+                title = "Hasil Pencarian",
+                onBackClick = { onBackClick() }
+            )
         },
         content = { innerPadding ->
             Column(modifier = Modifier
@@ -167,7 +164,7 @@ fun DictionaryScreen(
                 )
             ) {
                 Spacer(modifier = Modifier.height(108.dp))
-                DictionarySearchBar { }
+                DictionarySearchBar { onNavigateToSearch() }
 //                Spacer(modifier = Modifier.height(32.dp))
                 LazyColumn {
                     items(dummyDictionaryList) { item ->
@@ -180,94 +177,12 @@ fun DictionaryScreen(
     )
 }
 
-@Composable
-fun IngredientsItem(
-    item: IngredientModel,
-    onNavigateToDetail: () -> Unit
-) {
-    val ratingColor = getRatingColor(item.rating)
-
-    Card(
-        modifier = Modifier
-            .fillMaxWidth()
-            .clickable { onNavigateToDetail() },
-        colors = CardDefaults.cardColors(
-            containerColor = MaterialTheme.colorScheme.surfaceBright
-        ),
-        shape = RoundedCornerShape(16.dp),
-        elevation = CardDefaults.elevatedCardElevation(1.dp)
-    ) {
-        Column(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(16.dp)
-        ) {
-            Text(
-                    text = item.rating,
-                    style = MaterialTheme.typography.labelSmall,
-                    fontWeight = FontWeight.ExtraBold,
-                    color = ratingColor
-                )
-            Spacer(modifier = Modifier.height(2.dp))
-            Text(
-                text = item.name,
-                style = MaterialTheme.typography.titleMedium,
-                fontWeight = FontWeight.ExtraBold,
-                color = MaterialTheme.colorScheme.primary
-            )
-            Spacer(modifier = Modifier.height(2.dp))
-            Text(
-                text = item.description,
-                style = MaterialTheme.typography.bodyMedium,
-                color = MaterialTheme.colorScheme.onSurface
-            )
-        }
-    }
-}
-
-@Composable
-fun DictionarySearchBar(
-    onSearching: () -> Unit,
-) {
-    var text by remember { mutableStateOf("") }
-    var submittedText by remember { mutableStateOf("") }
-
-    CustomTextField(
-        text = text,
-        placeholder = "Cari bahan skincare...",
-        onValueChange = { newText -> text = newText },
-        leadingIcon = painterResource(id = R.drawable.ic_search),
-        keyboardType = KeyboardType.Text,
-        imeAction = ImeAction.Done,
-        isError = false,
-        isVisible = false,
-        errorMessage = null,
-        singleLine = true,
-        maxLine = 1,
-//        modifier = Modifier
-//            .onKeyEvent { keyEvent ->
-//                if (keyEvent.type == KeyEventType.KeyDown && keyEvent.key == Key.Enter) {
-//                    submittedText = text
-//                    text = ""
-//                    onSearching()
-//                    true
-//                } else {
-//                    false
-//                }
-//            }
-    )
-}
-
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun DictionaryAppBar(
-    title: String,
-    subtitle: String,
-    ) {
-    AppBar(
-        title,
-        subtitle,
-        )
+fun DictSearchAppBar(title: String, onBackClick: () -> Unit,) {
+    CenterAppBar(
+        title = title,
+        onBackClick = {onBackClick()})
 }
 
 //@Preview(showBackground = true)
@@ -277,11 +192,3 @@ fun DictionaryAppBar(
 //        DictionaryScreen(PaddingValues(horizontal = 16.dp, vertical = 42.dp))
 //    }
 //}
-
-@Preview(showBackground = true)
-@Composable
-fun AppBarPreview() {
-    SkinSiftTheme {
-        DictionaryAppBar("Kamus Ingredients", "Cari yang kamu butuhkan")
-    }
-}

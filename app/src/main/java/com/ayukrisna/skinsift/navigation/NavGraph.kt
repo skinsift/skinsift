@@ -12,9 +12,13 @@ import androidx.navigation.compose.composable
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.navigation
+import com.ayukrisna.skinsift.domain.model.ProductDetailModel
+import com.ayukrisna.skinsift.view.ui.screen.dictionary.DictDetailScreen
+import com.ayukrisna.skinsift.view.ui.screen.dictionary.DictSearchResult
 import com.ayukrisna.skinsift.view.ui.screen.dictionary.DictionaryScreen
 import com.ayukrisna.skinsift.view.ui.screen.home.HomeScreen
 import com.ayukrisna.skinsift.view.ui.screen.login.LoginScreen
+import com.ayukrisna.skinsift.view.ui.screen.product.ProductDetailScreen
 import com.ayukrisna.skinsift.view.ui.screen.product.ProductScreen
 import com.ayukrisna.skinsift.view.ui.screen.profile.ProfileScreen
 import com.ayukrisna.skinsift.view.ui.screen.signup.SignupScreen
@@ -90,7 +94,16 @@ fun NavGraphBuilder.dictionaryNavGraph(
     ) {
         composable<DictionaryScreen.Dictionary> {
             DictionaryScreen(
-                paddingValues = paddingValues
+                paddingValues = paddingValues,
+                onNavigateToDetail = {
+                    navController.navigate(DictionaryScreen.Detail)
+                },
+            )
+        }
+        composable<DictionaryScreen.Detail> {
+            DictDetailScreen(
+                paddingValues = paddingValues,
+                onBackClick = { navController.popBackStack() }
             )
         }
     }
@@ -104,7 +117,18 @@ fun NavGraphBuilder.productNavGraph(
         startDestination = ProductScreen.Product
     ) {
         composable<ProductScreen.Product> {
-            ProductScreen(paddingValues)
+            ProductScreen(
+                paddingValues = paddingValues,
+                onNavigateToDetail = {
+                    navController.navigate(ProductScreen.Detail)
+                }
+            )
+        }
+        composable<ProductScreen.Detail> {
+            ProductDetailScreen(
+                paddingValues = paddingValues,
+                onBackClick = { navController.popBackStack() }
+            )
         }
     }
 }

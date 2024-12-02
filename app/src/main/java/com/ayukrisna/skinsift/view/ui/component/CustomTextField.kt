@@ -64,17 +64,8 @@ import com.ayukrisna.skinsift.util.UiText
 import com.ayukrisna.skinsift.util.isNumber
 
 @Composable
-fun CustomSearchBar(
-
-) {
-    CustomTextField(
-        title = ""
-    )
-}
-
-@Composable
 fun CustomTextField(
-    title: String,
+    title: String? = null,
     text: String = "",
     placeholder: String = "",
     onValueChange: (String) -> Unit = {},
@@ -110,12 +101,14 @@ fun CustomTextField(
     Column (
         modifier = Modifier.fillMaxWidth()
     ) {
-        Text(
-            text = title,
-            style = MaterialTheme.typography.labelMedium,
-            color = MaterialTheme.colorScheme.primary,
-            modifier = Modifier.padding(top = 8.dp, bottom = 4.dp)
-        )
+        if (title != null) {
+            Text(
+                text = title,
+                style = MaterialTheme.typography.labelMedium,
+                color = MaterialTheme.colorScheme.primary,
+                modifier = Modifier.padding(top = 8.dp, bottom = 4.dp)
+            )
+        }
         Box () {
             BasicTextField(
                 value = if (isKeyboardTypeNumber) {
@@ -144,7 +137,7 @@ fun CustomTextField(
                 modifier = Modifier
                     .fillMaxWidth()
                     .shadow(elevation = 1.dp, shape = RoundedCornerShape(20.dp))
-                    .background(MaterialTheme.colorScheme.surface)
+                    .background(MaterialTheme.colorScheme.surfaceBright)
                     .height(48.dp)
                     .border(1.dp, colorBorder, RoundedCornerShape(20.dp))
                     .padding(8.dp)
@@ -201,6 +194,29 @@ fun CustomTextField(
             text = errorMessage?.asString(context).orEmpty(),
             color = MaterialTheme.colorScheme.error,
             style = MaterialTheme.typography.bodySmall,
+        )
+    }
+}
+
+@Preview(showBackground = true)
+@Composable
+fun PreviewCustomSearchBar(
+) {
+    SkinSiftTheme {
+        var text by remember { mutableStateOf("") }
+
+        CustomTextField(
+            text = text,
+            placeholder = "Cari bahan skincare...",
+            onValueChange = { newText -> text = newText },
+            leadingIcon = painterResource(id = R.drawable.ic_search),
+            keyboardType = KeyboardType.Text,
+            imeAction = ImeAction.Done,
+            isError = false,
+            isVisible = false,
+            errorMessage = null,
+            singleLine = true,
+            maxLine = 1
         )
     }
 }

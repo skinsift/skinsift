@@ -19,6 +19,8 @@ import com.ayukrisna.skinsift.navigation.AuthScreen
 import com.ayukrisna.skinsift.navigation.BottomNavigationBar
 import com.ayukrisna.skinsift.navigation.NavGraph
 import androidx.navigation.NavDestination.Companion.hasRoute
+import com.ayukrisna.skinsift.navigation.DictionaryScreen
+import com.ayukrisna.skinsift.navigation.ProductScreen
 import com.ayukrisna.skinsift.navigation.ProfileScreen
 import com.ayukrisna.skinsift.navigation.RootScreen
 
@@ -34,6 +36,8 @@ fun MainScreen() {
     val noBottomNavRoutes = listOf(
         AuthScreen.Login,
         AuthScreen.Signup,
+        DictionaryScreen.Detail,
+        ProductScreen.Detail
     )
 
     Scaffold(

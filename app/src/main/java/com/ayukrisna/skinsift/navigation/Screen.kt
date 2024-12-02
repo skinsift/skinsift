@@ -36,12 +36,21 @@ sealed class HomeScreen() {
 sealed class DictionaryScreen() {
     @Serializable
     data object Dictionary : DictionaryScreen()
+
+    @Serializable
+    data object Detail : DictionaryScreen()
+
+    @Serializable
+    data object SearchResult : DictionaryScreen()
 }
 
 @Serializable
 sealed class ProductScreen() {
     @Serializable
     data object Product : ProductScreen()
+
+    @Serializable
+    data object Detail : ProductScreen()
 }
 
 @Serializable

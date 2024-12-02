@@ -1,6 +1,7 @@
 package com.ayukrisna.skinsift.view.ui.screen.product
 
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
@@ -42,6 +43,7 @@ import com.ayukrisna.skinsift.view.ui.theme.SkinSiftTheme
 @Composable
 fun ProductScreen (
     paddingValues: PaddingValues,
+    onNavigateToDetail: () -> Unit,
     modifier: Modifier = Modifier
 ){
     val skincareProducts = listOf(
@@ -75,10 +77,9 @@ fun ProductScreen (
         ),
     )
 
-
     Scaffold(
         topBar = {
-            SkincareAppBar("Kamus Produk Skincare", "Cari yang kamu butuhkan")
+            SkincareAppBar("Kamus Skincare", "Cari yang kamu butuhkan")
         },
         content = { innerPadding ->
             // Padding values should be applied if needed
@@ -103,7 +104,8 @@ fun ProductScreen (
                                 product.name,
                                 product.brand,
                                 product.description,
-                                product.imageUrl
+                                product.imageUrl,
+                                {onNavigateToDetail()}
                             )
                         }
                     }
@@ -125,10 +127,12 @@ fun SkincareCard(
     brand: String,
     description: String,
     imageUrl: String? = null,
+    onNavigateToDetail: () -> Unit,
     modifier: Modifier = Modifier
 ) {
     Card(
-        modifier = Modifier,
+        modifier = Modifier
+            .clickable { onNavigateToDetail() },
 //            .width(156.dp),
 //            .padding(0.dp, 0.dp, 8.dp, 8.dp),
         shape = RoundedCornerShape(16.dp),
@@ -185,15 +189,15 @@ fun SkincareCard(
     }
 }
 
-@Preview(showBackground = true)
-@Composable
-fun SkincareCardPreview(modifier: Modifier = Modifier) {
-    SkincareCard(
-        "Nama Skincare",
-        "Merk Skincare",
-        "Ini deskripsi singkat produknya"
-    )
-}
+//@Preview(showBackground = true)
+//@Composable
+//fun SkincareCardPreview(modifier: Modifier = Modifier) {
+//    SkincareCard(
+//        "Nama Skincare",
+//        "Merk Skincare",
+//        "Ini deskripsi singkat produknya"
+//    )
+//}
 
 //@Preview(showBackground = true)
 //@Composable
