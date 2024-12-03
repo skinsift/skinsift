@@ -9,6 +9,8 @@ sealed class RootScreen {
     @Serializable
     object HomeNav
     @Serializable
+    object AssessNav
+    @Serializable
     object DictionaryNav
     @Serializable
     object ProductNav
@@ -36,6 +38,15 @@ sealed class HomeScreen() {
 
     @Serializable
     data object AddPreference : HomeScreen()
+}
+
+@Serializable
+sealed class AssessmentScreen() {
+    @Serializable
+    data object Start : AssessmentScreen()
+
+    @Serializable
+    data object Skin : AssessmentScreen()
 }
 
 @Serializable

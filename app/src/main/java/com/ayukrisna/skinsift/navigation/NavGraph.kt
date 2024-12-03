@@ -12,6 +12,8 @@ import androidx.navigation.compose.composable
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.navigation
+import com.ayukrisna.skinsift.view.ui.screen.assessment.SkinAssessmentScreen
+import com.ayukrisna.skinsift.view.ui.screen.assessment.StartAssessmentScreen
 import com.ayukrisna.skinsift.view.ui.screen.dictionary.DictDetailScreen
 import com.ayukrisna.skinsift.view.ui.screen.dictionary.DictFilterScreen
 import com.ayukrisna.skinsift.view.ui.screen.dictionary.DictionaryScreen
@@ -39,6 +41,7 @@ fun NavGraph (
     ) {
         authNavGraph(navController, paddingValues)
         homeNavGraph(navController, paddingValues)
+        assessNavGraph(navController, paddingValues)
         dictionaryNavGraph(navController, paddingValues)
         productNavGraph(navController, paddingValues)
         profileNavGraph(navController, paddingValues)
@@ -83,7 +86,10 @@ fun NavGraphBuilder.homeNavGraph(
                 paddingValues = paddingValues,
                 onNavigateToPreference = {
                     navController.navigate(HomeScreen.Preference)
-                }
+                },
+                onNavigateToAssessment = {
+                    navController.navigate(AssessmentScreen.Start)
+                },
             )
         }
         composable<HomeScreen.Preference> {
@@ -105,6 +111,30 @@ fun NavGraphBuilder.homeNavGraph(
             )
         }
     }
+}
+
+fun NavGraphBuilder.assessNavGraph(
+    navController: NavHostController,
+    paddingValues: PaddingValues,
+) {
+    navigation<RootScreen.AssessNav>(
+        startDestination = AssessmentScreen.Start
+    ) {
+        composable<AssessmentScreen.Start> {
+            StartAssessmentScreen(
+                paddingValues = paddingValues,
+                onNavigateToNext = {navController.navigate(AssessmentScreen.Skin)},
+                onBackClick = { navController.popBackStack() }
+            )
+        }
+        composable<AssessmentScreen.Skin> {
+            SkinAssessmentScreen(
+                paddingValues = paddingValues,
+                onBackClick = { navController.popBackStack() },
+            )
+        }
+    }
+
 }
 
 fun NavGraphBuilder.dictionaryNavGraph(

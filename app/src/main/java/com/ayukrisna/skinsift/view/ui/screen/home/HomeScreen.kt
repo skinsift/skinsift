@@ -1,7 +1,6 @@
 package com.ayukrisna.skinsift.view.ui.screen.home
 
 import androidx.compose.foundation.Image
-import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.horizontalScroll
 import androidx.compose.foundation.layout.Arrangement
@@ -19,7 +18,6 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowForward
 import androidx.compose.material.icons.filled.KeyboardArrowRight
@@ -49,14 +47,13 @@ import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.ayukrisna.skinsift.R
-import com.ayukrisna.skinsift.view.ui.component.CircleImageView
-import com.ayukrisna.skinsift.view.ui.theme.SkinSiftTheme
 
 @Composable
 fun HomeScreen(
     onNavigateToPreference: () -> Unit,
-    paddingValues: PaddingValues,
+    onNavigateToAssessment: () -> Unit,
     modifier: Modifier = Modifier,
+    paddingValues: PaddingValues,
 ) {
     Surface {
         Column (
@@ -72,7 +69,7 @@ fun HomeScreen(
             Spacer(modifier = Modifier.height(24.dp))
             TitleHome("Pahami Kebutuhanmu")
             Spacer(modifier = Modifier.height(12.dp))
-            ScannerRow()
+            ScannerRow({onNavigateToAssessment()})
             Spacer(modifier = Modifier.height(24.dp))
             TitleHome("Bahan Skincare Tersimpan")
             Spacer(modifier = Modifier.height(12.dp))
@@ -249,63 +246,63 @@ fun ReminderCard(modifier: Modifier = Modifier) {
     }
 }
 
-@Composable
-fun ScannerCard(modifier: Modifier = Modifier) {
-    Card(
-        shape = RoundedCornerShape(16.dp),
-        modifier = Modifier
-            .fillMaxWidth(),
-        elevation = CardDefaults.cardElevation(1.dp)
-    ) {
-        Box(
-            modifier = Modifier.fillMaxWidth(),
-            contentAlignment = Alignment.Center
-        ) {
-
-            Image(
-                painter = painterResource(id = R.drawable.card_background),
-                contentDescription = null,
-                contentScale = ContentScale.Crop,
-                modifier = Modifier.matchParentSize()
-            )
-
-            Column(
-                modifier = Modifier
-                    .padding(16.dp)
-            ) {
-                Row (
-                    horizontalArrangement = Arrangement.SpaceBetween,
-                    verticalAlignment = Alignment.CenterVertically,
-                    modifier = Modifier.fillMaxWidth()
-                ){
-                    Image(
-                        painter = painterResource(id = R.drawable.scanner),
-                        contentDescription = null,
-                        modifier = Modifier.size(80.dp)
-                    )
-                    Column(
-                        verticalArrangement = Arrangement.Top,
-                        horizontalAlignment = Alignment.Start,
-                    ) {
-                        Text(
-                            "Yuk, Scan Ingredients dari Skincaremu ✨",
-                            style = MaterialTheme.typography.titleMedium,
-                            fontWeight = FontWeight.Bold,
-                            modifier = Modifier
-                                .padding(12.dp, 0.dp, 0.dp, 0.dp)
-                        )
-                        Text(
-                            "Biar kamu tau apa saja yang kamu gunakan dalam skincaremu.",
-                            style = MaterialTheme.typography.bodyMedium,
-                            modifier = Modifier
-                                .padding(12.dp, 0.dp, 0.dp, 0.dp)
-                        )
-                    }
-                }
-            }
-        }
-    }
-}
+//@Composable
+//fun ScannerCard(modifier: Modifier = Modifier) {
+//    Card(
+//        shape = RoundedCornerShape(16.dp),
+//        modifier = Modifier
+//            .fillMaxWidth(),
+//        elevation = CardDefaults.cardElevation(1.dp)
+//    ) {
+//        Box(
+//            modifier = Modifier.fillMaxWidth(),
+//            contentAlignment = Alignment.Center
+//        ) {
+//
+//            Image(
+//                painter = painterResource(id = R.drawable.card_background),
+//                contentDescription = null,
+//                contentScale = ContentScale.Crop,
+//                modifier = Modifier.matchParentSize()
+//            )
+//
+//            Column(
+//                modifier = Modifier
+//                    .padding(16.dp)
+//            ) {
+//                Row (
+//                    horizontalArrangement = Arrangement.SpaceBetween,
+//                    verticalAlignment = Alignment.CenterVertically,
+//                    modifier = Modifier.fillMaxWidth()
+//                ){
+//                    Image(
+//                        painter = painterResource(id = R.drawable.scanner),
+//                        contentDescription = null,
+//                        modifier = Modifier.size(80.dp)
+//                    )
+//                    Column(
+//                        verticalArrangement = Arrangement.Top,
+//                        horizontalAlignment = Alignment.Start,
+//                    ) {
+//                        Text(
+//                            "Yuk, Scan Ingredients dari Skincaremu ✨",
+//                            style = MaterialTheme.typography.titleMedium,
+//                            fontWeight = FontWeight.Bold,
+//                            modifier = Modifier
+//                                .padding(12.dp, 0.dp, 0.dp, 0.dp)
+//                        )
+//                        Text(
+//                            "Biar kamu tau apa saja yang kamu gunakan dalam skincaremu.",
+//                            style = MaterialTheme.typography.bodyMedium,
+//                            modifier = Modifier
+//                                .padding(12.dp, 0.dp, 0.dp, 0.dp)
+//                        )
+//                    }
+//                }
+//            }
+//        }
+//    }
+//}
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -427,52 +424,57 @@ fun ArticleCard(
     }
 }
 
-@Preview(showBackground = true)
-@Composable
-fun ScannerRowPreview() {
-    ScannerRow()
-}
+//@Preview(showBackground = true)
+//@Composable
+//fun ScannerRowPreview() {
+//    ScannerRow()
+//}
 
 @Composable
-fun ScannerRow(modifier: Modifier = Modifier) {
+fun ScannerRow(assessment: () -> Unit, modifier: Modifier = Modifier) {
     Row(
         Modifier.fillMaxWidth(),
         horizontalArrangement = Arrangement.SpaceBetween,
     ){
         SkincareScannerCard(
+            {assessment()},
             Modifier.fillMaxWidth()
         )
         Spacer(modifier = Modifier.height(4.dp))
         PersonalizedCard(
-            Modifier.fillMaxWidth()
+            {assessment()},
+            Modifier.fillMaxWidth(),
         )
     }
 }
 
 @Composable
-fun SkincareScannerCard(modifier: Modifier = Modifier) {
+fun SkincareScannerCard(assessment: () -> Unit, modifier: Modifier = Modifier) {
     SquareCard(
         bgImage = painterResource(id = R.drawable.card_bg_dark),
         icon = painterResource(id = R.drawable.line_scan_small),
         title = "Pindai Bahan Skincare",
         subtitle = "Pahami komposisi dari skincaremu dengan sekali foto.",
-        textColor = MaterialTheme.colorScheme.onPrimary
+        textColor = MaterialTheme.colorScheme.onPrimary,
+        action = {assessment()}
     )
 }
 
 @Composable
-fun PersonalizedCard(modifier: Modifier = Modifier) {
+fun PersonalizedCard(assessment: () -> Unit, modifier: Modifier = Modifier) {
     SquareCard(
         bgImage = painterResource(id = R.drawable.card_bg_light),
         icon = painterResource(id = R.drawable.skincare_icon),
         title = "Personalisasi Skincare",
         subtitle = "Dapatkan rekomendasi produk sesuai dengan kebutuhanmu.",
-        textColor = MaterialTheme.colorScheme.onSurface
+        textColor = MaterialTheme.colorScheme.onSurface,
+        action = {assessment()}
     )
 }
 
 @Composable
 fun SquareCard(
+    action: () -> Unit,
     bgImage: Painter,
     icon: Painter,
     title: String,
@@ -481,7 +483,8 @@ fun SquareCard(
 ) {
     Card(
         modifier = Modifier
-            .width(178.dp),
+            .width(178.dp)
+            .clickable { action() },
         shape = RoundedCornerShape(16.dp),
         colors = CardDefaults.cardColors(
             containerColor = MaterialTheme.colorScheme.surfaceBright
@@ -532,17 +535,17 @@ fun SquareCard(
  * PREVIEW
  */
 
-@Preview(showBackground = true)
-@Composable
-fun SkincareScannerCardPreview() {
-    SkincareScannerCard()
-}
-
-@Preview(showBackground = true)
-@Composable
-fun PersonalizedCardPreview() {
-    PersonalizedCard()
-}
+//@Preview(showBackground = true)
+//@Composable
+//fun SkincareScannerCardPreview() {
+//    SkincareScannerCard()
+//}
+//
+//@Preview(showBackground = true)
+//@Composable
+//fun PersonalizedCardPreview() {
+//    PersonalizedCard()
+//}
 
 @Preview(showBackground = true)
 @Composable
@@ -570,11 +573,11 @@ fun ReminderCardPreview() {
     ReminderCard()
 }
 
-@Preview(showBackground = true)
-@Composable
-fun ScannerCardPreview() {
-    ScannerCard()
-}
+//@Preview(showBackground = true)
+//@Composable
+//fun ScannerCardPreview() {
+//    ScannerCard()
+//}
 
 //@Preview(showBackground = true)
 //@Composable

@@ -19,6 +19,7 @@ import com.ayukrisna.skinsift.navigation.AuthScreen
 import com.ayukrisna.skinsift.navigation.BottomNavigationBar
 import com.ayukrisna.skinsift.navigation.NavGraph
 import androidx.navigation.NavDestination.Companion.hasRoute
+import com.ayukrisna.skinsift.navigation.AssessmentScreen
 import com.ayukrisna.skinsift.navigation.DictionaryScreen
 import com.ayukrisna.skinsift.navigation.HomeScreen
 import com.ayukrisna.skinsift.navigation.ProductScreen
@@ -39,6 +40,8 @@ fun MainScreen() {
         AuthScreen.Signup,
         HomeScreen.Preference,
         HomeScreen.AddPreference,
+        AssessmentScreen.Start,
+        AssessmentScreen.Skin,
         DictionaryScreen.Detail,
         DictionaryScreen.Filter,
         ProductScreen.Detail
