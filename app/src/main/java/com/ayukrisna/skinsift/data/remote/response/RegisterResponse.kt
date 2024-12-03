@@ -14,7 +14,10 @@ data class RegisterResponse(
 	val error: Boolean? = null,
 
 	@field:SerializedName("message")
-	val message: String? = null
+	val message: String? = null,
+
+	@field:SerializedName("detail")
+	val detail: String? = null
 )
 
 data class Data(

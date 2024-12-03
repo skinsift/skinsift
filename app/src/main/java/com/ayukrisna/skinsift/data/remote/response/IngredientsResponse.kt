@@ -2,13 +2,13 @@ package com.ayukrisna.skinsift.data.remote.response
 
 import com.google.gson.annotations.SerializedName
 
-data class LoginResponse(
-
-	@field:SerializedName("loginResult")
-	val loginResult: LoginResult? = null,
+data class IngredientsResponse(
 
 	@field:SerializedName("status_code")
 	val statusCode: Int? = null,
+
+	@field:SerializedName("Ingredientlist")
+	val ingredientlist: List<IngredientListItem?>? = null,
 
 	@field:SerializedName("error")
 	val error: Boolean? = null,
@@ -20,14 +20,17 @@ data class LoginResponse(
 	val detail: String? = null
 )
 
-data class LoginResult(
+data class IngredientListItem(
 
-	@field:SerializedName("name")
+	@field:SerializedName("Id_Ingredients")
+	val idIngredients: Int? = null,
+
+	@field:SerializedName("nama")
 	val name: String? = null,
 
-	@field:SerializedName("userId")
-	val userId: String? = null,
+	@field:SerializedName("rating")
+	val rating: String? = null,
 
-	@field:SerializedName("token")
-	val token: String? = null
+	@field:SerializedName("benefitidn")
+	val category: String? = null
 )

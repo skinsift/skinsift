@@ -1,8 +1,6 @@
 package com.ayukrisna.skinsift.view.ui.screen.dictionary
 
-import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Spacer
@@ -11,148 +9,53 @@ import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.wrapContentWidth
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.icons.Icons
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
-import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.Text
-import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.tooling.preview.Preview
 import com.ayukrisna.skinsift.R
-import com.ayukrisna.skinsift.view.ui.theme.SkinSiftTheme
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
-import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.painter.Painter
-import androidx.compose.ui.graphics.vector.ImageVector
-import androidx.compose.ui.input.key.KeyEventType
-import androidx.compose.ui.input.key.key
-import androidx.compose.ui.input.key.onKeyEvent
-import androidx.compose.ui.input.key.type
 import androidx.compose.ui.platform.LocalLayoutDirection
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import com.ayukrisna.skinsift.view.ui.component.AppBar
-import com.ayukrisna.skinsift.domain.model.IngredientModel
 import com.ayukrisna.skinsift.view.ui.component.CustomTextField
 import com.ayukrisna.skinsift.view.ui.component.getRatingColor
-import androidx.compose.ui.input.key.Key
-
-val dummyDictionaryList = listOf(
-    IngredientModel(
-        id = 1,
-        name = "3-O Ethyl Ascorbic Acid",
-        rating = "Terbaik",
-        description = "A delicious and healthy fruit.",
-        benefit = "Rich in fiber and vitamins.",
-        category = "Anti Penuaan, Antioksidan, Ekstrak Tumbuhan",
-        key = "A1"
-    ),
-    IngredientModel(
-        id = 2,
-        name = "Banana",
-        rating = "Baik",
-        description = "A quick source of energy.",
-        benefit = "High in potassium.",
-        category = "Anti Penuaan, Antioksidan, Ekstrak Tumbuhan",
-        key = "B1"
-    ),
-    IngredientModel(
-        id = 3,
-        name = "Carrot",
-        rating = "Rata-Rata",
-        description = "A crunchy and sweet vegetable.",
-        benefit = "Good for eye health.",
-        category = "Anti Penuaan, Antioksidan, Ekstrak Tumbuhan",
-        key = "C1"
-    ),
-    IngredientModel(
-        id = 4,
-        name = "Donut",
-        rating = "Buruk",
-        description = "A tasty but sugary snack.",
-        benefit = "Provides instant energy.",
-        category = "Anti Penuaan, Antioksidan, Ekstrak Tumbuhan",
-        key = "D1"
-    ),
-    IngredientModel(
-        id = 5,
-        name = "Eggplant",
-        rating = "Terburuk",
-        description = "A versatile vegetable.",
-        benefit = "Contains antioxidants.",
-        category = "Anti Penuaan, Antioksidan, Ekstrak Tumbuhan",
-        key = "E1"
-    ),
-    IngredientModel(
-        id = 6,
-        name = "Fig",
-        rating = "Terbaik",
-        description = "A sweet and nutritious fruit.",
-        benefit = "High in calcium and fiber.",
-        category = "Anti Penuaan, Antioksidan, Ekstrak Tumbuhan",
-        key = "F1"
-    ),
-    IngredientModel(
-        id = 7,
-        name = "Grapes",
-        rating = "Baik",
-        description = "A juicy and delicious fruit.",
-        benefit = "Rich in antioxidants.",
-        category = "Anti Penuaan, Antioksidan, Ekstrak Tumbuhan",
-        key = "G1"
-    ),
-    IngredientModel(
-        id = 8,
-        name = "Honey",
-        rating = "Rata-Rata",
-        description = "A natural sweetener.",
-        benefit = "Has antibacterial properties.",
-        category = "Sweetener",
-        key = "H1"
-    ),
-    IngredientModel(
-        id = 9,
-        name = "Ice Cream",
-        rating = "Buruk",
-        description = "A cold and creamy dessert.",
-        benefit = "Tastes great on a hot day.",
-        category = "Anti Penuaan, Antioksidan, Ekstrak Tumbuhan",
-        key = "I1"
-    ),
-    IngredientModel(
-        id = 10,
-        name = "Jackfruit",
-        rating = "Terburuk",
-        description = "A large and tropical fruit.",
-        benefit = "High in vitamin C.",
-        category = "Anti Penuaan, Antioksidan, Ekstrak Tumbuhan",
-        key = "J1"
-    )
-)
+import com.ayukrisna.skinsift.data.remote.response.IngredientListItem
+import org.koin.androidx.compose.koinViewModel
+import com.ayukrisna.skinsift.util.Result
+import com.ayukrisna.skinsift.view.ui.component.LoadingProgress
 
 @Composable
 fun DictionaryScreen(
+    viewModel: DictionaryViewModel = koinViewModel(),
     onNavigateToDetail: () -> Unit,
     onNavigateToFilter: () -> Unit,
     paddingValues: PaddingValues,
     modifier : Modifier = Modifier
 ) {
+    val ingredientsState by viewModel.ingredientsState.collectAsState()
+
+    LaunchedEffect(Unit) {
+        viewModel.fetchIngredients()
+    }
+
     Scaffold(
         topBar = {
             DictionaryAppBar(
@@ -172,10 +75,26 @@ fun DictionaryScreen(
             ) {
                 Spacer(modifier = Modifier.height(108.dp))
                 DictionarySearchBar { }
-                LazyColumn {
-                    items(dummyDictionaryList) { item ->
-                        IngredientsItem(item) { onNavigateToDetail() }
-                        Spacer(modifier = Modifier.height(10.dp))
+
+                when (ingredientsState) {
+                    is Result.Idle -> Text("Idle State")
+                    is Result.Loading -> LoadingProgress()
+                    is Result.Success -> {
+                        val ingredients: List<IngredientListItem> = (ingredientsState as Result.Success<List<IngredientListItem>>).data
+                        if (ingredients.isNotEmpty()) {
+                            LazyColumn {
+                                items(ingredients) { item ->
+                                    IngredientsItem(item) { onNavigateToDetail() }
+                                    Spacer(modifier = Modifier.height(10.dp))
+                                }
+                            }
+                        } else {
+                            Text("Yah, belum ada bahan di sini!")
+                        }
+                    }
+                    is Result.Error -> {
+                        val error = (ingredientsState as Result.Error).error
+                        Text("Error: $error")
                     }
                 }
             }
@@ -185,10 +104,10 @@ fun DictionaryScreen(
 
 @Composable
 fun IngredientsItem(
-    item: IngredientModel,
+    item: IngredientListItem,
     onNavigateToDetail: () -> Unit
 ) {
-    val ratingColor = getRatingColor(item.rating)
+    val ratingColor = item.rating?.let { getRatingColor(it) }
 
     Card(
         modifier = Modifier
@@ -205,25 +124,33 @@ fun IngredientsItem(
                 .fillMaxWidth()
                 .padding(16.dp)
         ) {
-            Text(
-                    text = item.rating,
-                    style = MaterialTheme.typography.labelSmall,
+            item.rating?.let {
+                if (ratingColor != null) {
+                    Text(
+                        text = it,
+                        style = MaterialTheme.typography.labelSmall,
+                        fontWeight = FontWeight.ExtraBold,
+                        color = ratingColor
+                    )
+                }
+            }
+            Spacer(modifier = Modifier.height(2.dp))
+            item.name?.let {
+                Text(
+                    text = it,
+                    style = MaterialTheme.typography.titleMedium,
                     fontWeight = FontWeight.ExtraBold,
-                    color = ratingColor
+                    color = MaterialTheme.colorScheme.primary
                 )
+            }
             Spacer(modifier = Modifier.height(2.dp))
-            Text(
-                text = item.name,
-                style = MaterialTheme.typography.titleMedium,
-                fontWeight = FontWeight.ExtraBold,
-                color = MaterialTheme.colorScheme.primary
-            )
-            Spacer(modifier = Modifier.height(2.dp))
-            Text(
-                text = item.description,
-                style = MaterialTheme.typography.bodyMedium,
-                color = MaterialTheme.colorScheme.onSurface
-            )
+            item.category?.let {
+                Text(
+                    text = it,
+                    style = MaterialTheme.typography.bodyMedium,
+                    color = MaterialTheme.colorScheme.onSurface
+                )
+            }
         }
     }
 }
