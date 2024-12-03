@@ -1,5 +1,6 @@
 package com.ayukrisna.skinsift.data.remote.retrofit
 
+import com.ayukrisna.skinsift.data.remote.response.DetailIngredientsResponse
 import com.ayukrisna.skinsift.data.remote.response.IngredientsResponse
 import com.ayukrisna.skinsift.data.remote.response.LoginResponse
 import com.ayukrisna.skinsift.data.remote.response.RegisterResponse
@@ -8,6 +9,7 @@ import retrofit2.http.Field
 import retrofit2.http.FormUrlEncoded
 import retrofit2.http.GET
 import retrofit2.http.POST
+import retrofit2.http.Path
 
 interface ApiService {
     @FormUrlEncoded
@@ -27,4 +29,9 @@ interface ApiService {
 
     @GET("ingredient")
     suspend fun getIngredients(): Response<IngredientsResponse>
+
+    @GET("ingredient/{id}")
+    suspend fun getDetailIngredients(
+        @Path("id") id: Int
+    ): Response<DetailIngredientsResponse>
 }

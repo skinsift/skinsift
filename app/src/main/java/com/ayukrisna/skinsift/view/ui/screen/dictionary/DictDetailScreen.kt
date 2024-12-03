@@ -18,6 +18,9 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalLayoutDirection
@@ -28,13 +31,22 @@ import androidx.compose.ui.unit.dp
 import com.ayukrisna.skinsift.R
 import com.ayukrisna.skinsift.view.ui.component.CenterAppBar
 import com.ayukrisna.skinsift.view.ui.theme.SkinSiftTheme
+import org.koin.androidx.compose.koinViewModel
 
 @Composable
 fun DictDetailScreen(
+    id: Int,
     paddingValues: PaddingValues,
     onBackClick: () -> Unit,
+    viewModel: DictDetailViewModel = koinViewModel(),
     modifier: Modifier = Modifier
 ) {
+    val ingredientState by viewModel.ingredientState.collectAsState()
+
+    LaunchedEffect(Unit) {
+        viewModel.fetchIngredient(id)
+    }
+
     Scaffold(
         topBar = {
             DetailIngredientAppBar(
