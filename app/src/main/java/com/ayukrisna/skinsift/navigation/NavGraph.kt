@@ -12,13 +12,13 @@ import androidx.navigation.compose.composable
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.navigation
-import com.ayukrisna.skinsift.domain.model.ProductDetailModel
 import com.ayukrisna.skinsift.view.ui.screen.dictionary.DictDetailScreen
 import com.ayukrisna.skinsift.view.ui.screen.dictionary.DictFilterScreen
-import com.ayukrisna.skinsift.view.ui.screen.dictionary.DictSearchResult
 import com.ayukrisna.skinsift.view.ui.screen.dictionary.DictionaryScreen
 import com.ayukrisna.skinsift.view.ui.screen.home.HomeScreen
 import com.ayukrisna.skinsift.view.ui.screen.login.LoginScreen
+import com.ayukrisna.skinsift.view.ui.screen.preference.AddPreferenceScreen
+import com.ayukrisna.skinsift.view.ui.screen.preference.PreferenceScreen
 import com.ayukrisna.skinsift.view.ui.screen.product.ProductDetailScreen
 import com.ayukrisna.skinsift.view.ui.screen.product.ProductScreen
 import com.ayukrisna.skinsift.view.ui.screen.profile.ProfileScreen
@@ -80,7 +80,28 @@ fun NavGraphBuilder.homeNavGraph(
     ) {
         composable<HomeScreen.Home> {
             HomeScreen(
-                paddingValues = paddingValues
+                paddingValues = paddingValues,
+                onNavigateToPreference = {
+                    navController.navigate(HomeScreen.Preference)
+                }
+            )
+        }
+        composable<HomeScreen.Preference> {
+            PreferenceScreen(
+                paddingValues = paddingValues,
+                onNavigateToDetail = {
+                    navController.navigate(DictionaryScreen.Detail)
+                },
+                onNavigateToAdd = {
+                    navController.navigate(HomeScreen.AddPreference)
+                },
+                onBackClick = { navController.popBackStack() }
+            )
+        }
+        composable<HomeScreen.AddPreference> {
+            AddPreferenceScreen(
+                paddingValues = paddingValues,
+                onBackClick = { navController.popBackStack() }
             )
         }
     }

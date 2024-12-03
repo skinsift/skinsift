@@ -30,6 +30,12 @@ sealed class AuthScreen {
 sealed class HomeScreen() {
     @Serializable
     data object Home : HomeScreen()
+
+    @Serializable
+    data object Preference : HomeScreen()
+
+    @Serializable
+    data object AddPreference : HomeScreen()
 }
 
 @Serializable

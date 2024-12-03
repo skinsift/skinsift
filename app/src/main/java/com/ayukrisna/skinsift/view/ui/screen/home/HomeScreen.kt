@@ -2,6 +2,7 @@ package com.ayukrisna.skinsift.view.ui.screen.home
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.horizontalScroll
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -53,6 +54,7 @@ import com.ayukrisna.skinsift.view.ui.theme.SkinSiftTheme
 
 @Composable
 fun HomeScreen(
+    onNavigateToPreference: () -> Unit,
     paddingValues: PaddingValues,
     modifier: Modifier = Modifier,
 ) {
@@ -68,8 +70,8 @@ fun HomeScreen(
             HomeTopBar()
             Spacer(modifier = Modifier.height(12.dp))
             HomeIntro()
-            Spacer(modifier = Modifier.height(16.dp))
-            ReminderCard()
+//            Spacer(modifier = Modifier.height(16.dp))
+//            ReminderCard()
             Spacer(modifier = Modifier.height(24.dp))
             TitleHome(stringResource(R.string.ingredients_scanner))
             Spacer(modifier = Modifier.height(12.dp))
@@ -80,12 +82,14 @@ fun HomeScreen(
             Spacer(modifier = Modifier.height(12.dp))
             ScannerHistoryItem(
                 "Cocok Denganmu \uD83D\uDC90",
-                "Niacinamide, Retinoid, Hexylresorcinol"
+                "Niacinamide, Retinoid, Hexylresorcinol",
+                onNavigateToPreference
             )
             Spacer(modifier = Modifier.height(12.dp))
             ScannerHistoryItem(
                 "Wajib Dihindari ☠",
-                "Polyacrylamide, PTFE, Petrolatum"
+                "Polyacrylamide, PTFE, Petrolatum",
+                onNavigateToPreference
             )
             Spacer(modifier = Modifier.height(24.dp))
             TitleHome(stringResource(R.string.interesting_articles))
@@ -317,11 +321,13 @@ fun ScannerCard(modifier: Modifier = Modifier) {
 fun ScannerHistoryItem(
     title: String,
     ingredients: String,
+    onClick: () -> Unit,
     modifier: Modifier = Modifier
 ) {
     Card(
         modifier = Modifier
-            .fillMaxWidth(),
+            .fillMaxWidth()
+            .clickable { onClick() },
         colors = CardDefaults.cardColors(
             containerColor = MaterialTheme.colorScheme.surfaceBright
         ),
@@ -559,13 +565,13 @@ fun NotificationButtonPreview() {
     NotificationButton()
 }
 
-@Preview(showBackground = true)
-@Composable
-fun HomeScreenPreview() {
-    SkinSiftTheme {
-        HomeScreen(paddingValues = PaddingValues(horizontal = 16.dp, vertical = 42.dp))
-    }
-}
+//@Preview(showBackground = true)
+//@Composable
+//fun HomeScreenPreview() {
+//    SkinSiftTheme {
+//        HomeScreen(paddingValues = PaddingValues(horizontal = 16.dp, vertical = 42.dp))
+//    }
+//}
 
 @Preview(showBackground = true)
 @Composable
@@ -579,14 +585,14 @@ fun ScannerCardPreview() {
     ScannerCard()
 }
 
-@Preview(showBackground = true)
-@Composable
-fun ScannerHistoryItemPreview(modifier: Modifier = Modifier) {
-    ScannerHistoryItem(
-        "Wajib Dihindari ☠",
-        "Polyacrylamide, PTFE, Petrolatum"
-    )
-}
+//@Preview(showBackground = true)
+//@Composable
+//fun ScannerHistoryItemPreview(modifier: Modifier = Modifier) {
+//    ScannerHistoryItem(
+//        "Wajib Dihindari ☠",
+//        "Polyacrylamide, PTFE, Petrolatum"
+//    )
+//}
 
 @Preview(showBackground = true)
 @Composable
