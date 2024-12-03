@@ -2,8 +2,11 @@ package com.ayukrisna.skinsift.view.ui.screen.product
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.ExperimentalLayoutApi
+import androidx.compose.foundation.layout.FlowColumn
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.aspectRatio
@@ -13,9 +16,6 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
-import androidx.compose.foundation.lazy.grid.GridCells
-import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
-import androidx.compose.foundation.lazy.grid.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
@@ -40,6 +40,7 @@ import com.ayukrisna.skinsift.domain.model.ProductModel
 import com.ayukrisna.skinsift.view.ui.component.AppBar
 import com.ayukrisna.skinsift.view.ui.theme.SkinSiftTheme
 
+@OptIn(ExperimentalLayoutApi::class)
 @Composable
 fun ProductScreen (
     paddingValues: PaddingValues,
@@ -92,27 +93,32 @@ fun ProductScreen (
                     bottom = paddingValues.calculateBottomPadding()
                 )
             ) {
-                LazyVerticalGrid(
-                    columns = GridCells.Fixed(2)
-                ) {
-                    items(skincareProducts) { product ->
-                        Box(
-                            modifier = Modifier
-                                .padding(2.dp)
-                        ) {
-                            SkincareCard(
-                                product.name,
-                                product.brand,
-                                product.description,
-                                product.imageUrl,
-                                {onNavigateToDetail()}
-                            )
-                        }
-                    }
-                }
+                ListProducts(skincareProducts,) {onNavigateToDetail()}
             }
         }
     )
+}
+
+@OptIn(ExperimentalLayoutApi::class)
+@Composable
+fun ListProducts(skincareProducts: List<ProductModel>, onNavigateToDetail: () -> Unit) {
+    FlowColumn(
+    ) {
+        skincareProducts.forEach() { product ->
+            Box(
+                modifier = Modifier
+                    .padding(2.dp)
+            ) {
+                SkincareCard(
+                    product.name,
+                    product.brand,
+                    product.description,
+                    product.imageUrl,
+                    {onNavigateToDetail()}
+                )
+            }
+        }
+    }
 }
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -132,8 +138,8 @@ fun SkincareCard(
 ) {
     Card(
         modifier = Modifier
-            .clickable { onNavigateToDetail() },
-//            .width(156.dp),
+            .clickable { onNavigateToDetail() }
+            .width(180.dp),
 //            .padding(0.dp, 0.dp, 8.dp, 8.dp),
         shape = RoundedCornerShape(16.dp),
         colors = CardDefaults.cardColors(

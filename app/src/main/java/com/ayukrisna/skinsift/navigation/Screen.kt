@@ -47,6 +47,18 @@ sealed class AssessmentScreen() {
 
     @Serializable
     data object Skin : AssessmentScreen()
+
+    @Serializable
+    data object Purpose : AssessmentScreen()
+
+    @Serializable
+    data object Function : AssessmentScreen()
+
+    @Serializable
+    data object Allergy : AssessmentScreen()
+
+    @Serializable
+    data object Result : AssessmentScreen()
 }
 
 @Serializable

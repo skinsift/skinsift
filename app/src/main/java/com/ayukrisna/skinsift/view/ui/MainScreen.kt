@@ -42,6 +42,10 @@ fun MainScreen() {
         HomeScreen.AddPreference,
         AssessmentScreen.Start,
         AssessmentScreen.Skin,
+        AssessmentScreen.Purpose,
+        AssessmentScreen.Function,
+        AssessmentScreen.Allergy,
+        AssessmentScreen.Result,
         DictionaryScreen.Detail,
         DictionaryScreen.Filter,
         ProductScreen.Detail

@@ -12,6 +12,10 @@ import androidx.navigation.compose.composable
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.navigation
+import com.ayukrisna.skinsift.view.ui.screen.assessment.AllergyAssessmentScreen
+import com.ayukrisna.skinsift.view.ui.screen.assessment.AssessmentResultScreen
+import com.ayukrisna.skinsift.view.ui.screen.assessment.FunctionAssessmentScreen
+import com.ayukrisna.skinsift.view.ui.screen.assessment.PurposeAssessmentScreen
 import com.ayukrisna.skinsift.view.ui.screen.assessment.SkinAssessmentScreen
 import com.ayukrisna.skinsift.view.ui.screen.assessment.StartAssessmentScreen
 import com.ayukrisna.skinsift.view.ui.screen.dictionary.DictDetailScreen
@@ -130,11 +134,41 @@ fun NavGraphBuilder.assessNavGraph(
         composable<AssessmentScreen.Skin> {
             SkinAssessmentScreen(
                 paddingValues = paddingValues,
+                onNextClick = { navController.navigate(AssessmentScreen.Purpose) },
                 onBackClick = { navController.popBackStack() },
             )
         }
+        composable<AssessmentScreen.Purpose> {
+            PurposeAssessmentScreen(
+                paddingValues = paddingValues,
+                onNextClick = { navController.navigate(AssessmentScreen.Function) },
+                onBackClick = { navController.popBackStack() },
+            )
+        }
+        composable<AssessmentScreen.Function> {
+            FunctionAssessmentScreen(
+                paddingValues = paddingValues,
+                onNextClick = { navController.navigate(AssessmentScreen.Allergy) },
+                onBackClick = { navController.popBackStack() },
+            )
+        }
+        composable<AssessmentScreen.Allergy> {
+            AllergyAssessmentScreen(
+                paddingValues = paddingValues,
+                onNextClick = { navController.navigate(AssessmentScreen.Result) },
+                onBackClick = { navController.popBackStack() },
+            )
+        }
+        composable<AssessmentScreen.Result> {
+            AssessmentResultScreen(
+                paddingValues = paddingValues,
+                onBackClick = { navController.popBackStack() },
+                onNavigateToDetail = {
+                    navController.navigate(DictionaryScreen.Detail)
+                },
+            )
+        }
     }
-
 }
 
 fun NavGraphBuilder.dictionaryNavGraph(

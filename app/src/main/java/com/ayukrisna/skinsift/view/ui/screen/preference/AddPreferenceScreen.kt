@@ -75,7 +75,7 @@ fun ChooseIngredient() {
         text = "Nama Bahan",
         style = MaterialTheme.typography.labelMedium,
         color = MaterialTheme.colorScheme.primary,
-        modifier = Modifier.padding(top = 8.dp, bottom = 4.dp)
+        modifier = Modifier.padding(8.dp)
     )
     Row(
         modifier = Modifier
@@ -83,7 +83,7 @@ fun ChooseIngredient() {
             .shadow(elevation = 1.dp, shape = RoundedCornerShape(16.dp))
             .background(MaterialTheme.colorScheme.surfaceBright)
             .height(54.dp)
-            .border(1.dp, MaterialTheme.colorScheme.primary.copy(alpha = 0.5f), RoundedCornerShape(20.dp))
+            .border(1.dp, MaterialTheme.colorScheme.primary.copy(alpha = 0.5f), RoundedCornerShape(16.dp))
             .padding(8.dp),
         verticalAlignment = Alignment.CenterVertically,
         horizontalArrangement = Arrangement.SpaceBetween
