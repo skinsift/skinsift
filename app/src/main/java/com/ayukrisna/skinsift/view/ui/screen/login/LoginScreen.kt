@@ -6,6 +6,8 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.runtime.livedata.observeAsState
+import com.ayukrisna.skinsift.util.Result
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.requiredSize
 import androidx.compose.material3.Button
@@ -38,11 +40,11 @@ import org.koin.androidx.compose.koinViewModel
 fun LoginScreen(
     viewModel: LoginViewModel = koinViewModel(),
     onNavigateToSignup: () -> Unit,
+    onNavigateToHome: () -> Unit,
     paddingValues: PaddingValues,
     modifier: Modifier = Modifier,
 ) {
-    val loginState by viewModel.loginState.collectAsState()
-    val errorState by viewModel.errorState.collectAsState()
+    val loginState by viewModel.loginState.observeAsState(initial = Result.Loading)
 
     Surface {
         Column (
@@ -74,22 +76,17 @@ fun LoginScreen(
             //Signup Button
             SignupButton({ onNavigateToSignup() })
 
-            when {
-                loginState != null -> {
-                    Text("Login Successful: $loginState")
-                    LaunchedEffect(loginState) {
-                        println("Resetting loginState")
-                        kotlinx.coroutines.delay(3000)
-                        viewModel.resetStates()
+            when (loginState) {
+                is Result.Idle -> {}
+                is Result.Loading -> Text("Loading...")
+                is Result.Success -> {
+                    LaunchedEffect(Unit) {
+                        onNavigateToHome()
                     }
                 }
-                errorState != null -> {
-                    Text("Error: $errorState", color = Color.Red)
-                    LaunchedEffect(errorState) {
-                        println("Resetting errorState")
-                        kotlinx.coroutines.delay(3000)
-                        viewModel.resetStates()
-                    }
+                is Result.Error -> {
+                    val error = (loginState as Result.Error).error
+                    Text("Error: $error", color = Color.Red)
                 }
             }
         }

@@ -12,6 +12,14 @@ class ValidateUnameOrEmailUseCase: BaseUseCase<String, ValidationResult>() {
                 errorMessage = UiText.StringResource(resId = R.string.emailCannotBeBlank)
             )
         }
+
+        if (input.length < 3) {
+            return ValidationResult(
+                successful = false,
+                errorMessage = UiText.StringResource(resId = R.string.emailMustBeAtLeastThreeCharacters)
+            )
+        }
+
         return ValidationResult(
             successful = true,
             errorMessage = null

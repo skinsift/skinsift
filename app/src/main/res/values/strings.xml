@@ -3,7 +3,7 @@
     <string name="nameCannotBeBlank">Eits! Namamu tidak boleh kosong.</string>
     <string name="emailCannotBeBlank">Eits! Isi username atau emailmu dulu, ya.</string>
     <string name="emailIsNotValid">Emailmu tidak valid, nih.</string>
-    <string name="passwordLessThanEightChars">Pastikan passwordmu terdiri dari 8 karakter atau lebih, ya!</string>
+    <string name="passwordLessThanSevenChars">Pastikan passwordmu terdiri dari 7 karakter atau lebih, ya!</string>
     <string name="testing_error">Testing error</string>
     <string name="home_intro1">"Scan dan temukan "</string>
     <string name="home_intro2">skincare</string>
@@ -22,4 +22,6 @@
     <string name="rating">Rating</string>
     <string name="use">Kegunaan</string>
     <string name="category">Kategori</string>
+    <string name="emailMustBeAtLeastThreeCharacters">Eits! Usernamemu harus berisi minimal 3 huruf, ya!</string>
+    <string name="passwordMustContainLettersAndNumbers">Oh, passwordmu harus terdiri dari angka dan huruf</string>
 </resources>

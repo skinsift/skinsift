@@ -16,8 +16,7 @@ import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -29,10 +28,11 @@ import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import com.ayukrisna.skinsift.R
+import com.ayukrisna.skinsift.data.remote.response.RegisterResponse
 import com.ayukrisna.skinsift.view.ui.component.CustomTextField
 import com.ayukrisna.skinsift.view.ui.theme.SkinSiftTheme
 import org.koin.androidx.compose.koinViewModel
-
+import com.ayukrisna.skinsift.util.Result
 
 @Composable
 fun SignupScreen(
@@ -41,8 +41,7 @@ fun SignupScreen(
     paddingValues: PaddingValues,
     modifier: Modifier = Modifier,
 ) {
-    val signUpState by viewModel.signUpState.collectAsState()
-    val errorState by viewModel.errorState.collectAsState()
+    val signUpState by viewModel.signUpState.observeAsState(initial = Result.Loading)
 
     Surface {
         Column (
@@ -75,22 +74,16 @@ fun SignupScreen(
             //Login Button
             LoginButton({ onNavigateToLogin() })
 
-            when {
-                signUpState != null -> {
-                    Text("Sign Up Successful: $signUpState")
-                    LaunchedEffect(signUpState) {
-                        println("Resetting signUpState")
-                        kotlinx.coroutines.delay(3000)
-                        viewModel.resetStates()
-                    }
+            when (signUpState) {
+                is Result.Idle -> {}
+                is Result.Loading -> Text("Loading")
+                is Result.Success<*> -> {
+                    val registerResponse = (signUpState as Result.Success<RegisterResponse>).data
+                    Text("Sign up Successful: ${registerResponse.message}")
                 }
-                errorState != null -> {
-                    Text("Error: $errorState", color = Color.Red)
-                    LaunchedEffect(errorState) {
-                        println("Resetting errorState")
-                        kotlinx.coroutines.delay(3000)
-                        viewModel.resetStates()
-                    }
+                is Result.Error -> {
+                    val error = (signUpState as Result.Error).error
+                    Text("Error: $error", color = Color.Red)
                 }
             }
         }

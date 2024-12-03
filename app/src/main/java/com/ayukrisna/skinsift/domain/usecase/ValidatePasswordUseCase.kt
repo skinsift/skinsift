@@ -6,10 +6,18 @@ import com.ayukrisna.skinsift.util.UiText
 
 class ValidatePasswordUseCase {
     fun execute(input: String, checkLength: Boolean): ValidationResult {
-        if (checkLength && input.length < 8) {
+        if (checkLength && input.length < 7) {
             return ValidationResult(
                 successful = false,
-                errorMessage = UiText.StringResource(resId = R.string.passwordLessThanEightChars),
+                errorMessage = UiText.StringResource(resId = R.string.passwordLessThanSevenChars),
+            )
+        }
+
+        val containsLettersAndNumbers = input.any { it.isLetter() } && input.any { it.isDigit() }
+        if (checkLength && !containsLettersAndNumbers) {
+            return ValidationResult(
+                successful = false,
+                errorMessage = UiText.StringResource(resId = R.string.passwordMustContainLettersAndNumbers),
             )
         }
 

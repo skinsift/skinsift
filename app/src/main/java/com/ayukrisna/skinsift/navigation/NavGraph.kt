@@ -64,6 +64,9 @@ fun NavGraphBuilder.authNavGraph(
                 onNavigateToSignup = {
                     navController.navigate(AuthScreen.Signup)
                 },
+                onNavigateToHome = {
+                    navController.navigate(HomeScreen.Home)
+                },
                 paddingValues = paddingValues
             )
         }

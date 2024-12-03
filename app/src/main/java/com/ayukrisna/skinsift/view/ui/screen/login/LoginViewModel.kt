@@ -3,6 +3,8 @@ package com.ayukrisna.skinsift.view.ui.screen.login
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.ayukrisna.skinsift.domain.usecase.LoginUseCase
@@ -11,6 +13,8 @@ import com.ayukrisna.skinsift.domain.usecase.ValidateUnameOrEmailUseCase
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
+import com.ayukrisna.skinsift.util.Result
+
 
 class LoginViewModel(
     private val loginUseCase: LoginUseCase
@@ -20,8 +24,8 @@ class LoginViewModel(
 
     var formState by mutableStateOf(LoginState())
 
-    private val _loginState = MutableStateFlow<String?>(null)
-    val loginState: StateFlow<String?> = _loginState
+    private val _loginState = MutableLiveData<Result<Unit>>(Result.Idle)
+    val loginState: LiveData<Result<Unit>> = _loginState
 
     private val _errorState = MutableStateFlow<String?>(null)
     val errorState: StateFlow<String?> = _errorState
@@ -42,7 +46,10 @@ class LoginViewModel(
             }
 
             is LoginEvent.Submit -> {
-                if (validateUnameOrEmail() && validatePassword()) {
+                val isUnameOrEmailValid = validateUnameOrEmail()
+                val isPasswordValid = validatePassword()
+
+                if (isUnameOrEmailValid && isPasswordValid) {
                     login(formState.unameOrEmail, formState.password )
                 }
             }
@@ -61,20 +68,11 @@ class LoginViewModel(
         return passwordResult.successful
     }
 
-    private fun login(unameOrEmail: String, password: String){
+    private fun login(usernameOrEmail: String, password: String){
         viewModelScope.launch {
-            try {
-                val response = loginUseCase.execute(unameOrEmail, password)
-                _loginState.value = response.message
-
-            } catch (e: Exception) {
-                _errorState.value = e.message
-            }
+            _loginState.value = Result.Loading
+            val result = loginUseCase.execute(usernameOrEmail, password)
+            _loginState.value = result
         }
-    }
-
-    fun resetStates() {
-        _loginState.value = null
-        _errorState.value = null
     }
 }
