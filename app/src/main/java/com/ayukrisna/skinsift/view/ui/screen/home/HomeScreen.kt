@@ -65,20 +65,16 @@ fun HomeScreen(
             modifier = Modifier
                 .fillMaxSize()
                 .padding(paddingValues)
-                .verticalScroll(rememberScrollState())
         ) {
             HomeTopBar()
             Spacer(modifier = Modifier.height(12.dp))
             HomeIntro()
-//            Spacer(modifier = Modifier.height(16.dp))
-//            ReminderCard()
             Spacer(modifier = Modifier.height(24.dp))
-            TitleHome(stringResource(R.string.ingredients_scanner))
+            TitleHome("Pahami Kebutuhanmu")
             Spacer(modifier = Modifier.height(12.dp))
             ScannerRow()
-//            ScannerCard()
             Spacer(modifier = Modifier.height(24.dp))
-            TitleHome(stringResource(R.string.ingredients_saved))
+            TitleHome("Bahan Skincare Tersimpan")
             Spacer(modifier = Modifier.height(12.dp))
             ScannerHistoryItem(
                 "Cocok Denganmu \uD83D\uDC90",
@@ -91,10 +87,6 @@ fun HomeScreen(
                 "Polyacrylamide, PTFE, Petrolatum",
                 onNavigateToPreference
             )
-            Spacer(modifier = Modifier.height(24.dp))
-            TitleHome(stringResource(R.string.interesting_articles))
-            Spacer(modifier = Modifier.height(6.dp))
-            ArticleCardList()
         }
     }
 }
@@ -116,12 +108,11 @@ fun NotificationButton(modifier: Modifier = Modifier) {
 @Composable
 fun HomeTopBar(modifier: Modifier = Modifier) {
     Row(
-        horizontalArrangement = Arrangement.SpaceBetween,
+        horizontalArrangement = Arrangement.Start,
         verticalAlignment = Alignment.CenterVertically,
         modifier = Modifier.fillMaxWidth()
     ) {
         Profile()
-        NotificationButton()
     }
 }
 
