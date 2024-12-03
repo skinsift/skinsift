@@ -80,7 +80,6 @@ fun IngredientsOverview(ratingColor: Color, rating: String, use: String, categor
     Card(
         modifier = Modifier
             .fillMaxWidth(),
-//            .padding(8.dp),
         colors = CardDefaults.cardColors(
             containerColor = MaterialTheme.colorScheme.surfaceBright
         ),
