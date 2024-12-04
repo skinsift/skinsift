@@ -139,12 +139,12 @@ fun DictSearchResult(
                 Spacer(modifier = Modifier.height(108.dp))
                 DictionarySearchBar { onNavigateToSearch() }
 //                Spacer(modifier = Modifier.height(32.dp))
-                LazyColumn {
-                    items(dummyDictionaryList) { item ->
-                        IngredientsItem(item) { onNavigateToDetail() }
-                        Spacer(modifier = Modifier.height(10.dp))
-                    }
-                }
+//                LazyColumn {
+//                    items(dummyDictionaryList) { item ->
+//                        IngredientsItem(item) { onNavigateToDetail() }
+//                        Spacer(modifier = Modifier.height(10.dp))
+//                    }
+//                }
             }
         }
     )

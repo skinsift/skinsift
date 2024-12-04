@@ -23,7 +23,7 @@ data class IngredientsResponse(
 data class IngredientListItem(
 
 	@field:SerializedName("Id_Ingredients")
-	val idIngredients: Int? = null,
+	val idIngredients: Int,
 
 	@field:SerializedName("nama")
 	val name: String? = null,

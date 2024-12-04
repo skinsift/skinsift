@@ -23,8 +23,6 @@ import com.ayukrisna.skinsift.navigation.AssessmentScreen
 import com.ayukrisna.skinsift.navigation.DictionaryScreen
 import com.ayukrisna.skinsift.navigation.HomeScreen
 import com.ayukrisna.skinsift.navigation.ProductScreen
-import com.ayukrisna.skinsift.navigation.ProfileScreen
-import com.ayukrisna.skinsift.navigation.RootScreen
 
 @Preview
 @Composable
@@ -46,19 +44,23 @@ fun MainScreen() {
         AssessmentScreen.Function,
         AssessmentScreen.Allergy,
         AssessmentScreen.Result,
-        DictionaryScreen.Detail,
         DictionaryScreen.Filter,
         ProductScreen.Detail
+    )
+    
+    val argumentRoutes = setOf(
+        "com.ayukrisna.skinsift.navigation.DictionaryScreen.Detail/{id}"
     )
 
     Scaffold(
         bottomBar = {
             val navBackStackEntry by navController.currentBackStackEntryAsState()
             val currentDestination = navBackStackEntry?.destination
+            val currentRoute = currentDestination?.route
 
             val showBottomBar = noBottomNavRoutes.none {
                 if (currentDestination?.route == null) true
-                else currentDestination.hasRoute(it::class)
+                else (currentDestination.hasRoute(it::class) && currentRoute !in argumentRoutes)
             }
 
             if (showBottomBar) {

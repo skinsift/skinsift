@@ -37,7 +37,6 @@ import androidx.compose.ui.unit.dp
 import com.ayukrisna.skinsift.R
 import com.ayukrisna.skinsift.domain.model.IngredientModel
 import com.ayukrisna.skinsift.view.ui.component.CenterAppBar
-import com.ayukrisna.skinsift.view.ui.screen.dictionary.dummyDictionaryList
 import com.ayukrisna.skinsift.view.ui.screen.dictionary.listdictionary.IngredientsItem
 
 @Composable
@@ -78,10 +77,10 @@ fun PreferenceScreen (
                         )
                     }
                 }
-                when (selectedTabIndex) {
-                    0 -> LikeContent(dummyDictionaryList, onNavigateToDetail)
-                    1 -> DislikeContent()
-                }
+//                when (selectedTabIndex) {
+//                    0 -> LikeContent(dummyDictionaryList, onNavigateToDetail)
+//                    1 -> DislikeContent()
+//                }
             }
         }
     )
@@ -100,10 +99,10 @@ fun DislikeContent() {
 @Composable
 fun FilledPreference(lists: List<IngredientModel>, onNavigateToDetail: () -> Unit) {
     LazyColumn {
-        items(lists) { item ->
-            IngredientsItem(item) { onNavigateToDetail() }
-            Spacer(modifier = Modifier.height(10.dp))
-        }
+//        items(lists) { item ->
+//            IngredientsItem(item) { onNavigateToDetail() }
+//            Spacer(modifier = Modifier.height(10.dp))
+//        }
     }
 }
 

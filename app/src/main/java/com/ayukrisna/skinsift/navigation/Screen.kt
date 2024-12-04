@@ -67,7 +67,7 @@ sealed class DictionaryScreen() {
     data object Dictionary : DictionaryScreen()
 
     @Serializable
-    data object Detail : DictionaryScreen()
+    data class Detail(val id: Int)
 
     @Serializable
     data object Filter : DictionaryScreen()

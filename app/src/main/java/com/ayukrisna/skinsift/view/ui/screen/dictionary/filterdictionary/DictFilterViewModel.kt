@@ -1,5 +1,6 @@
 package com.ayukrisna.skinsift.view.ui.screen.dictionary.filterdictionary
 
+import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.ayukrisna.skinsift.data.remote.response.Filter
@@ -17,6 +18,9 @@ class DictFilterViewModel(
     private val _filterState = MutableStateFlow<Result<Filter>>(Result.Idle)
     val filterState: StateFlow<Result<Filter>> = _filterState
 
+    private val _selectedFilters = MutableStateFlow<MutableMap<String, MutableList<String>>>(mutableMapOf())
+    val selectedFilters: StateFlow<Map<String, List<String>>> = _selectedFilters
+
     fun fetchFilter() {
         _filterState.value = Result.Loading
 
@@ -24,5 +28,23 @@ class DictFilterViewModel(
             val result = filterUseCase.execute()
             _filterState.value = result
         }
+    }
+
+    fun toggleFilter(category: String, option: String) {
+        val newFilters = _selectedFilters.value.toMutableMap()
+        val options = newFilters.getOrPut(category) { mutableListOf() }.toMutableList()
+
+
+        if (options.contains(option)) {
+            options.remove(option)
+        } else {
+            options.add(option)
+        }
+
+        newFilters[category] = options
+        _selectedFilters.value = newFilters
+
+        Log.d("DictFilterViewModel", "Category: $category, Option: $option")
+        Log.d("DictFilterViewModel", "Filters: ${_selectedFilters.value}")
     }
 }

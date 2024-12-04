@@ -1,5 +1,6 @@
 package com.ayukrisna.skinsift.view.ui.screen.dictionary.filterdictionary
 
+import android.util.Log
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.ExperimentalLayoutApi
@@ -25,13 +26,12 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalLayoutDirection
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
@@ -49,11 +49,17 @@ fun DictFilterScreen(
     modifier: Modifier = Modifier
 ) {
     val filterState by viewModel.filterState.collectAsState()
+    val context = LocalContext.current
+
+    LaunchedEffect(Unit) {
+        viewModel.fetchFilter()
+    }
 
     Scaffold(
         floatingActionButton = {
             SaveFilterFab(onClick = {
-                println("Filter Saved!")
+                val selectedFilters = viewModel.selectedFilters.value
+                Log.d("FilterSelection", "Selected Filters: $selectedFilters")
                 onBackClick()
             })
         },
@@ -80,9 +86,9 @@ fun DictFilterScreen(
                     is Result.Loading -> LoadingProgress()
                     is Result.Success -> {
                         val filter: Filter = (filterState as Result.Success<Filter>).data
-                        FilterSection("Rating", filter.rating)
-                        Spacer(modifier = Modifier.height(8.dp))
-                        FilterSection("Kategori", filter.benefitidn)
+                        FilterSection("rating", filter.rating, viewModel)
+                        Spacer(modifier = Modifier.height(24.dp))
+                        FilterSection("benefitidn", filter.benefitidn, viewModel)
                     }
                     is Result.Error -> {
                         val error = (filterState as Result.Error).error
@@ -97,7 +103,12 @@ fun DictFilterScreen(
 
 @OptIn(ExperimentalLayoutApi::class)
 @Composable
-fun FilterSection(title: String, options: List<String?>?) {
+fun FilterSection(category: String, options: List<String?>?, viewModel: DictFilterViewModel) {
+    val title =
+        if (category == "rating") "Rating"
+        else "Kategori"
+
+    val selectedFilters by viewModel.selectedFilters.collectAsState()
 
     Column(
         modifier = Modifier
@@ -114,7 +125,7 @@ fun FilterSection(title: String, options: List<String?>?) {
                 horizontalArrangement = Arrangement.Start
             ){
                 options.forEach() { option ->
-                    var selected by remember { mutableStateOf(false) }
+                    val isSelected = selectedFilters[category]?.contains(option) == true
                     FilterChip(
                         modifier = Modifier
                             .padding(0.dp, 0.dp, 8.dp, 0.dp),
@@ -123,11 +134,16 @@ fun FilterSection(title: String, options: List<String?>?) {
                                 Text(option)
                             }
                         },
-                        selected = selected,
-                        onClick = { selected = !selected },
+                        selected = isSelected,
+                        onClick = {
+                            if (option != null) {
+                                viewModel.toggleFilter(category, option)
+                                Log.d("FilterSection", "Option: $option, Selected: $isSelected")
+                            }
+                        },
                         shape = RoundedCornerShape(16.dp),
                         leadingIcon =
-                        if (selected) {
+                        if (isSelected) {
                             {
                                 Icon(
                                     imageVector = Icons.Filled.Done,
@@ -149,7 +165,6 @@ fun FilterSection(title: String, options: List<String?>?) {
                 color = MaterialTheme.colorScheme.onSurface
             )
         }
-
     }
 }
 

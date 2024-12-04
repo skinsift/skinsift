@@ -12,6 +12,7 @@ import androidx.navigation.compose.composable
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.navigation
+import androidx.navigation.toRoute
 import com.ayukrisna.skinsift.view.ui.screen.assessment.AllergyAssessmentScreen
 import com.ayukrisna.skinsift.view.ui.screen.assessment.AssessmentResultScreen
 import com.ayukrisna.skinsift.view.ui.screen.assessment.FunctionAssessmentScreen
@@ -37,7 +38,7 @@ fun NavGraph (
 ) {
     NavHost(
         navController,
-        startDestination = RootScreen.HomeNav,
+        startDestination = RootScreen.AuthNav,
         enterTransition = { fadeIn(tween(100))},
         popEnterTransition = {EnterTransition.None},
         exitTransition = { fadeOut(tween(100))},
@@ -184,16 +185,18 @@ fun NavGraphBuilder.dictionaryNavGraph(
         composable<DictionaryScreen.Dictionary> {
             DictionaryScreen(
                 paddingValues = paddingValues,
-                onNavigateToDetail = {
-                    navController.navigate(DictionaryScreen.Detail)
+                onNavigateToDetail = { id ->
+                    navController.navigate(DictionaryScreen.Detail(id))
                 },
                 onNavigateToFilter = {
                     navController.navigate(DictionaryScreen.Filter)
                 },
             )
         }
-        composable<DictionaryScreen.Detail> {
+        composable<DictionaryScreen.Detail> { entry ->
+            val detailIngredient = entry.toRoute<DictionaryScreen.Detail>()
             DictDetailScreen(
+                id = detailIngredient.id,
                 paddingValues = paddingValues,
                 onBackClick = { navController.popBackStack() }
             )

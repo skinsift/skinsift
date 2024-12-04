@@ -47,7 +47,7 @@ import com.ayukrisna.skinsift.view.ui.component.LoadingProgress
 @Composable
 fun DictionaryScreen(
     viewModel: DictionaryViewModel = koinViewModel(),
-    onNavigateToDetail: () -> Unit,
+    onNavigateToDetail: (Int) -> Unit,
     onNavigateToFilter: () -> Unit,
     paddingValues: PaddingValues,
     modifier : Modifier = Modifier
@@ -87,7 +87,7 @@ fun DictionaryScreen(
                         if (ingredients.isNotEmpty()) {
                             LazyColumn {
                                 items(ingredients) { item ->
-                                    IngredientsItem(item) { onNavigateToDetail() }
+                                    IngredientsItem(item) { onNavigateToDetail(item.idIngredients) }
                                     Spacer(modifier = Modifier.height(10.dp))
                                 }
                             }

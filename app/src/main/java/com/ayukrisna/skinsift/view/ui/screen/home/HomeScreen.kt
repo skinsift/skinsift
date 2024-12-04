@@ -120,7 +120,7 @@ fun Profile(modifier: Modifier = Modifier) {
         verticalAlignment = Alignment.CenterVertically,
     ) {
 //        CircleImageView()
-        Text("Hai, Ayu Krisna ✨",
+        Text("Hai ✨",
             style = MaterialTheme.typography.titleSmall, modifier = Modifier
                 .padding(0.dp, 0.dp, 0.dp, 0.dp)
         )
@@ -245,64 +245,6 @@ fun ReminderCard(modifier: Modifier = Modifier) {
         }
     }
 }
-
-//@Composable
-//fun ScannerCard(modifier: Modifier = Modifier) {
-//    Card(
-//        shape = RoundedCornerShape(16.dp),
-//        modifier = Modifier
-//            .fillMaxWidth(),
-//        elevation = CardDefaults.cardElevation(1.dp)
-//    ) {
-//        Box(
-//            modifier = Modifier.fillMaxWidth(),
-//            contentAlignment = Alignment.Center
-//        ) {
-//
-//            Image(
-//                painter = painterResource(id = R.drawable.card_background),
-//                contentDescription = null,
-//                contentScale = ContentScale.Crop,
-//                modifier = Modifier.matchParentSize()
-//            )
-//
-//            Column(
-//                modifier = Modifier
-//                    .padding(16.dp)
-//            ) {
-//                Row (
-//                    horizontalArrangement = Arrangement.SpaceBetween,
-//                    verticalAlignment = Alignment.CenterVertically,
-//                    modifier = Modifier.fillMaxWidth()
-//                ){
-//                    Image(
-//                        painter = painterResource(id = R.drawable.scanner),
-//                        contentDescription = null,
-//                        modifier = Modifier.size(80.dp)
-//                    )
-//                    Column(
-//                        verticalArrangement = Arrangement.Top,
-//                        horizontalAlignment = Alignment.Start,
-//                    ) {
-//                        Text(
-//                            "Yuk, Scan Ingredients dari Skincaremu ✨",
-//                            style = MaterialTheme.typography.titleMedium,
-//                            fontWeight = FontWeight.Bold,
-//                            modifier = Modifier
-//                                .padding(12.dp, 0.dp, 0.dp, 0.dp)
-//                        )
-//                        Text(
-//                            "Biar kamu tau apa saja yang kamu gunakan dalam skincaremu.",
-//                            style = MaterialTheme.typography.bodyMedium,
-//                            modifier = Modifier
-//                                .padding(12.dp, 0.dp, 0.dp, 0.dp)
-//                        )
-//                    }
-//                }
-//            }
-//        }
-//    }
-//}
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable

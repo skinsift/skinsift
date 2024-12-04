@@ -1,6 +1,8 @@
 package com.ayukrisna.skinsift.data.repository
 
 import com.ayukrisna.skinsift.data.local.pref.UserPreference
+import com.ayukrisna.skinsift.data.remote.request.LoginRequest
+import com.ayukrisna.skinsift.data.remote.request.RegisterRequest
 import com.ayukrisna.skinsift.data.remote.response.LoginResponse
 import com.ayukrisna.skinsift.data.remote.response.RegisterResponse
 import com.ayukrisna.skinsift.data.remote.retrofit.ApiConfig
@@ -26,8 +28,9 @@ class UserRepositoryImp (
     }
 
     override suspend fun login(unameOrEmail: String, password: String): LoginResponse {
+        val loginRequest = LoginRequest(unameOrEmail, password)
         val apiService = ApiConfig.getApiService()
-        val response = apiService.loginUser(unameOrEmail, password)
+        val response = apiService.loginUser(loginRequest)
         if (response.isSuccessful) {
             return response.body() ?: throw Exception("Response body is null")
         } else {
@@ -38,8 +41,9 @@ class UserRepositoryImp (
     }
 
     override suspend fun register(username:String, email: String, password: String): RegisterResponse {
+        val registerRequest = RegisterRequest(Username = username, Email = email, Password = password)
         val apiService = ApiConfig.getApiService()
-        val response = apiService.registerUser(username, email, password)
+        val response = apiService.registerUser(registerRequest)
         if (response.isSuccessful) {
             return response.body() ?: throw Exception("Response body is null")
         } else {
