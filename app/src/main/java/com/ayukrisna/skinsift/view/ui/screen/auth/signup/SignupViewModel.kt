@@ -1,4 +1,4 @@
-package com.ayukrisna.skinsift.view.ui.screen.signup
+package com.ayukrisna.skinsift.view.ui.screen.auth.signup
 
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -8,10 +8,10 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.ayukrisna.skinsift.data.remote.response.RegisterResponse
-import com.ayukrisna.skinsift.domain.usecase.RegisterUseCase
-import com.ayukrisna.skinsift.domain.usecase.ValidateEmailUseCase
-import com.ayukrisna.skinsift.domain.usecase.ValidatePasswordUseCase
-import com.ayukrisna.skinsift.domain.usecase.ValidateUnameOrEmailUseCase
+import com.ayukrisna.skinsift.domain.usecase.auth.RegisterUseCase
+import com.ayukrisna.skinsift.domain.usecase.validation.ValidateEmailUseCase
+import com.ayukrisna.skinsift.domain.usecase.validation.ValidatePasswordUseCase
+import com.ayukrisna.skinsift.domain.usecase.validation.ValidateUnameOrEmailUseCase
 import com.ayukrisna.skinsift.util.Result
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow

@@ -1,4 +1,4 @@
-package com.ayukrisna.skinsift.view.ui.screen.signup
+package com.ayukrisna.skinsift.view.ui.screen.auth.signup
 
 sealed class SignupEvent {
     data class UsernameChanged(val username: String) : SignupEvent()

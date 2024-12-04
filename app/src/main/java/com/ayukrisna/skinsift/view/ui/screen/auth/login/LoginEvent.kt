@@ -1,4 +1,4 @@
-package com.ayukrisna.skinsift.view.ui.screen.login
+package com.ayukrisna.skinsift.view.ui.screen.auth.login
 
 sealed class LoginEvent {
     data class UnameOrEmailChanged(val unameOrEmail: String) : LoginEvent()

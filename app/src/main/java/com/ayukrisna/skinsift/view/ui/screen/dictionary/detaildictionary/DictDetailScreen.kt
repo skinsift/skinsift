@@ -1,5 +1,6 @@
-package com.ayukrisna.skinsift.view.ui.screen.dictionary
+package com.ayukrisna.skinsift.view.ui.screen.dictionary.detaildictionary
 
+import android.widget.Toast
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
@@ -14,6 +15,7 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
@@ -23,15 +25,18 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalLayoutDirection
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.ayukrisna.skinsift.R
+import com.ayukrisna.skinsift.data.remote.response.Ingredient
 import com.ayukrisna.skinsift.view.ui.component.CenterAppBar
-import com.ayukrisna.skinsift.view.ui.theme.SkinSiftTheme
 import org.koin.androidx.compose.koinViewModel
+import com.ayukrisna.skinsift.util.Result
+import com.ayukrisna.skinsift.view.ui.component.LoadingProgress
+import com.ayukrisna.skinsift.view.ui.component.getRatingColor
 
 @Composable
 fun DictDetailScreen(
@@ -42,6 +47,7 @@ fun DictDetailScreen(
     modifier: Modifier = Modifier
 ) {
     val ingredientState by viewModel.ingredientState.collectAsState()
+    val context = LocalContext.current
 
     LaunchedEffect(Unit) {
         viewModel.fetchIngredient(id)
@@ -52,7 +58,8 @@ fun DictDetailScreen(
             DetailIngredientAppBar(
                 title = "Detail Bahan Skincare",
                 onBackClick = { onBackClick() }
-            )},
+            )
+        },
         content = { innerPadding ->
             Column(modifier = Modifier
                 .fillMaxHeight()
@@ -63,28 +70,50 @@ fun DictDetailScreen(
                     bottom = paddingValues.calculateBottomPadding()
                 )
             ) {
-                Text(text = "Acetyl Glucosamine",
-                    style = MaterialTheme.typography.titleLarge,
-                    fontWeight = FontWeight.Bold,
-                    color = MaterialTheme.colorScheme.onSurface
-                )
-                Spacer(modifier = Modifier.height(16.dp))
-                IngredientsOverview(
-                    ratingColor = Color(0xFF298A4B),
-                    rating = "Best",
-                    use = "Hydration, Soothing, Evens Skin Tone",
-                    category = "Antioxidant, Humectant"
-                )
-                Spacer(modifier = Modifier.height(12.dp))
-                IngredientsDescription(
-                    description =
-                        "Asam amino gula yang dapat ditemukan di kulit dan memiliki manfaat penting. Salah satunya adalah sebagai prekursor untuk biosintesis pelembap super, asam hialuronat. Jadi, acetyl glucosamine sendiri juga merupakan bahan penting yang identik dengan kulit dan merupakan faktor pelembap alami.\n" +
-                                "\n" +
-                                "Namun, itu bukan satu-satunya manfaatnya. Acetyl glucosamine memiliki dua manfaat lain yang terbukti melalui uji klinis double-blind. Pertama, ini adalah bahan yang menjanjikan untuk melawan keriput: penggunaan 2% dapat memperbaiki keriput, terutama di area sekitar mata."
-                )
+                when (ingredientState) {
+                    is Result.Idle -> Text("Idle State")
+                    is Result.Loading -> LoadingProgress()
+                    is Result.Success -> {
+                        val ingredient: Ingredient = (ingredientState as Result.Success<Ingredient>).data
+                        IngredientDetail(ingredient)
+                    }
+                    is Result.Error -> {
+                        val error = (ingredientState as Result.Error).error
+                        Toast.makeText(context, "Error: $error", Toast.LENGTH_LONG).show()
+                    }
+                }
             }
         }
     )
+}
+
+
+@Composable
+fun IngredientDetail(ingredient: Ingredient) {
+    val name = ingredient.nama ?: "Belum ada nama"
+    val rating = ingredient.rating ?: "Belum ada rating"
+    val ratingColor = getRatingColor(rating)
+    val key = ingredient.keyidn ?: "Belum ada deskripsi untuk ini"
+    val benefit = ingredient.benefitidn ?: "Belum ada deskripsi untuk ini"
+    val category = ingredient.kategoriidn ?: "Belum ada deskripsi untuk ini"
+    val description = ingredient.deskripsiidn ?: "Belum ada deskripsi untuk ini"
+
+    Text(text = name,
+        style = MaterialTheme.typography.titleLarge,
+        fontWeight = FontWeight.Bold,
+        color = MaterialTheme.colorScheme.onSurface
+    )
+    Spacer(modifier = Modifier.height(16.dp))
+    IngredientsOverview(
+        ratingColor = ratingColor,
+        rating = rating,
+        use = benefit,
+        category = category
+    )
+    Spacer(modifier = Modifier.height(12.dp))
+    IngredientsDescription(
+        keyIngredient = key,
+        description = description)
 }
 
 @Composable
@@ -121,6 +150,7 @@ fun IngredientsOverview(ratingColor: Color, rating: String, use: String, categor
 
 @Composable
 fun IngredientsDescription(
+    keyIngredient: String,
     description: String,
     modifier : Modifier = Modifier
 ) {
@@ -140,7 +170,23 @@ fun IngredientsDescription(
                 .padding(16.dp)
         ) {
             Text(
-                text = "Dekripsi",
+                text = "Key Ingredient",
+                style = MaterialTheme.typography.titleMedium,
+                fontWeight = FontWeight.Bold,
+                color = MaterialTheme.colorScheme.onSurface
+            )
+            Spacer(modifier = Modifier.height(12.dp))
+            Text(
+                text = keyIngredient,
+                style = MaterialTheme.typography.bodyMedium,
+                color = MaterialTheme.colorScheme.onSurface
+            )
+            HorizontalDivider(
+                thickness = 1.dp,
+                color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.5f)
+            )
+            Text(
+                text = "Deskripsi",
                 style = MaterialTheme.typography.titleMedium,
                 fontWeight = FontWeight.Bold,
                 color = MaterialTheme.colorScheme.onSurface

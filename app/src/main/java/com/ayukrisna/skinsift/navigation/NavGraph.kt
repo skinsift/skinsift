@@ -18,17 +18,17 @@ import com.ayukrisna.skinsift.view.ui.screen.assessment.FunctionAssessmentScreen
 import com.ayukrisna.skinsift.view.ui.screen.assessment.PurposeAssessmentScreen
 import com.ayukrisna.skinsift.view.ui.screen.assessment.SkinAssessmentScreen
 import com.ayukrisna.skinsift.view.ui.screen.assessment.StartAssessmentScreen
-import com.ayukrisna.skinsift.view.ui.screen.dictionary.DictDetailScreen
-import com.ayukrisna.skinsift.view.ui.screen.dictionary.DictFilterScreen
-import com.ayukrisna.skinsift.view.ui.screen.dictionary.DictionaryScreen
+import com.ayukrisna.skinsift.view.ui.screen.dictionary.detaildictionary.DictDetailScreen
+import com.ayukrisna.skinsift.view.ui.screen.dictionary.filterdictionary.DictFilterScreen
+import com.ayukrisna.skinsift.view.ui.screen.dictionary.listdictionary.DictionaryScreen
 import com.ayukrisna.skinsift.view.ui.screen.home.HomeScreen
-import com.ayukrisna.skinsift.view.ui.screen.login.LoginScreen
+import com.ayukrisna.skinsift.view.ui.screen.auth.login.LoginScreen
 import com.ayukrisna.skinsift.view.ui.screen.preference.AddPreferenceScreen
 import com.ayukrisna.skinsift.view.ui.screen.preference.PreferenceScreen
 import com.ayukrisna.skinsift.view.ui.screen.product.ProductDetailScreen
 import com.ayukrisna.skinsift.view.ui.screen.product.ProductScreen
 import com.ayukrisna.skinsift.view.ui.screen.profile.ProfileScreen
-import com.ayukrisna.skinsift.view.ui.screen.signup.SignupScreen
+import com.ayukrisna.skinsift.view.ui.screen.auth.signup.SignupScreen
 
 @Composable
 fun NavGraph (

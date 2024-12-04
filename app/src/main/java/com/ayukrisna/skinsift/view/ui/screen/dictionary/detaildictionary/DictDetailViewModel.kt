@@ -1,9 +1,9 @@
-package com.ayukrisna.skinsift.view.ui.screen.dictionary
+package com.ayukrisna.skinsift.view.ui.screen.dictionary.detaildictionary
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.ayukrisna.skinsift.data.remote.response.Ingredient
-import com.ayukrisna.skinsift.domain.usecase.DetailIngredientUseCase
+import com.ayukrisna.skinsift.domain.usecase.ingredient.DetailIngredientUseCase
 import kotlinx.coroutines.flow.MutableStateFlow
 import com.ayukrisna.skinsift.util.Result
 import kotlinx.coroutines.flow.StateFlow

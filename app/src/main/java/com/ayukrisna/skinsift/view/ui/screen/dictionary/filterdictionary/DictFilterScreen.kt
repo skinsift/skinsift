@@ -1,4 +1,4 @@
-package com.ayukrisna.skinsift.view.ui.screen.dictionary
+package com.ayukrisna.skinsift.view.ui.screen.dictionary.filterdictionary
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -13,11 +13,6 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.lazy.LazyRow
-import androidx.compose.foundation.lazy.grid.GridCells
-import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
-import androidx.compose.foundation.lazy.grid.items
-import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Done
@@ -30,6 +25,7 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -39,14 +35,21 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalLayoutDirection
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
+import com.ayukrisna.skinsift.data.remote.response.Filter
 import com.ayukrisna.skinsift.view.ui.component.CenterAppBar
+import org.koin.androidx.compose.koinViewModel
+import com.ayukrisna.skinsift.util.Result
+import com.ayukrisna.skinsift.view.ui.component.LoadingProgress
 
 @Composable
 fun DictFilterScreen(
     paddingValues: PaddingValues,
     onBackClick: () -> Unit,
+    viewModel: DictFilterViewModel = koinViewModel(),
     modifier: Modifier = Modifier
 ) {
+    val filterState by viewModel.filterState.collectAsState()
+
     Scaffold(
         floatingActionButton = {
             SaveFilterFab(onClick = {
@@ -59,7 +62,8 @@ fun DictFilterScreen(
             DictFilterAppBar(
                 title = "Filter Bahan Skincare",
                 onBackClick = { onBackClick() }
-            )},
+            )
+        },
         content = { innerPadding ->
             Column(
                 modifier = Modifier
@@ -71,9 +75,20 @@ fun DictFilterScreen(
                         bottom = paddingValues.calculateBottomPadding()
                     )
             ) {
-                FilterSection("Rating", listOf("Terbaik", "Baik", "Rata-Rata", "Buruk", "Terburuk", "Belum Dinilai"))
-                Spacer(modifier = Modifier.height(8.dp))
-                FilterSection("Kategori", listOf("Antioksidan", "Ekstrak Tumbuhan", "Meratakan warna kulit", "Scrub & Exfoliating", "Hidrasi", "Memudarkan Flek Hitam"))
+                when (filterState) {
+                    is Result.Idle -> Text("Idle State")
+                    is Result.Loading -> LoadingProgress()
+                    is Result.Success -> {
+                        val filter: Filter = (filterState as Result.Success<Filter>).data
+                        FilterSection("Rating", filter.rating)
+                        Spacer(modifier = Modifier.height(8.dp))
+                        FilterSection("Kategori", filter.benefitidn)
+                    }
+                    is Result.Error -> {
+                        val error = (filterState as Result.Error).error
+                        Text("Error: $error")
+                    }
+                }
             }
         }
     )
@@ -82,8 +97,7 @@ fun DictFilterScreen(
 
 @OptIn(ExperimentalLayoutApi::class)
 @Composable
-fun FilterSection(title: String, options: List<String> ) {
-//    var selected by remember { mutableStateOf(false) }
+fun FilterSection(title: String, options: List<String?>?) {
 
     Column(
         modifier = Modifier
@@ -95,33 +109,47 @@ fun FilterSection(title: String, options: List<String> ) {
             fontWeight = FontWeight.Bold,
             color = MaterialTheme.colorScheme.onSurface
         )
-        FlowRow (
-            horizontalArrangement = Arrangement.Start
-        ){
-            options.forEach() { option ->
-                var selected by remember { mutableStateOf(false) }
-                FilterChip(
-                    modifier = Modifier
-                        .padding(0.dp, 0.dp, 8.dp, 0.dp),
-                    label = {Text(option)},
-                    selected = selected,
-                    onClick = { selected = !selected },
-                    shape = RoundedCornerShape(16.dp),
-                    leadingIcon =
-                    if (selected) {
-                        {
-                            Icon(
-                                imageVector = Icons.Filled.Done,
-                                contentDescription = null,
-                                modifier = Modifier.size(FilterChipDefaults.IconSize)
-                            )
-                        }
-                    } else {
-                        null
-                    },
-                )
+        if (options != null) {
+            FlowRow (
+                horizontalArrangement = Arrangement.Start
+            ){
+                options.forEach() { option ->
+                    var selected by remember { mutableStateOf(false) }
+                    FilterChip(
+                        modifier = Modifier
+                            .padding(0.dp, 0.dp, 8.dp, 0.dp),
+                        label = {
+                            if (option != null) {
+                                Text(option)
+                            }
+                        },
+                        selected = selected,
+                        onClick = { selected = !selected },
+                        shape = RoundedCornerShape(16.dp),
+                        leadingIcon =
+                        if (selected) {
+                            {
+                                Icon(
+                                    imageVector = Icons.Filled.Done,
+                                    contentDescription = null,
+                                    modifier = Modifier.size(FilterChipDefaults.IconSize)
+                                )
+                            }
+                        } else {
+                            null
+                        },
+                    )
+                }
             }
+        } else {
+            Text(
+                text = "Belum ada filter.",
+                style = MaterialTheme.typography.bodyMedium,
+                fontWeight = FontWeight.Medium,
+                color = MaterialTheme.colorScheme.onSurface
+            )
         }
+
     }
 }
 
@@ -148,8 +176,6 @@ fun SaveFilterFab(onClick: () -> Unit) {
         }
     }
 }
-
-
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable

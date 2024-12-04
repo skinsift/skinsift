@@ -1,4 +1,4 @@
-package com.ayukrisna.skinsift.view.ui.screen.login
+package com.ayukrisna.skinsift.view.ui.screen.auth.login
 
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -7,9 +7,9 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.ayukrisna.skinsift.domain.usecase.LoginUseCase
-import com.ayukrisna.skinsift.domain.usecase.ValidatePasswordUseCase
-import com.ayukrisna.skinsift.domain.usecase.ValidateUnameOrEmailUseCase
+import com.ayukrisna.skinsift.domain.usecase.auth.LoginUseCase
+import com.ayukrisna.skinsift.domain.usecase.validation.ValidatePasswordUseCase
+import com.ayukrisna.skinsift.domain.usecase.validation.ValidateUnameOrEmailUseCase
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch

@@ -1,4 +1,4 @@
-package com.ayukrisna.skinsift.view.ui.screen.login
+package com.ayukrisna.skinsift.view.ui.screen.auth.login
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box

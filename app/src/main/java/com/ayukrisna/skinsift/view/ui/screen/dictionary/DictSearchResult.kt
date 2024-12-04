@@ -17,6 +17,8 @@ import androidx.compose.ui.platform.LocalLayoutDirection
 import androidx.compose.ui.unit.dp
 import com.ayukrisna.skinsift.domain.model.IngredientModel
 import com.ayukrisna.skinsift.view.ui.component.CenterAppBar
+import com.ayukrisna.skinsift.view.ui.screen.dictionary.listdictionary.DictionarySearchBar
+import com.ayukrisna.skinsift.view.ui.screen.dictionary.listdictionary.IngredientsItem
 
 @Composable
 fun DictSearchResult(

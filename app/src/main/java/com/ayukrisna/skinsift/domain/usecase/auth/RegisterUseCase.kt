@@ -1,4 +1,4 @@
-package com.ayukrisna.skinsift.domain.usecase
+package com.ayukrisna.skinsift.domain.usecase.auth
 
 import com.ayukrisna.skinsift.data.remote.response.RegisterResponse
 import com.ayukrisna.skinsift.domain.repository.UserRepository

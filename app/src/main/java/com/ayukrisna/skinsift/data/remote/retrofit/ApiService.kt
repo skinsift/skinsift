@@ -1,6 +1,7 @@
 package com.ayukrisna.skinsift.data.remote.retrofit
 
 import com.ayukrisna.skinsift.data.remote.response.DetailIngredientsResponse
+import com.ayukrisna.skinsift.data.remote.response.FilterIngreResponse
 import com.ayukrisna.skinsift.data.remote.response.IngredientsResponse
 import com.ayukrisna.skinsift.data.remote.response.LoginResponse
 import com.ayukrisna.skinsift.data.remote.response.RegisterResponse
@@ -34,4 +35,7 @@ interface ApiService {
     suspend fun getDetailIngredients(
         @Path("id") id: Int
     ): Response<DetailIngredientsResponse>
+
+    @GET("ingredient/filter")
+    suspend fun getFilterIngredient(): Response<FilterIngreResponse>
 }

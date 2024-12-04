@@ -1,11 +1,9 @@
-package com.ayukrisna.skinsift.view.ui.screen.signup
+package com.ayukrisna.skinsift.view.ui.screen.auth.login
 
 import com.ayukrisna.skinsift.util.UiText
 
-data class SignupState(
-    val username: String = "",
-    val usernameError: UiText? = null,
-    val email: String = "",
+data class LoginState(
+    val unameOrEmail: String = "",
     val emailError: UiText? = null,
     val password: String = "",
     val passwordError: UiText? = null,

@@ -1,4 +1,4 @@
-package com.ayukrisna.skinsift.domain.usecase
+package com.ayukrisna.skinsift.domain.usecase.validation
 
 import com.ayukrisna.skinsift.R
 import com.ayukrisna.skinsift.domain.model.ValidationResult

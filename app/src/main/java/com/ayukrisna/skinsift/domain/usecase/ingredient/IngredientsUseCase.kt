@@ -1,4 +1,4 @@
-package com.ayukrisna.skinsift.domain.usecase
+package com.ayukrisna.skinsift.domain.usecase.ingredient
 
 import com.ayukrisna.skinsift.data.remote.response.IngredientListItem
 import com.ayukrisna.skinsift.domain.repository.IngredientRepository

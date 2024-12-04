@@ -1,5 +1,6 @@
-package com.ayukrisna.skinsift.view.ui.screen.dictionary
+package com.ayukrisna.skinsift.view.ui.screen.dictionary.listdictionary
 
+import android.widget.Toast
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
@@ -30,6 +31,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.graphics.painter.Painter
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalLayoutDirection
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
@@ -51,6 +53,7 @@ fun DictionaryScreen(
     modifier : Modifier = Modifier
 ) {
     val ingredientsState by viewModel.ingredientsState.collectAsState()
+    val context = LocalContext.current
 
     LaunchedEffect(Unit) {
         viewModel.fetchIngredients()
@@ -95,6 +98,7 @@ fun DictionaryScreen(
                     is Result.Error -> {
                         val error = (ingredientsState as Result.Error).error
                         Text("Error: $error")
+                        Toast.makeText(context, "Error: $error", Toast.LENGTH_LONG).show()
                     }
                 }
             }

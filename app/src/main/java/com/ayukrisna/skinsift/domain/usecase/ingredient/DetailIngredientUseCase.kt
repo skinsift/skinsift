@@ -1,7 +1,6 @@
-package com.ayukrisna.skinsift.domain.usecase
+package com.ayukrisna.skinsift.domain.usecase.ingredient
 
 import com.ayukrisna.skinsift.data.remote.response.Ingredient
-import com.ayukrisna.skinsift.data.remote.response.DetailIngredientsResponse
 import com.ayukrisna.skinsift.domain.repository.IngredientRepository
 import com.ayukrisna.skinsift.util.Result
 

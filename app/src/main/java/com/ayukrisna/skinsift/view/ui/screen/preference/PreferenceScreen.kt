@@ -38,7 +38,7 @@ import com.ayukrisna.skinsift.R
 import com.ayukrisna.skinsift.domain.model.IngredientModel
 import com.ayukrisna.skinsift.view.ui.component.CenterAppBar
 import com.ayukrisna.skinsift.view.ui.screen.dictionary.dummyDictionaryList
-import com.ayukrisna.skinsift.view.ui.screen.dictionary.IngredientsItem
+import com.ayukrisna.skinsift.view.ui.screen.dictionary.listdictionary.IngredientsItem
 
 @Composable
 fun PreferenceScreen (
