@@ -1,7 +1,10 @@
 package com.ayukrisna.skinsift.data.repository
 
 import com.ayukrisna.skinsift.data.local.pref.UserPreference
+import com.ayukrisna.skinsift.data.remote.request.SearchIngredientRequest
+import com.ayukrisna.skinsift.data.remote.request.SearchProductRequest
 import com.ayukrisna.skinsift.data.remote.response.DetailProductResponse
+import com.ayukrisna.skinsift.data.remote.response.FilterProductResponse
 import com.ayukrisna.skinsift.data.remote.response.IngredientsResponse
 import com.ayukrisna.skinsift.data.remote.response.ProductResponse
 import com.ayukrisna.skinsift.data.remote.retrofit.ApiConfig
@@ -34,6 +37,40 @@ class ProductRepositoryImp (private val userPreference: UserPreference) : Produc
         val token = userPreference.getSession().first().token
         val apiService = ApiConfig.getApiService(token)
         val response = apiService.getDetailProduct(id)
+
+        if (response.isSuccessful) {
+            return response.body() ?: throw Exception("Response body is null")
+        } else {
+            val errorBody = response.errorBody()?.string()
+            val errorResponse = errorBody?.let { parseErrorBody(it) }
+            throw Exception(errorResponse?.message ?: "HTTP ${response.code()} error")
+        }
+    }
+
+    override suspend fun getFilterProduct(): FilterProductResponse {
+        val token = userPreference.getSession().first().token
+        val apiService = ApiConfig.getApiService(token)
+        val response = apiService.getFilterProduct()
+
+        if (response.isSuccessful) {
+            return response.body() ?: throw Exception("Response body is null")
+        } else {
+            val errorBody = response.errorBody()?.string()
+            val errorResponse = errorBody?.let { parseErrorBody(it) }
+            throw Exception(errorResponse?.message ?: "HTTP ${response.code()} error")
+        }
+    }
+
+    override suspend fun searchProduct(
+        query: String?,
+        skinType: List<String>?,
+        category: List<String>?
+    ): ProductResponse {
+        val searchQuery = SearchProductRequest(query, category, skinType)
+
+        val token = userPreference.getSession().first().token
+        val apiService = ApiConfig.getApiService(token)
+        val response = apiService.searchProduct(searchQuery)
 
         if (response.isSuccessful) {
             return response.body() ?: throw Exception("Response body is null")

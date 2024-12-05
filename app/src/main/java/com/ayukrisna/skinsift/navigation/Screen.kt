@@ -76,10 +76,13 @@ sealed class DictionaryScreen {
 @Serializable
 sealed class ProductScreen {
     @Serializable
-    data object Product : ProductScreen()
+    data class Product(val skinType: List<String>? = null, val category: List<String>? = null)
 
     @Serializable
     data class Detail(val id: Int)
+
+    @Serializable
+    data object Filter : ProductScreen()
 }
 
 @Serializable

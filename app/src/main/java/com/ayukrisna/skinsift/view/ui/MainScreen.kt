@@ -45,6 +45,7 @@ fun MainScreen() {
         AssessmentScreen.Allergy,
         AssessmentScreen.Result,
         DictionaryScreen.Filter,
+        ProductScreen.Filter
     )
 
     val argumentRoutes = setOf(

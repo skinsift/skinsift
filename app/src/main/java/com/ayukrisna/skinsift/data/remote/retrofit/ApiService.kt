@@ -3,9 +3,11 @@ package com.ayukrisna.skinsift.data.remote.retrofit
 import com.ayukrisna.skinsift.data.remote.request.LoginRequest
 import com.ayukrisna.skinsift.data.remote.request.RegisterRequest
 import com.ayukrisna.skinsift.data.remote.request.SearchIngredientRequest
+import com.ayukrisna.skinsift.data.remote.request.SearchProductRequest
 import com.ayukrisna.skinsift.data.remote.response.DetailIngredientsResponse
 import com.ayukrisna.skinsift.data.remote.response.DetailProductResponse
 import com.ayukrisna.skinsift.data.remote.response.FilterIngreResponse
+import com.ayukrisna.skinsift.data.remote.response.FilterProductResponse
 import com.ayukrisna.skinsift.data.remote.response.IngredientsResponse
 import com.ayukrisna.skinsift.data.remote.response.LoginResponse
 import com.ayukrisna.skinsift.data.remote.response.ProductResponse
@@ -52,4 +54,12 @@ interface ApiService {
     suspend fun getDetailProduct(
         @Path("id") id: Int
     ): Response<DetailProductResponse>
+
+    @GET("product/filter")
+    suspend fun getFilterProduct(): Response<FilterProductResponse>
+
+    @POST("product/search")
+    suspend fun searchProduct(
+        @Body request: SearchProductRequest
+    ) : Response<ProductResponse>
 }

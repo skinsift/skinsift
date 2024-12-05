@@ -1,5 +1,6 @@
 package com.ayukrisna.skinsift.view.ui.screen.product.listproduct
 
+import android.util.Log
 import android.widget.Toast
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
@@ -31,49 +32,74 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalLayoutDirection
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
+import com.ayukrisna.skinsift.R
 import com.ayukrisna.skinsift.data.remote.response.ProductListItem
 import com.ayukrisna.skinsift.view.ui.component.AppBar
 import org.koin.androidx.compose.koinViewModel
 import com.ayukrisna.skinsift.util.Result
 import com.ayukrisna.skinsift.view.ui.component.LoadingProgress
+import com.ayukrisna.skinsift.view.ui.screen.dictionary.listdictionary.SearchBar
+import com.ayukrisna.skinsift.view.ui.screen.dictionary.listdictionary.ShowFilter
 
 @OptIn(ExperimentalLayoutApi::class)
 @Composable
 fun ProductScreen (
+    skinType: List<String>? = null,
+    category: List<String>? = null,
     productViewModel: ProductViewModel = koinViewModel(),
     paddingValues: PaddingValues,
     onNavigateToDetail: (Int) -> Unit,
+    onNavigateToFilter: () -> Unit,
     modifier: Modifier = Modifier
 ){
     val productsState by productViewModel.productsState.collectAsState()
     val context = LocalContext.current
 
     LaunchedEffect(Unit) {
-        productViewModel.fetchProducts()
+        if (skinType == null && category == null) {
+            Log.d("ProductFilterViewModel", "Selected filters is empty")
+            productViewModel.fetchProducts()
+        } else {
+            Log.d("ProductFilterViewModel", "Skin type: $skinType, Category: $category")
+            productViewModel.searchProducts(skinType = skinType, category =  category)
+        }
     }
 
     Scaffold(
         topBar = {
-            SkincareAppBar("Produk Skincare", "Cari yang kamu butuhkan")
+            SkincareAppBar(
+                "Produk Skincare",
+                "Cari yang kamu butuhkan",
+                painterResource(id = R.drawable.ic_filter)
+            ) { onNavigateToFilter() }
         },
         content = { innerPadding ->
             // Padding values should be applied if needed
             Column(modifier = Modifier
                 .fillMaxSize()
                 .padding(
-                    top = innerPadding.calculateTopPadding(),
                     start = paddingValues.calculateStartPadding(LocalLayoutDirection.current),
                     end = paddingValues.calculateStartPadding(LocalLayoutDirection.current),
                     bottom = paddingValues.calculateBottomPadding()
                 )
             ) {
+                Spacer(modifier = Modifier.height(108.dp))
+                SearchBar { query ->
+                    productViewModel.searchProducts(query, skinType, category)
+                }
+                if (skinType != null || category != null) {
+                    ShowFilter(skinType, category)
+                    Spacer(modifier = Modifier.height(24.dp))
+                }
                 when (productsState) {
                     is Result.Idle -> Text("Idle State")
                     is Result.Loading -> LoadingProgress()
@@ -117,8 +143,8 @@ fun ProductScreen (
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun SkincareAppBar(title: String, subtitle: String) {
-    AppBar(title, subtitle)
+fun SkincareAppBar(title: String, subtitle: String, icon: Painter, onNavigateToFilter: () -> Unit) {
+    AppBar(title, subtitle, icon) { onNavigateToFilter() }
 }
 
 @Composable

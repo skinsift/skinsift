@@ -19,11 +19,15 @@ import com.ayukrisna.skinsift.domain.usecase.ingredient.DetailIngredientUseCase
 import com.ayukrisna.skinsift.domain.usecase.ingredient.FilterIngredientUseCase
 import com.ayukrisna.skinsift.domain.usecase.ingredient.SearchIngredientUseCase
 import com.ayukrisna.skinsift.domain.usecase.product.DetailProductUseCase
+import com.ayukrisna.skinsift.domain.usecase.product.FilterProductUseCase
 import com.ayukrisna.skinsift.domain.usecase.product.ProductUseCase
+import com.ayukrisna.skinsift.domain.usecase.product.SearchProductUseCase
 import com.ayukrisna.skinsift.view.ui.screen.dictionary.detaildictionary.DictDetailViewModel
 import com.ayukrisna.skinsift.view.ui.screen.dictionary.filterdictionary.DictFilterViewModel
 import com.ayukrisna.skinsift.view.ui.screen.dictionary.listdictionary.DictionaryViewModel
 import com.ayukrisna.skinsift.view.ui.screen.product.detailproduct.DetailProductViewModel
+import com.ayukrisna.skinsift.view.ui.screen.product.filterproduct.ProductFilterScreen
+import com.ayukrisna.skinsift.view.ui.screen.product.filterproduct.ProductFilterViewModel
 import com.ayukrisna.skinsift.view.ui.screen.product.listproduct.ProductViewModel
 import org.koin.androidx.viewmodel.dsl.viewModel
 import org.koin.core.module.dsl.singleOf
@@ -59,6 +63,8 @@ val useCaseModules = module {
 
     single { ProductUseCase(get()) }
     single { DetailProductUseCase(get()) }
+    single { FilterProductUseCase(get()) }
+    single { SearchProductUseCase(get()) }
 }
 
 //View Model
@@ -70,6 +76,7 @@ val viewModelModules = module {
     viewModel{ DictionaryViewModel(get(), get()) }
     viewModel{ DictDetailViewModel(get()) }
 
-    viewModel{ ProductViewModel(get()) }
+    viewModel{ ProductFilterViewModel(get()) }
+    viewModel{ ProductViewModel(get(), get()) }
     viewModel{ DetailProductViewModel(get()) }
 }

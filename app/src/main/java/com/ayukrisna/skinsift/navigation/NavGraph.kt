@@ -13,6 +13,7 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.navigation
 import androidx.navigation.toRoute
+import com.ayukrisna.skinsift.data.remote.response.ProductFilter
 import com.ayukrisna.skinsift.view.ui.screen.assessment.AllergyAssessmentScreen
 import com.ayukrisna.skinsift.view.ui.screen.assessment.AssessmentResultScreen
 import com.ayukrisna.skinsift.view.ui.screen.assessment.FunctionAssessmentScreen
@@ -27,9 +28,10 @@ import com.ayukrisna.skinsift.view.ui.screen.auth.login.LoginScreen
 import com.ayukrisna.skinsift.view.ui.screen.preference.AddPreferenceScreen
 import com.ayukrisna.skinsift.view.ui.screen.preference.PreferenceScreen
 import com.ayukrisna.skinsift.view.ui.screen.product.detailproduct.ProductDetailScreen
-import com.ayukrisna.skinsift.view.ui.screen.product.listproduct.ProductScreen
 import com.ayukrisna.skinsift.view.ui.screen.profile.ProfileScreen
 import com.ayukrisna.skinsift.view.ui.screen.auth.signup.SignupScreen
+import com.ayukrisna.skinsift.view.ui.screen.product.filterproduct.ProductFilterScreen
+import com.ayukrisna.skinsift.view.ui.screen.product.listproduct.ProductScreen
 
 @Composable
 fun NavGraph (
@@ -223,13 +225,19 @@ fun NavGraphBuilder.productNavGraph(
     paddingValues: PaddingValues,
 ) {
     navigation<RootScreen.ProductNav>(
-        startDestination = ProductScreen.Product
+        startDestination = ProductScreen.Product(skinType = null, category = null)
     ) {
-        composable<ProductScreen.Product> {
+        composable<ProductScreen.Product> { entry ->
+            val product = entry.toRoute<ProductScreen.Product>()
             ProductScreen(
+                skinType = product.skinType,
+                category = product.category,
                 paddingValues = paddingValues,
                 onNavigateToDetail = { id ->
                     navController.navigate(ProductScreen.Detail(id))
+                },
+                onNavigateToFilter = {
+                    navController.navigate(ProductScreen.Filter)
                 }
             )
         }
@@ -239,6 +247,17 @@ fun NavGraphBuilder.productNavGraph(
                 id = detailProduct.id,
                 paddingValues = paddingValues,
                 onBackClick = { navController.popBackStack() }
+            )
+        }
+        composable<ProductScreen.Filter> {
+            ProductFilterScreen(
+                paddingValues = paddingValues,
+                onBackClick = {
+                    navController.popBackStack()
+                },
+                onNavigateToProduct = { skinType, category ->
+                    navController.navigate(ProductScreen.Product(skinType, category))
+                }
             )
         }
     }

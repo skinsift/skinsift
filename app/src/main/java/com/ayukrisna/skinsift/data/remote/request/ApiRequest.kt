@@ -16,3 +16,9 @@ data class SearchIngredientRequest(
     val rating: List<String>? = null,
     val benefitidn: List<String>? = null
 )
+
+data class SearchProductRequest(
+    val nama_atau_merk: String? = null,
+    val kategori: List<String>? = null,
+    val jenis_kulit: List<String>? = null,
+)

@@ -95,7 +95,7 @@ fun DictionaryScreen(
                 )
             ) {
                 Spacer(modifier = Modifier.height(108.dp))
-                DictionarySearchBar { query ->
+                SearchBar { query ->
                     dictViewModel.searchIngredients(query, rating, benefit)
                 }
                 if (rating != null || benefit != null) {
@@ -183,7 +183,7 @@ fun IngredientsItem(
 }
 
 @Composable
-fun DictionarySearchBar(
+fun SearchBar(
     onSearching: (String) -> Unit,
 ) {
     var text by remember { mutableStateOf("") }
