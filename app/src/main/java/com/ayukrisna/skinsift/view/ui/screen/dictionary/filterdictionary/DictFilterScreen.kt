@@ -45,6 +45,7 @@ import com.ayukrisna.skinsift.view.ui.component.LoadingProgress
 fun DictFilterScreen(
     paddingValues: PaddingValues,
     onBackClick: () -> Unit,
+    onNavigateToDictionary: (List<String>?, List<String>?) -> Unit,
     viewModel: DictFilterViewModel = koinViewModel(),
     modifier: Modifier = Modifier
 ) {
@@ -60,7 +61,11 @@ fun DictFilterScreen(
             SaveFilterFab(onClick = {
                 val selectedFilters = viewModel.selectedFilters.value
                 Log.d("FilterSelection", "Selected Filters: $selectedFilters")
-                onBackClick()
+
+                val rating: List<String>? = selectedFilters["rating"]
+                val benefit: List<String>? = selectedFilters["benefitidn"]
+
+                onNavigateToDictionary(rating, benefit)
             })
         },
         floatingActionButtonPosition = androidx.compose.material3.FabPosition.Center,

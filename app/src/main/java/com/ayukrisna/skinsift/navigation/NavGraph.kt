@@ -180,10 +180,13 @@ fun NavGraphBuilder.dictionaryNavGraph(
     paddingValues: PaddingValues,
 ) {
     navigation<RootScreen.DictionaryNav>(
-        startDestination = DictionaryScreen.Dictionary
+        startDestination = DictionaryScreen.Dictionary(rating = null, benefit = null)
     ) {
-        composable<DictionaryScreen.Dictionary> {
+        composable<DictionaryScreen.Dictionary> { entry ->
+            val dictionary = entry.toRoute<DictionaryScreen.Dictionary>()
             DictionaryScreen(
+                rating = dictionary.rating,
+                benefit = dictionary.benefit,
                 paddingValues = paddingValues,
                 onNavigateToDetail = { id ->
                     navController.navigate(DictionaryScreen.Detail(id))
@@ -204,7 +207,12 @@ fun NavGraphBuilder.dictionaryNavGraph(
         composable<DictionaryScreen.Filter> {
             DictFilterScreen(
                 paddingValues = paddingValues,
-                onBackClick = { navController.popBackStack() }
+                onBackClick = {
+                    navController.popBackStack()
+                },
+                onNavigateToDictionary = { rating, benefit ->
+                    navController.navigate(DictionaryScreen.Dictionary(rating, benefit))
+                }
             )
         }
     }

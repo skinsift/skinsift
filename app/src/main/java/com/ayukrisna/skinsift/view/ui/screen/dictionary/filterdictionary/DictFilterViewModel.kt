@@ -34,7 +34,6 @@ class DictFilterViewModel(
         val newFilters = _selectedFilters.value.toMutableMap()
         val options = newFilters.getOrPut(category) { mutableListOf() }.toMutableList()
 
-
         if (options.contains(option)) {
             options.remove(option)
         } else {

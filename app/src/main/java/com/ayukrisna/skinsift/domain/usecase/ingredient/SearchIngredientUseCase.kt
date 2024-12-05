@@ -5,7 +5,7 @@ import com.ayukrisna.skinsift.domain.repository.IngredientRepository
 import com.ayukrisna.skinsift.util.Result
 
 class SearchIngredientUseCase(private val ingredientRepository: IngredientRepository) {
-    suspend fun execute(name: String?, rating: List<String>?, benefit: List<String>?): Result<List<IngredientListItem>> {
+    suspend fun execute(name: String? = null, rating: List<String>? = null, benefit: List<String>? = null): Result<List<IngredientListItem>> {
         return try {
             val response = ingredientRepository.searchIngredient(name, rating, benefit)
             if (response.error == false) {

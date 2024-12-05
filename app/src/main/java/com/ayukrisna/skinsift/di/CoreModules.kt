@@ -15,6 +15,7 @@ import org.koin.dsl.module
 import com.ayukrisna.skinsift.domain.usecase.auth.RegisterUseCase
 import com.ayukrisna.skinsift.domain.usecase.ingredient.DetailIngredientUseCase
 import com.ayukrisna.skinsift.domain.usecase.ingredient.FilterIngredientUseCase
+import com.ayukrisna.skinsift.domain.usecase.ingredient.SearchIngredientUseCase
 import com.ayukrisna.skinsift.view.ui.screen.dictionary.detaildictionary.DictDetailViewModel
 import com.ayukrisna.skinsift.view.ui.screen.dictionary.filterdictionary.DictFilterViewModel
 import com.ayukrisna.skinsift.view.ui.screen.dictionary.listdictionary.DictionaryViewModel
@@ -47,6 +48,7 @@ val useCaseModules = module {
     single { IngredientsUseCase(get()) }
     single { DetailIngredientUseCase(get()) }
     single { FilterIngredientUseCase(get()) }
+    single { SearchIngredientUseCase(get()) }
 }
 
 //View Model
@@ -54,7 +56,7 @@ val viewModelModules = module {
     viewModel{ SignupViewModel(get()) }
     viewModel{ LoginViewModel(get()) }
 
-    viewModel{ DictionaryViewModel(get()) }
-    viewModel{ DictDetailViewModel(get()) }
     viewModel{ DictFilterViewModel(get()) }
+    viewModel{ DictionaryViewModel(get(), get()) }
+    viewModel{ DictDetailViewModel(get()) }
 }

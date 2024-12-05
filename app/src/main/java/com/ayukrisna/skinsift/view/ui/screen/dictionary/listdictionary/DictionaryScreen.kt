@@ -1,8 +1,13 @@
 package com.ayukrisna.skinsift.view.ui.screen.dictionary.listdictionary
 
+import android.util.Log
 import android.widget.Toast
+import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.ExperimentalLayoutApi
+import androidx.compose.foundation.layout.FlowRow
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.calculateStartPadding
@@ -43,20 +48,30 @@ import com.ayukrisna.skinsift.data.remote.response.IngredientListItem
 import org.koin.androidx.compose.koinViewModel
 import com.ayukrisna.skinsift.util.Result
 import com.ayukrisna.skinsift.view.ui.component.LoadingProgress
+import com.ayukrisna.skinsift.view.ui.screen.dictionary.filterdictionary.DictFilterViewModel
 
 @Composable
 fun DictionaryScreen(
-    viewModel: DictionaryViewModel = koinViewModel(),
+    rating : List<String>? = null,
+    benefit : List<String>? = null,
+    dictViewModel: DictionaryViewModel = koinViewModel(),
     onNavigateToDetail: (Int) -> Unit,
     onNavigateToFilter: () -> Unit,
     paddingValues: PaddingValues,
     modifier : Modifier = Modifier
 ) {
-    val ingredientsState by viewModel.ingredientsState.collectAsState()
+    val ingredientsState by dictViewModel.ingredientsState.collectAsState()
+
     val context = LocalContext.current
 
     LaunchedEffect(Unit) {
-        viewModel.fetchIngredients()
+        if (rating == null && benefit == null) {
+            Log.d("DictFilterViewModel", "Selected filters is empty")
+            dictViewModel.fetchIngredients()
+        } else {
+            Log.d("DictFilterViewModel", "Rating: $rating, Benefit: $benefit")
+            dictViewModel.searchIngredients(rating, benefit)
+        }
     }
 
     Scaffold(
@@ -78,7 +93,10 @@ fun DictionaryScreen(
             ) {
                 Spacer(modifier = Modifier.height(108.dp))
                 DictionarySearchBar { }
-
+                if (rating != null || benefit != null) {
+                    ShowFilter(rating, benefit)
+                    Spacer(modifier = Modifier.height(24.dp))
+                }
                 when (ingredientsState) {
                     is Result.Idle -> Text("Idle State")
                     is Result.Loading -> LoadingProgress()
@@ -198,18 +216,35 @@ fun DictionaryAppBar(title: String, subtitle: String, icon: Painter, onNavigateT
     AppBar(title, subtitle, icon) { onNavigateToFilter() }
 }
 
-//@Preview(showBackground = true)
-//@Composable
-//fun DictionaryPreview() {
-//    SkinSiftTheme {
-//        DictionaryScreen(PaddingValues(horizontal = 16.dp, vertical = 42.dp))
-//    }
-//}
-
-//@Preview(showBackground = true)
-//@Composable
-//fun AppBarPreview() {
-//    SkinSiftTheme {
-//        DictionaryAppBar("Kamus Ingredients", "Cari yang kamu butuhkan")
-//    }
-//}
+@OptIn(ExperimentalLayoutApi::class)
+@Composable
+fun ShowFilter(rating : List<String>?, benefit : List<String>?) {
+    FlowRow (horizontalArrangement = Arrangement.Start) {
+        rating?.let {
+            rating.forEach() { ratingItem ->
+                Text(
+                    text = ratingItem,
+                    modifier = Modifier
+                        .padding(horizontal = 4.dp, vertical = 4.dp)
+                        .background(MaterialTheme.colorScheme.primary, shape = RoundedCornerShape(20.dp))
+                        .padding(horizontal = 12.dp, vertical = 6.dp),
+                    style = MaterialTheme.typography.bodySmall,
+                    color = MaterialTheme.colorScheme.onPrimary
+                )
+            }
+        }
+        benefit?.let {
+            benefit.forEach() { benefitItem ->
+                Text(
+                    text = benefitItem,
+                    modifier = Modifier
+                        .padding(horizontal = 8.dp, vertical = 4.dp)
+                        .background(MaterialTheme.colorScheme.primary, shape = RoundedCornerShape(20.dp))
+                        .padding(horizontal = 12.dp, vertical = 6.dp),
+                    style = MaterialTheme.typography.bodySmall,
+                    color = MaterialTheme.colorScheme.onPrimary
+                )
+            }
+        }
+    }
+}

@@ -64,7 +64,7 @@ sealed class AssessmentScreen() {
 @Serializable
 sealed class DictionaryScreen() {
     @Serializable
-    data object Dictionary : DictionaryScreen()
+    data class Dictionary(val rating: List<String>? = null, val benefit: List<String>? = null)
 
     @Serializable
     data class Detail(val id: Int)
