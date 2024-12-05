@@ -4,6 +4,7 @@ import com.ayukrisna.skinsift.data.remote.request.LoginRequest
 import com.ayukrisna.skinsift.data.remote.request.RegisterRequest
 import com.ayukrisna.skinsift.data.remote.request.SearchIngredientRequest
 import com.ayukrisna.skinsift.data.remote.response.DetailIngredientsResponse
+import com.ayukrisna.skinsift.data.remote.response.DetailProductResponse
 import com.ayukrisna.skinsift.data.remote.response.FilterIngreResponse
 import com.ayukrisna.skinsift.data.remote.response.IngredientsResponse
 import com.ayukrisna.skinsift.data.remote.response.LoginResponse
@@ -46,4 +47,9 @@ interface ApiService {
 
     @GET("product")
     suspend fun getProducts(): Response<ProductResponse>
+
+    @GET("product/detail/{id}")
+    suspend fun getDetailProduct(
+        @Path("id") id: Int
+    ): Response<DetailProductResponse>
 }

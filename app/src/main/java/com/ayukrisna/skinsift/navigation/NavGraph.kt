@@ -26,7 +26,7 @@ import com.ayukrisna.skinsift.view.ui.screen.home.HomeScreen
 import com.ayukrisna.skinsift.view.ui.screen.auth.login.LoginScreen
 import com.ayukrisna.skinsift.view.ui.screen.preference.AddPreferenceScreen
 import com.ayukrisna.skinsift.view.ui.screen.preference.PreferenceScreen
-import com.ayukrisna.skinsift.view.ui.screen.product.ProductDetailScreen
+import com.ayukrisna.skinsift.view.ui.screen.product.detailproduct.ProductDetailScreen
 import com.ayukrisna.skinsift.view.ui.screen.product.listproduct.ProductScreen
 import com.ayukrisna.skinsift.view.ui.screen.profile.ProfileScreen
 import com.ayukrisna.skinsift.view.ui.screen.auth.signup.SignupScreen
@@ -228,13 +228,15 @@ fun NavGraphBuilder.productNavGraph(
         composable<ProductScreen.Product> {
             ProductScreen(
                 paddingValues = paddingValues,
-                onNavigateToDetail = {
-                    navController.navigate(ProductScreen.Detail)
+                onNavigateToDetail = { id ->
+                    navController.navigate(ProductScreen.Detail(id))
                 }
             )
         }
-        composable<ProductScreen.Detail> {
+        composable<ProductScreen.Detail> { entry ->
+            val detailProduct = entry.toRoute<ProductScreen.Detail>()
             ProductDetailScreen(
+                id = detailProduct.id,
                 paddingValues = paddingValues,
                 onBackClick = { navController.popBackStack() }
             )

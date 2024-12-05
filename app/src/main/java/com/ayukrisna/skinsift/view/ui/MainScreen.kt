@@ -45,11 +45,11 @@ fun MainScreen() {
         AssessmentScreen.Allergy,
         AssessmentScreen.Result,
         DictionaryScreen.Filter,
-        ProductScreen.Detail
     )
-    
+
     val argumentRoutes = setOf(
-        "com.ayukrisna.skinsift.navigation.DictionaryScreen.Detail/{id}"
+        "com.ayukrisna.skinsift.navigation.DictionaryScreen.Detail/{id}",
+        "com.ayukrisna.skinsift.navigation.ProductScreen.Detail/{id}"
     )
 
     Scaffold(

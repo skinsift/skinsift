@@ -29,7 +29,7 @@ sealed class AuthScreen {
 }
 
 @Serializable
-sealed class HomeScreen() {
+sealed class HomeScreen {
     @Serializable
     data object Home : HomeScreen()
 
@@ -41,7 +41,7 @@ sealed class HomeScreen() {
 }
 
 @Serializable
-sealed class AssessmentScreen() {
+sealed class AssessmentScreen {
     @Serializable
     data object Start : AssessmentScreen()
 
@@ -62,7 +62,7 @@ sealed class AssessmentScreen() {
 }
 
 @Serializable
-sealed class DictionaryScreen() {
+sealed class DictionaryScreen {
     @Serializable
     data class Dictionary(val rating: List<String>? = null, val benefit: List<String>? = null)
 
@@ -74,16 +74,16 @@ sealed class DictionaryScreen() {
 }
 
 @Serializable
-sealed class ProductScreen() {
+sealed class ProductScreen {
     @Serializable
     data object Product : ProductScreen()
 
     @Serializable
-    data object Detail : ProductScreen()
+    data class Detail(val id: Int)
 }
 
 @Serializable
-sealed class ProfileScreen() {
+sealed class ProfileScreen {
     @Serializable
     data object Profile : ProfileScreen()
 }

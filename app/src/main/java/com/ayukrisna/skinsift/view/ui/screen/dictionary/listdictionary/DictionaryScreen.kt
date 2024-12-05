@@ -219,7 +219,7 @@ fun DictionaryAppBar(title: String, subtitle: String, icon: Painter, onNavigateT
 fun ShowFilter(rating : List<String>?, benefit : List<String>?) {
     FlowRow (horizontalArrangement = Arrangement.Start) {
         rating?.let {
-            rating.forEach() { ratingItem ->
+            rating.forEach { ratingItem ->
                 Text(
                     text = ratingItem,
                     modifier = Modifier
@@ -232,7 +232,7 @@ fun ShowFilter(rating : List<String>?, benefit : List<String>?) {
             }
         }
         benefit?.let {
-            benefit.forEach() { benefitItem ->
+            benefit.forEach { benefitItem ->
                 Text(
                     text = benefitItem,
                     modifier = Modifier

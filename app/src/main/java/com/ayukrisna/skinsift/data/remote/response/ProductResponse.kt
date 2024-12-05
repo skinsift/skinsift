@@ -26,7 +26,7 @@ data class ProductListItem(
 	val imageUrl: String? = null,
 
 	@field:SerializedName("Id_Products")
-	val id: Int? = null,
+	val id: Int,
 
 	@field:SerializedName("nama_product")
 	val productName: String? = null,

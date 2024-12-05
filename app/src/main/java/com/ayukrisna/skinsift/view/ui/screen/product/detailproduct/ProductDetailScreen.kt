@@ -1,12 +1,13 @@
-package com.ayukrisna.skinsift.view.ui.screen.product
+package com.ayukrisna.skinsift.view.ui.screen.product.detailproduct
 
+import android.util.Log
+import android.widget.Toast
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.calculateStartPadding
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -23,45 +24,44 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalLayoutDirection
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
 import com.ayukrisna.skinsift.R
+import com.ayukrisna.skinsift.data.remote.response.DetailProduct
 import com.ayukrisna.skinsift.domain.model.ProductDetailModel
-import com.ayukrisna.skinsift.view.ui.component.AppBar
+import com.ayukrisna.skinsift.util.Result
 import com.ayukrisna.skinsift.view.ui.component.CenterAppBar
+import com.ayukrisna.skinsift.view.ui.component.LoadingProgress
+import org.koin.androidx.compose.koinViewModel
 
 
 @Composable
 fun ProductDetailScreen (
+    id: Int,
     paddingValues: PaddingValues,
     onBackClick: () -> Unit,
+    viewModel: DetailProductViewModel = koinViewModel(),
     modifier : Modifier = Modifier
 ) {
+    val productState by viewModel.productState.collectAsState()
+    val context = LocalContext.current
 
-    val dummyDetail = ProductDetailModel(
-        id = 3,
-        name = "Marigold Clearings Petal Toner",
-        type = "Cleanser",
-        category = "Toner",
-        skinType = "Kering",
-        brand = "NPURE",
-        keyIngredients = "Anti-acne: Niacinamide\nCell-communicating ingredient: Niacinamide\nExfoliant: Glycolic Acid\nSkin brightening: Licorice Glycyrrhiza Glabra Extract, Niacinamide\nSkin-identical ingredient: Glycerin\nSoothing: Licorice Glycyrrhiza Glabra Extract, Allantoin",
-        ingredients = "Aqua, Glycerin, Lactic Acid, Tromethamine, Propylene Glycol, Niacinamide, Butylene Glycol, Fructooligosaccharides, Beta Vulgaris Root Extract, Allantoin, Aloe Barbadensis Leaf Extract, Maltodextrin, Calcium Pantothenate, Urea, Caprylyl Glycol, Magnesium Lactate, Potassium Lactate, Papain, Ethylhexylglycerin, Panthenol, Biotin, Folic Acid, Ascorbic Acid, Tocopherol, Retinyl Palmitate, Pyridoxine HCl, Arachis Hypogaea Oil, Calendula Officinalis Flower Extract, Proline, Alanine, Serine, Phenoxyethanol, PEG-40 Hydrogenated Castor Oil, Disodium EDTA, Calendula Officinalis Flower, Xanthan Gum, Sodium Citrate, Hydroxypropyl Cyclodextrin, Citric Acid, Cyanocobalamin, 7-Dehydrocholesterol, Lecithin, Acetyl Glutamine, sh-oligopeptide-1, sh-oligopeptide-2, sh-polypeptide-1, sh-polypeptide-9, sh-polypeptide-11, Bacillus/Soybean/Folic Acid Ferment Extract, Sodium Hyaluronate, 1,2-hexanediol, Fragrance (Parfum) Components and Finished Fragrances.",
-        description = "Toner dengan kelopak bunga Marigold asli yang dan mengandung Papain sebagai Natural Enzymatic Exfoliator untuk mengangkat sel kulit mati dan membantu proses regenerasi kulit.",
-        benefit = "Menutrisi kulit, mencegah penuaan dini, melindungi kulit dari radikal bebas, menghaluskan, dan mencerahkan kulit.",
-                bpom = "NA18221202239",
-        imageUrl = "https://storage.googleapis.com/skinsift/products/npure_marigoldclearingspetaltoner.jpg"
-    )
+    LaunchedEffect(Unit) {
+        viewModel.fetchProduct(id)
+    }
 
     Scaffold (
         topBar = {
@@ -76,43 +76,43 @@ fun ProductDetailScreen (
                     start = paddingValues.calculateStartPadding(LocalLayoutDirection.current),
                     end = paddingValues.calculateStartPadding(LocalLayoutDirection.current),
                     bottom = paddingValues.calculateBottomPadding())
-                .verticalScroll(rememberScrollState())
+                .verticalScroll(rememberScrollState()),
+                verticalArrangement = Arrangement.Center,
+                horizontalAlignment = Alignment.CenterHorizontally
             ) {
-                ProductDetailContent(dummyDetail) {
-                    ProductImage(it.imageUrl)
-                    Spacer(modifier = Modifier.height(8.dp))
-                    ProductOverview(
-                        name = it.name,
-                        brand = it.brand,
-                        type = it.type,
-                        category = it.category,
-                        skinType = it.skinType,
-                        bpom = it.bpom,
-                        description = it.description
-                    )
-                    Spacer(modifier = Modifier.height(8.dp))
-                    ProductInformation(title = "Kegunaan", information= it.benefit)
-                    Spacer(modifier = Modifier.height(8.dp))
-                    KeyIngredientsInformation(it.keyIngredients)
-                    Spacer(modifier = Modifier.height(8.dp))
-//                    ProductInformation(title = "Deskripsi", information= it.description)
-//                    Spacer(modifier = Modifier.height(8.dp))
-                    ProductInformation(title = "Bahan dan Komposisi", information= it.ingredients)
-                    Spacer(modifier = Modifier.height(8.dp))
+                when (productState) {
+                    is Result.Idle -> Text("Idle State")
+                    is Result.Loading -> LoadingProgress()
+                    is Result.Success -> {
+                        val product: DetailProduct = (productState as Result.Success<DetailProduct>).data
+
+                        product.imageUrl?.let { ProductImage(it) }
+                            Spacer(modifier = Modifier.height(8.dp))
+                            ProductOverview(
+                                name = product.productName ?: "Belum ada nama",
+                                brand = product.brand ?: "Belum ada merk",
+                                type = product.productType ?: "Belum ada tipe",
+                                category = product.category ?: "-",
+                                skinType = product.skinType ?: "-",
+                                bpom = product.bpom ?: "-",
+                                description = product.description ?: "Belum ada deskripsi"
+                            )
+                            Spacer(modifier = Modifier.height(8.dp))
+                            ProductInformation(title = "Kegunaan", information= product.benefit ?: "Belum ada kegunaan")
+                            Spacer(modifier = Modifier.height(8.dp))
+                            KeyIngredientsInformation(product.keyIngredients ?: "Produk ini tidak memiliki bahan utama")
+                            Spacer(modifier = Modifier.height(8.dp))
+                            ProductInformation(title = "Bahan dan Komposisi", information= product.ingredients ?: "Belum ada keterangan komposisi.")
+                            Spacer(modifier = Modifier.height(8.dp))
+                    }
+                    is Result.Error -> {
+                        val error = (productState as Result.Error).error
+                        Toast.makeText(context, "Error: $error", Toast.LENGTH_LONG).show()
+                    }
                 }
             }
         }
     )
-}
-
-@Composable
-fun ProductDetailContent(
-    dummyDetail: ProductDetailModel,
-    content: @Composable (ProductDetailModel) -> Unit
-) {
-    Column {
-        content(dummyDetail)
-    }
 }
 
 @Composable
@@ -187,7 +187,7 @@ fun ProductOverviewItem(icon: Painter, title: String, description: String) {
             .fillMaxWidth(),
         horizontalArrangement = Arrangement.Start
     ) {
-        Box() {
+        Box {
             Icon(
                 painter = icon,
                 contentDescription = null,
@@ -228,7 +228,6 @@ fun KeyIngredientsInformation(keyIngredients: String) {
     Card(
         modifier = Modifier
             .fillMaxWidth(),
-//            .padding(8.dp),
         colors = CardDefaults.cardColors(
             containerColor = MaterialTheme.colorScheme.surfaceBright
         ),
@@ -247,24 +246,33 @@ fun KeyIngredientsInformation(keyIngredients: String) {
                 color = MaterialTheme.colorScheme.onSurface
             )
             Spacer(modifier = Modifier.height(12.dp))
-            ingredients.forEach { (key, value) ->
-                Row(modifier = Modifier
-                    .fillMaxWidth(),
-                    horizontalArrangement = Arrangement.Start)
-                {
-                    Text(
-                        text = key,
-                        style = MaterialTheme.typography.bodyMedium,
-                        fontWeight = FontWeight.ExtraBold,
-                        color = MaterialTheme.colorScheme.primary,
-                        modifier = Modifier.weight(2f)
-                    )
-                    Text(
-                        text = value,
-                        style = MaterialTheme.typography.bodyMedium,
-                        color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.7f),
-                        modifier = Modifier.weight(3f)
-                    )
+            if (keyIngredients == "Produk ini tidak memiliki bahan utama") {
+                Log.d("KeyIngredients", "Nyampe sini, $keyIngredients")
+                Text(
+                    text = keyIngredients,
+                    style = MaterialTheme.typography.bodyMedium,
+                    color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.7f),
+                )
+            } else {
+                ingredients.forEach { (key, value) ->
+                    Row(modifier = Modifier
+                        .fillMaxWidth(),
+                        horizontalArrangement = Arrangement.Start)
+                    {
+                        Text(
+                            text = key,
+                            style = MaterialTheme.typography.bodyMedium,
+                            fontWeight = FontWeight.ExtraBold,
+                            color = MaterialTheme.colorScheme.primary,
+                            modifier = Modifier.weight(2f)
+                        )
+                        Text(
+                            text = value,
+                            style = MaterialTheme.typography.bodyMedium,
+                            color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.7f),
+                            modifier = Modifier.weight(3f)
+                        )
+                    }
                 }
             }
         }

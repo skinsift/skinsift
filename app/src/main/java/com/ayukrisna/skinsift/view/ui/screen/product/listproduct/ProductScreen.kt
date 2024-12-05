@@ -49,7 +49,7 @@ import com.ayukrisna.skinsift.view.ui.component.LoadingProgress
 fun ProductScreen (
     productViewModel: ProductViewModel = koinViewModel(),
     paddingValues: PaddingValues,
-    onNavigateToDetail: () -> Unit,
+    onNavigateToDetail: (Int) -> Unit,
     modifier: Modifier = Modifier
 ){
     val productsState by productViewModel.productsState.collectAsState()
@@ -59,10 +59,9 @@ fun ProductScreen (
         productViewModel.fetchProducts()
     }
 
-
     Scaffold(
         topBar = {
-            SkincareAppBar("Kamus Skincare", "Cari yang kamu butuhkan")
+            SkincareAppBar("Produk Skincare", "Cari yang kamu butuhkan")
         },
         content = { innerPadding ->
             // Padding values should be applied if needed
@@ -81,7 +80,26 @@ fun ProductScreen (
                     is Result.Success -> {
                         val products: List<ProductListItem> = (productsState as Result.Success<List<ProductListItem>>).data
                         if (products.isNotEmpty()) {
-                            ListProducts(products) {onNavigateToDetail()}
+                            LazyVerticalGrid (
+                                columns = GridCells.Fixed(2),
+                                contentPadding = PaddingValues(4.dp, 8.dp, 4.dp, 8.dp)
+                            ) {
+                                items(products) { product ->
+                                    Box(
+                                        modifier = Modifier
+                                            .padding(2.dp)
+                                    ) {
+                                        SkincareCard(
+                                            product.productName ?: "Belum ada nama",
+                                            product.brand ?: "Belum ada brand",
+                                            product.description ?: "Belum ada deskripsi",
+                                            product.imageUrl,
+                                            {onNavigateToDetail(product.id)}
+
+                                        )
+                                    }
+                                }
+                            }
                         } else {
                             Text("Yah, belum ada produk di sini!")
                         }
@@ -95,31 +113,6 @@ fun ProductScreen (
             }
         }
     )
-}
-
-@OptIn(ExperimentalLayoutApi::class)
-@Composable
-fun ListProducts(skincareProducts: List<ProductListItem>, onNavigateToDetail: () -> Unit) {
-    LazyVerticalGrid (
-        columns = GridCells.Fixed(2),
-        contentPadding = PaddingValues(8.dp)
-    ) {
-        items(skincareProducts) { product ->
-            Box(
-                modifier = Modifier
-                    .padding(2.dp)
-            ) {
-                SkincareCard(
-                    product.productName ?: "Belum ada nama",
-                    product.brand ?: "Belum ada brand",
-                    product.description ?: "Belum ada deskripsi",
-                    product.imageUrl,
-                    {onNavigateToDetail()}
-
-                )
-            }
-        }
-    }
 }
 
 @OptIn(ExperimentalMaterial3Api::class)

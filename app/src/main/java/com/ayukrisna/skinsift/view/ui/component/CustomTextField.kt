@@ -114,7 +114,7 @@ fun CustomTextField(
                 modifier = Modifier.padding(top = 8.dp, bottom = 4.dp)
             )
         }
-        Box () {
+        Box {
             BasicTextField(
                 value = if (isKeyboardTypeNumber) {
                     if (isNumber(text)) text else ""

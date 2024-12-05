@@ -11,7 +11,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalLayoutDirection
 import androidx.compose.ui.unit.dp
 import com.ayukrisna.skinsift.domain.model.ProductModel
-import com.ayukrisna.skinsift.view.ui.screen.product.listproduct.ListProducts
 
 @Composable
 fun AssessmentResultScreen(

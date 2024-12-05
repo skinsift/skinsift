@@ -129,7 +129,7 @@ fun FilterSection(category: String, options: List<String?>?, viewModel: DictFilt
             FlowRow (
                 horizontalArrangement = Arrangement.Start
             ){
-                options.forEach() { option ->
+                options.forEach { option ->
                     val isSelected = selectedFilters[category]?.contains(option) == true
                     FilterChip(
                         modifier = Modifier
