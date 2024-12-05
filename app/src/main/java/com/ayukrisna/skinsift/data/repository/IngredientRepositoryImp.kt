@@ -46,11 +46,11 @@ class IngredientRepositoryImp (private val userPreference: UserPreference) : Ing
     }
 
     override suspend fun searchIngredient(
-        name: String?,
+        query: String?,
         rating: List<String>?,
         benefit: List<String>?
     ): IngredientsResponse {
-        val searchQuery = SearchIngredientRequest(name, rating, benefit)
+        val searchQuery = SearchIngredientRequest(query, rating, benefit)
 
         val token = userPreference.getSession().first().token
         val apiService = ApiConfig.getApiService(token)

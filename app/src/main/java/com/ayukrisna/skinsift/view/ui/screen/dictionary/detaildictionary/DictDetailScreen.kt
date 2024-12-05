@@ -66,10 +66,10 @@ fun DictDetailScreen(
             Column(modifier = Modifier
                 .fillMaxHeight()
                 .padding(
-                    top = paddingValues.calculateTopPadding() + 24.dp,
+                    top = paddingValues.calculateTopPadding() + 64.dp,
                     start = paddingValues.calculateStartPadding(LocalLayoutDirection.current),
                     end = paddingValues.calculateStartPadding(LocalLayoutDirection.current),
-                    bottom = paddingValues.calculateBottomPadding()
+                    bottom = paddingValues.calculateBottomPadding() + 16.dp
                 )
                 .verticalScroll(rememberScrollState())
             ) {
@@ -179,11 +179,13 @@ fun IngredientsDescription(
                 color = MaterialTheme.colorScheme.onSurface
             )
             Spacer(modifier = Modifier.height(12.dp))
-            Text(
-                text = keyIngredient,
-                style = MaterialTheme.typography.bodyMedium,
-                color = MaterialTheme.colorScheme.onSurface
-            )
+            keyIngredient.split("|").forEach { item ->
+                Text(
+                    text = "∙ ${item.trim()}",
+                    style = MaterialTheme.typography.bodyMedium,
+                    color = MaterialTheme.colorScheme.onSurface
+                )
+            }
             Spacer(modifier = Modifier.height(16.dp))
             HorizontalDivider(
                 thickness = 1.dp,

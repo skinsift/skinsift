@@ -18,6 +18,7 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.BasicTextField
+import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
@@ -46,6 +47,8 @@ import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.SolidColor
 import androidx.compose.ui.graphics.painter.Painter
+import androidx.compose.ui.input.key.KeyEvent
+import androidx.compose.ui.input.key.onKeyEvent
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.semantics.isTraversalGroup
@@ -79,6 +82,8 @@ fun CustomTextField(
     trailingIcon: @Composable (() -> Unit)? = null,
     singleLine: Boolean = false,
     maxLine: Int = 1,
+    onKeyEvent: ((KeyEvent) -> Boolean)? = null,
+    onImeAction: (() -> Unit)? = null
     ) {
     //Variables
     val isKeyboardTypeNumber =
@@ -131,7 +136,15 @@ fun CustomTextField(
                 },
                 keyboardOptions = KeyboardOptions(
                     keyboardType = keyboardType,
-                    imeAction = imeAction
+                    imeAction = imeAction,
+                ),
+                keyboardActions = KeyboardActions(
+                    onDone = {
+                        onImeAction?.invoke()
+                    },
+                    onSearch = {
+                        onImeAction?.invoke()
+                    }
                 ),
                 cursorBrush = SolidColor(MaterialTheme.colorScheme.primary),
                 modifier = Modifier
@@ -141,7 +154,10 @@ fun CustomTextField(
                     .height(48.dp)
                     .border(1.dp, colorBorder, RoundedCornerShape(20.dp))
                     .padding(8.dp)
-                    .focusRequester(focusRequester),
+                    .focusRequester(focusRequester)
+                    .onKeyEvent { keyEvent ->
+                        onKeyEvent?.invoke(keyEvent) ?: false
+                    },
                 decorationBox = { innerTextField ->
                     Box(
                         modifier = Modifier.fillMaxWidth()

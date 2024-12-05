@@ -36,6 +36,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.graphics.painter.Painter
+import androidx.compose.ui.input.key.KeyEvent
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalLayoutDirection
 import androidx.compose.ui.text.input.ImeAction
@@ -49,6 +50,9 @@ import org.koin.androidx.compose.koinViewModel
 import com.ayukrisna.skinsift.util.Result
 import com.ayukrisna.skinsift.view.ui.component.LoadingProgress
 import com.ayukrisna.skinsift.view.ui.screen.dictionary.filterdictionary.DictFilterViewModel
+import androidx.compose.ui.input.key.Key
+import androidx.compose.ui.input.key.key
+import androidx.compose.ui.input.key.onKeyEvent
 
 @Composable
 fun DictionaryScreen(
@@ -70,7 +74,7 @@ fun DictionaryScreen(
             dictViewModel.fetchIngredients()
         } else {
             Log.d("DictFilterViewModel", "Rating: $rating, Benefit: $benefit")
-            dictViewModel.searchIngredients(rating, benefit)
+            dictViewModel.searchIngredients(rating = rating, benefit =  benefit)
         }
     }
 
@@ -92,7 +96,9 @@ fun DictionaryScreen(
                 )
             ) {
                 Spacer(modifier = Modifier.height(108.dp))
-                DictionarySearchBar { }
+                DictionarySearchBar { query ->
+                    dictViewModel.searchIngredients(query, rating, benefit)
+                }
                 if (rating != null || benefit != null) {
                     ShowFilter(rating, benefit)
                     Spacer(modifier = Modifier.height(24.dp))
@@ -179,10 +185,9 @@ fun IngredientsItem(
 
 @Composable
 fun DictionarySearchBar(
-    onSearching: () -> Unit,
+    onSearching: (String) -> Unit,
 ) {
     var text by remember { mutableStateOf("") }
-    var submittedText by remember { mutableStateOf("") }
 
     CustomTextField(
         text = text,
@@ -196,17 +201,11 @@ fun DictionarySearchBar(
         errorMessage = null,
         singleLine = true,
         maxLine = 1,
-//        modifier = Modifier
-//            .onKeyEvent { keyEvent ->
-//                if (keyEvent.type == KeyEventType.KeyDown && keyEvent.key == Key.Enter) {
-//                    submittedText = text
-//                    text = ""
-//                    onSearching()
-//                    true
-//                } else {
-//                    false
-//                }
-//            }
+        onImeAction = {
+            Log.d("Keyboard", "Done action triggered")
+            onSearching(text)
+        },
+        modifier = Modifier.padding(16.dp)
     )
 }
 

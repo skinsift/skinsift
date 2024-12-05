@@ -26,11 +26,11 @@ class DictionaryViewModel (
         }
     }
 
-    fun searchIngredients(rating: List<String>?, benefit: List<String>?) {
+    fun searchIngredients(query: String? = null, rating: List<String>?, benefit: List<String>?) {
         _ingredientsState.value = Result.Loading
 
         viewModelScope.launch {
-            val result = searchIngredientsUseCase.execute(rating = rating, benefit = benefit)
+            val result = searchIngredientsUseCase.execute(query = query, rating = rating, benefit = benefit)
             _ingredientsState.value = result
         }
     }
