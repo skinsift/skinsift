@@ -6,7 +6,9 @@ import com.ayukrisna.skinsift.data.local.pref.UserPreference
 import com.ayukrisna.skinsift.data.repository.UserRepositoryImp
 import com.ayukrisna.skinsift.data.repository.IngredientRepositoryImp
 import com.ayukrisna.skinsift.data.repository.ProductRepositoryImp
+import com.ayukrisna.skinsift.data.repository.NotesRepositoryImp
 import com.ayukrisna.skinsift.domain.repository.IngredientRepository
+import com.ayukrisna.skinsift.domain.repository.NotesRepository
 import com.ayukrisna.skinsift.domain.repository.ProductRepository
 import com.ayukrisna.skinsift.domain.repository.UserRepository
 import com.ayukrisna.skinsift.domain.usecase.ingredient.IngredientsUseCase
@@ -18,6 +20,7 @@ import com.ayukrisna.skinsift.domain.usecase.auth.RegisterUseCase
 import com.ayukrisna.skinsift.domain.usecase.ingredient.DetailIngredientUseCase
 import com.ayukrisna.skinsift.domain.usecase.ingredient.FilterIngredientUseCase
 import com.ayukrisna.skinsift.domain.usecase.ingredient.SearchIngredientUseCase
+import com.ayukrisna.skinsift.domain.usecase.notes.NotesUseCase
 import com.ayukrisna.skinsift.domain.usecase.product.DetailProductUseCase
 import com.ayukrisna.skinsift.domain.usecase.product.FilterProductUseCase
 import com.ayukrisna.skinsift.domain.usecase.product.ProductUseCase
@@ -25,6 +28,7 @@ import com.ayukrisna.skinsift.domain.usecase.product.SearchProductUseCase
 import com.ayukrisna.skinsift.view.ui.screen.dictionary.detaildictionary.DictDetailViewModel
 import com.ayukrisna.skinsift.view.ui.screen.dictionary.filterdictionary.DictFilterViewModel
 import com.ayukrisna.skinsift.view.ui.screen.dictionary.listdictionary.DictionaryViewModel
+import com.ayukrisna.skinsift.view.ui.screen.notes.listnotes.NotesViewModel
 import com.ayukrisna.skinsift.view.ui.screen.product.detailproduct.DetailProductViewModel
 import com.ayukrisna.skinsift.view.ui.screen.product.filterproduct.ProductFilterScreen
 import com.ayukrisna.skinsift.view.ui.screen.product.filterproduct.ProductFilterViewModel
@@ -49,6 +53,7 @@ var repositoryModules : Module = module {
     singleOf(::UserRepositoryImp) bind UserRepository::class
     singleOf(::IngredientRepositoryImp) bind IngredientRepository::class
     singleOf(::ProductRepositoryImp) bind ProductRepository::class
+    singleOf(::NotesRepositoryImp) bind NotesRepository::class
 }
 
 // Use Case
@@ -65,6 +70,8 @@ val useCaseModules = module {
     single { DetailProductUseCase(get()) }
     single { FilterProductUseCase(get()) }
     single { SearchProductUseCase(get()) }
+
+    single { NotesUseCase(get()) }
 }
 
 //View Model
@@ -79,4 +86,6 @@ val viewModelModules = module {
     viewModel{ ProductFilterViewModel(get()) }
     viewModel{ ProductViewModel(get(), get()) }
     viewModel{ DetailProductViewModel(get()) }
+
+    viewModel{ NotesViewModel(get()) }
 }

@@ -40,8 +40,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
 import com.ayukrisna.skinsift.R
-import com.ayukrisna.skinsift.data.remote.response.DetailProduct
-import com.ayukrisna.skinsift.domain.model.ProductDetailModel
+import com.ayukrisna.skinsift.data.remote.response.product.DetailProduct
 import com.ayukrisna.skinsift.util.Result
 import com.ayukrisna.skinsift.view.ui.component.CenterAppBar
 import com.ayukrisna.skinsift.view.ui.component.LoadingProgress

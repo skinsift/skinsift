@@ -50,7 +50,7 @@ import com.ayukrisna.skinsift.R
 
 @Composable
 fun HomeScreen(
-    onNavigateToPreference: () -> Unit,
+    onNavigateToNotes: () -> Unit,
     onNavigateToAssessment: () -> Unit,
     modifier: Modifier = Modifier,
     paddingValues: PaddingValues,
@@ -76,13 +76,13 @@ fun HomeScreen(
             ScannerHistoryItem(
                 "Cocok Denganmu \uD83D\uDC90",
                 "Niacinamide, Retinoid, Hexylresorcinol",
-                onNavigateToPreference
+                onNavigateToNotes
             )
             Spacer(modifier = Modifier.height(12.dp))
             ScannerHistoryItem(
                 "Wajib Dihindari ☠",
                 "Polyacrylamide, PTFE, Petrolatum",
-                onNavigateToPreference
+                onNavigateToNotes
             )
         }
     }

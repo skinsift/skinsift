@@ -13,7 +13,6 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.navigation
 import androidx.navigation.toRoute
-import com.ayukrisna.skinsift.data.remote.response.ProductFilter
 import com.ayukrisna.skinsift.view.ui.screen.assessment.AllergyAssessmentScreen
 import com.ayukrisna.skinsift.view.ui.screen.assessment.AssessmentResultScreen
 import com.ayukrisna.skinsift.view.ui.screen.assessment.FunctionAssessmentScreen
@@ -25,11 +24,11 @@ import com.ayukrisna.skinsift.view.ui.screen.dictionary.filterdictionary.DictFil
 import com.ayukrisna.skinsift.view.ui.screen.dictionary.listdictionary.DictionaryScreen
 import com.ayukrisna.skinsift.view.ui.screen.home.HomeScreen
 import com.ayukrisna.skinsift.view.ui.screen.auth.login.LoginScreen
-import com.ayukrisna.skinsift.view.ui.screen.preference.AddPreferenceScreen
-import com.ayukrisna.skinsift.view.ui.screen.preference.PreferenceScreen
+import com.ayukrisna.skinsift.view.ui.screen.notes.AddNoteScreen
 import com.ayukrisna.skinsift.view.ui.screen.product.detailproduct.ProductDetailScreen
 import com.ayukrisna.skinsift.view.ui.screen.profile.ProfileScreen
 import com.ayukrisna.skinsift.view.ui.screen.auth.signup.SignupScreen
+import com.ayukrisna.skinsift.view.ui.screen.notes.listnotes.NotesScreen
 import com.ayukrisna.skinsift.view.ui.screen.product.filterproduct.ProductFilterScreen
 import com.ayukrisna.skinsift.view.ui.screen.product.listproduct.ProductScreen
 
@@ -48,6 +47,7 @@ fun NavGraph (
     ) {
         authNavGraph(navController, paddingValues)
         homeNavGraph(navController, paddingValues)
+        notesNavGraph(navController, paddingValues)
         assessNavGraph(navController, paddingValues)
         dictionaryNavGraph(navController, paddingValues)
         productNavGraph(navController, paddingValues)
@@ -94,28 +94,38 @@ fun NavGraphBuilder.homeNavGraph(
         composable<HomeScreen.Home> {
             HomeScreen(
                 paddingValues = paddingValues,
-                onNavigateToPreference = {
-                    navController.navigate(HomeScreen.Preference)
+                onNavigateToNotes = {
+                    navController.navigate(NotesScreen.Notes)
                 },
                 onNavigateToAssessment = {
                     navController.navigate(AssessmentScreen.Start)
                 },
             )
         }
-        composable<HomeScreen.Preference> {
-            PreferenceScreen(
+    }
+}
+
+fun NavGraphBuilder.notesNavGraph(
+    navController: NavHostController,
+    paddingValues: PaddingValues,
+) {
+    navigation<RootScreen.NotesNav>(
+        startDestination = NotesScreen.Notes
+    ) {
+        composable<NotesScreen.Notes> {
+            NotesScreen(
                 paddingValues = paddingValues,
                 onNavigateToDetail = {
                     navController.navigate(DictionaryScreen.Detail)
                 },
                 onNavigateToAdd = {
-                    navController.navigate(HomeScreen.AddPreference)
+                    navController.navigate(NotesScreen.AddNote)
                 },
                 onBackClick = { navController.popBackStack() }
             )
         }
-        composable<HomeScreen.AddPreference> {
-            AddPreferenceScreen(
+        composable<NotesScreen.AddNote> {
+            AddNoteScreen(
                 paddingValues = paddingValues,
                 onBackClick = { navController.popBackStack() }
             )

@@ -1,22 +1,22 @@
-package com.ayukrisna.skinsift.data.remote.response
+package com.ayukrisna.skinsift.data.remote.response.auth
 
 import com.google.gson.annotations.SerializedName
 
 data class RegisterResponse(
 
-	@field:SerializedName("status_code")
+    @field:SerializedName("status_code")
 	val statusCode: Int? = null,
 
-	@field:SerializedName("data")
+    @field:SerializedName("data")
 	val data: Data? = null,
 
-	@field:SerializedName("error")
+    @field:SerializedName("error")
 	val error: Boolean? = null,
 
-	@field:SerializedName("message")
+    @field:SerializedName("message")
 	val message: String? = null,
 
-	@field:SerializedName("detail")
+    @field:SerializedName("detail")
 	val detail: String? = null
 )
 

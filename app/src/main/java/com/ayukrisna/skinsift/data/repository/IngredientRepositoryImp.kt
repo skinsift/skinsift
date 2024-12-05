@@ -2,9 +2,9 @@ package com.ayukrisna.skinsift.data.repository
 
 import com.ayukrisna.skinsift.data.local.pref.UserPreference
 import com.ayukrisna.skinsift.data.remote.request.SearchIngredientRequest
-import com.ayukrisna.skinsift.data.remote.response.DetailIngredientsResponse
-import com.ayukrisna.skinsift.data.remote.response.FilterIngreResponse
-import com.ayukrisna.skinsift.data.remote.response.IngredientsResponse
+import com.ayukrisna.skinsift.data.remote.response.ingredients.DetailIngredientsResponse
+import com.ayukrisna.skinsift.data.remote.response.ingredients.FilterIngreResponse
+import com.ayukrisna.skinsift.data.remote.response.ingredients.IngredientsResponse
 import com.ayukrisna.skinsift.data.remote.retrofit.ApiConfig
 import com.ayukrisna.skinsift.domain.model.UserModel
 import com.ayukrisna.skinsift.domain.repository.IngredientRepository
@@ -12,7 +12,7 @@ import com.google.gson.Gson
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.first
 
-class IngredientRepositoryImp (private val userPreference: UserPreference) : IngredientRepository {
+class IngredientRepositoryImp(private val userPreference: UserPreference) : IngredientRepository {
     override fun getSession(): Flow<UserModel> {
         return userPreference.getSession()
     }

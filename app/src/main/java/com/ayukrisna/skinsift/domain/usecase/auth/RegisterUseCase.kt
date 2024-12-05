@@ -1,6 +1,6 @@
 package com.ayukrisna.skinsift.domain.usecase.auth
 
-import com.ayukrisna.skinsift.data.remote.response.RegisterResponse
+import com.ayukrisna.skinsift.data.remote.response.auth.RegisterResponse
 import com.ayukrisna.skinsift.domain.repository.UserRepository
 import com.ayukrisna.skinsift.util.Result
 

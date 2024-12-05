@@ -1,4 +1,4 @@
-package com.ayukrisna.skinsift.view.ui.screen.preference
+package com.ayukrisna.skinsift.view.ui.screen.notes
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
@@ -11,9 +11,6 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.foundation.text.input.TextFieldLineLimits
-import androidx.compose.foundation.text.input.rememberTextFieldState
-import androidx.compose.foundation.text.input.setTextAndPlaceCursorAtEnd
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.KeyboardArrowRight
 import androidx.compose.material3.DropdownMenuItem
@@ -40,7 +37,7 @@ import androidx.compose.ui.unit.dp
 import com.ayukrisna.skinsift.view.ui.component.CenterAppBar
 
 @Composable
-fun AddPreferenceScreen(
+fun AddNoteScreen(
     paddingValues: PaddingValues,
     onBackClick: () -> Unit,
     modifier: Modifier = Modifier

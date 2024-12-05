@@ -1,19 +1,20 @@
-package com.ayukrisna.skinsift.domain.usecase.product
+package com.ayukrisna.skinsift.domain.usecase.notes
 
+import com.ayukrisna.skinsift.data.remote.response.notes.Note
 import com.ayukrisna.skinsift.data.remote.response.product.ProductListItem
-import com.ayukrisna.skinsift.domain.repository.ProductRepository
+import com.ayukrisna.skinsift.domain.repository.NotesRepository
 import com.ayukrisna.skinsift.util.Result
 
-class ProductUseCase (private val productRepository: ProductRepository) {
-    suspend fun execute(): Result<List<ProductListItem>> {
+class NotesUseCase(private val notesRepository: NotesRepository) {
+    suspend fun execute(): Result<List<Note?>> {
         return try {
-            val response = productRepository.getProducts()
+            val response = notesRepository.getNotes()
             if (response.error == false) {
-                val getProductResults = response.productList?.filterNotNull()
+                val getProductResults = response.list
                 if (getProductResults != null) {
                     Result.Success(getProductResults)
                 } else {
-                    Result.Error("List Product is null")
+                    Result.Error("Notes is null")
                 }
             } else {
                 Result.Error(response.message ?: "Unknown error occurred")

@@ -2,7 +2,7 @@ package com.ayukrisna.skinsift.view.ui.screen.product.detailproduct
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.ayukrisna.skinsift.data.remote.response.DetailProduct
+import com.ayukrisna.skinsift.data.remote.response.product.DetailProduct
 import com.ayukrisna.skinsift.domain.usecase.product.DetailProductUseCase
 import com.ayukrisna.skinsift.util.Result
 import kotlinx.coroutines.flow.MutableStateFlow

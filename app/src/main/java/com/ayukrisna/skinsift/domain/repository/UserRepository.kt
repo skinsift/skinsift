@@ -1,7 +1,7 @@
 package com.ayukrisna.skinsift.domain.repository
 
-import com.ayukrisna.skinsift.data.remote.response.LoginResponse
-import com.ayukrisna.skinsift.data.remote.response.RegisterResponse
+import com.ayukrisna.skinsift.data.remote.response.auth.LoginResponse
+import com.ayukrisna.skinsift.data.remote.response.auth.RegisterResponse
 import com.ayukrisna.skinsift.domain.model.UserModel
 import kotlinx.coroutines.flow.Flow
 

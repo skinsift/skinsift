@@ -7,7 +7,6 @@ import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.calculateStartPadding
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.imePadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.requiredSize
 import androidx.compose.material3.Button
@@ -31,7 +30,7 @@ import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import com.ayukrisna.skinsift.R
-import com.ayukrisna.skinsift.data.remote.response.RegisterResponse
+import com.ayukrisna.skinsift.data.remote.response.auth.RegisterResponse
 import com.ayukrisna.skinsift.view.ui.component.CustomTextField
 import com.ayukrisna.skinsift.view.ui.theme.SkinSiftTheme
 import org.koin.androidx.compose.koinViewModel

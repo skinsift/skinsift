@@ -42,7 +42,7 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
 import com.ayukrisna.skinsift.R
-import com.ayukrisna.skinsift.data.remote.response.ProductListItem
+import com.ayukrisna.skinsift.data.remote.response.product.ProductListItem
 import com.ayukrisna.skinsift.view.ui.component.AppBar
 import org.koin.androidx.compose.koinViewModel
 import com.ayukrisna.skinsift.util.Result

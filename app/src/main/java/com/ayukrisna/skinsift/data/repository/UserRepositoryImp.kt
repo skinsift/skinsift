@@ -3,8 +3,8 @@ package com.ayukrisna.skinsift.data.repository
 import com.ayukrisna.skinsift.data.local.pref.UserPreference
 import com.ayukrisna.skinsift.data.remote.request.LoginRequest
 import com.ayukrisna.skinsift.data.remote.request.RegisterRequest
-import com.ayukrisna.skinsift.data.remote.response.LoginResponse
-import com.ayukrisna.skinsift.data.remote.response.RegisterResponse
+import com.ayukrisna.skinsift.data.remote.response.auth.LoginResponse
+import com.ayukrisna.skinsift.data.remote.response.auth.RegisterResponse
 import com.ayukrisna.skinsift.data.remote.retrofit.ApiConfig
 import com.ayukrisna.skinsift.domain.model.UserModel
 import com.ayukrisna.skinsift.domain.repository.UserRepository

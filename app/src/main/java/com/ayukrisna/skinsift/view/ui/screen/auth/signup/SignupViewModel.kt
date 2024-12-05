@@ -7,7 +7,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.ayukrisna.skinsift.data.remote.response.RegisterResponse
+import com.ayukrisna.skinsift.data.remote.response.auth.RegisterResponse
 import com.ayukrisna.skinsift.domain.usecase.auth.RegisterUseCase
 import com.ayukrisna.skinsift.domain.usecase.validation.ValidateEmailUseCase
 import com.ayukrisna.skinsift.domain.usecase.validation.ValidatePasswordUseCase

@@ -1,8 +1,8 @@
 package com.ayukrisna.skinsift.domain.repository
 
-import com.ayukrisna.skinsift.data.remote.response.DetailProductResponse
-import com.ayukrisna.skinsift.data.remote.response.FilterProductResponse
-import com.ayukrisna.skinsift.data.remote.response.ProductResponse
+import com.ayukrisna.skinsift.data.remote.response.product.DetailProductResponse
+import com.ayukrisna.skinsift.data.remote.response.product.FilterProductResponse
+import com.ayukrisna.skinsift.data.remote.response.product.ProductResponse
 import com.ayukrisna.skinsift.domain.model.UserModel
 import kotlinx.coroutines.flow.Flow
 

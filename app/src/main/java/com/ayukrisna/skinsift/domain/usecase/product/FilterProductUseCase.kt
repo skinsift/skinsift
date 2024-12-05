@@ -1,7 +1,6 @@
 package com.ayukrisna.skinsift.domain.usecase.product
 
-import com.ayukrisna.skinsift.data.remote.response.Filter
-import com.ayukrisna.skinsift.data.remote.response.ProductFilter
+import com.ayukrisna.skinsift.data.remote.response.product.ProductFilter
 import com.ayukrisna.skinsift.domain.repository.ProductRepository
 import com.ayukrisna.skinsift.util.Result
 

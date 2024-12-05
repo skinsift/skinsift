@@ -1,5 +1,6 @@
-package com.ayukrisna.skinsift.view.ui.screen.preference
+package com.ayukrisna.skinsift.view.ui.screen.notes.listnotes
 
+import android.widget.Toast
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -23,6 +24,8 @@ import androidx.compose.material3.Tab
 import androidx.compose.material3.TabRow
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.remember
@@ -31,28 +34,41 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalLayoutDirection
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import com.ayukrisna.skinsift.R
-import com.ayukrisna.skinsift.domain.model.IngredientModel
+import com.ayukrisna.skinsift.data.remote.response.ingredients.IngredientListItem
+import com.ayukrisna.skinsift.data.remote.response.notes.Note
+import com.ayukrisna.skinsift.util.Result
 import com.ayukrisna.skinsift.view.ui.component.CenterAppBar
+import com.ayukrisna.skinsift.view.ui.component.LoadingProgress
 import com.ayukrisna.skinsift.view.ui.screen.dictionary.listdictionary.IngredientsItem
+import org.koin.androidx.compose.koinViewModel
 
 @Composable
-fun PreferenceScreen (
+fun NotesScreen (
     paddingValues: PaddingValues,
     onNavigateToDetail: () -> Unit,
     onNavigateToAdd: () -> Unit,
     onBackClick: () -> Unit,
+    notesViewModel: NotesViewModel = koinViewModel(),
     modifier: Modifier = Modifier
 ) {
     var selectedTabIndex by remember { mutableIntStateOf(0) }
     val tabs = listOf("Suka", "Tidak Suka")
 
+    val notesState by notesViewModel.notesState.collectAsState()
+    val context = LocalContext.current
+
+    LaunchedEffect (Unit) {
+        notesViewModel.fetchNotes()
+    }
+
     Scaffold (
         topBar = {
-            PreferenceAppBar("Bahan Tersimpan", onBackClick)
+            PreferenceAppBar("Catatan Bahan", onBackClick)
         },
         floatingActionButton = {
             AddPreferenceButton(onNavigateToAdd)
@@ -77,35 +93,62 @@ fun PreferenceScreen (
                         )
                     }
                 }
-//                when (selectedTabIndex) {
-//                    0 -> LikeContent(dummyDictionaryList, onNavigateToDetail)
-//                    1 -> DislikeContent()
-//                }
+
+                when (notesState) {
+                    is Result.Idle -> Text("Idle State")
+                    is Result.Loading -> LoadingProgress()
+                    is Result.Success -> {
+                        val notes = (notesState as Result.Success<List<Note?>>).data
+                        when (selectedTabIndex) {
+                            0 -> {
+                                val likedNotes = notes.filter { it?.category == "Suka" }
+                                if (likedNotes.isEmpty()) {
+                                    NullPreference()
+                                } else {
+                                    FilledPreference(likedNotes, onNavigateToDetail)
+                                }
+                            }
+                            1 -> {
+                                val dislikedNotes = notes.filter { it?.category == "Tidak Suka" }
+                                if (dislikedNotes.isEmpty()) {
+                                    NullPreference()
+                                } else {
+                                    FilledPreference(dislikedNotes, onNavigateToDetail)
+                                }
+                            }
+                        }
+                    }
+                    is Result.Error -> {
+                        val error = (notesState as Result.Error).error
+                        if (error == "No notes found for user") {
+                            NullPreference()
+                        } else {
+                            Text("Error: $error")
+                            Toast.makeText(context, "Error: $error", Toast.LENGTH_LONG).show()
+                        }
+                    }
+                }
             }
         }
     )
 }
 
 @Composable
-fun LikeContent(lists: List<IngredientModel>, onNavigateToDetail: () -> Unit) {
-    FilledPreference(lists, onNavigateToDetail)
-}
-
-@Composable
-fun DislikeContent() {
-    NullPreference()
-}
-
-@Composable
-fun FilledPreference(lists: List<IngredientModel>, onNavigateToDetail: () -> Unit) {
+fun FilledPreference(lists: List<Note?>, onNavigateToDetail: () -> Unit) {
     LazyColumn {
-//        items(lists) { item ->
-//            IngredientsItem(item) { onNavigateToDetail() }
-//            Spacer(modifier = Modifier.height(10.dp))
-//        }
+        items(lists) { item ->
+            val ingredient : IngredientListItem =
+                IngredientListItem(
+                    idIngredients = item!!.id!!,
+                    name = item.name,
+                    rating = item.rating,
+                    category = item.category,
+                )
+            IngredientsItem(ingredient) { onNavigateToDetail() }
+            Spacer(modifier = Modifier.height(10.dp))
+        }
     }
 }
-
 
 @Composable
 fun NullPreference() {
@@ -151,12 +194,3 @@ fun AddPreferenceButton(onClick: () -> Unit) {
         text = { Text("Tambah Notes") },
     )
 }
-
-//@Preview (showBackground = true)
-//@Composable
-//fun PreferenceScreenPreview() {
-//    SkinSiftTheme {
-//        PreferenceScreen()
-//    }
-//}
-//

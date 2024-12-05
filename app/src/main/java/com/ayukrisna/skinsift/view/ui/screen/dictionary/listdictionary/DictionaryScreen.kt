@@ -36,7 +36,6 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.graphics.painter.Painter
-import androidx.compose.ui.input.key.KeyEvent
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalLayoutDirection
 import androidx.compose.ui.text.input.ImeAction
@@ -45,14 +44,10 @@ import androidx.compose.ui.unit.dp
 import com.ayukrisna.skinsift.view.ui.component.AppBar
 import com.ayukrisna.skinsift.view.ui.component.CustomTextField
 import com.ayukrisna.skinsift.view.ui.component.getRatingColor
-import com.ayukrisna.skinsift.data.remote.response.IngredientListItem
+import com.ayukrisna.skinsift.data.remote.response.ingredients.IngredientListItem
 import org.koin.androidx.compose.koinViewModel
 import com.ayukrisna.skinsift.util.Result
 import com.ayukrisna.skinsift.view.ui.component.LoadingProgress
-import com.ayukrisna.skinsift.view.ui.screen.dictionary.filterdictionary.DictFilterViewModel
-import androidx.compose.ui.input.key.Key
-import androidx.compose.ui.input.key.key
-import androidx.compose.ui.input.key.onKeyEvent
 
 @Composable
 fun DictionaryScreen(

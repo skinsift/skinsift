@@ -1,12 +1,10 @@
 package com.ayukrisna.skinsift.data.repository
 
 import com.ayukrisna.skinsift.data.local.pref.UserPreference
-import com.ayukrisna.skinsift.data.remote.request.SearchIngredientRequest
 import com.ayukrisna.skinsift.data.remote.request.SearchProductRequest
-import com.ayukrisna.skinsift.data.remote.response.DetailProductResponse
-import com.ayukrisna.skinsift.data.remote.response.FilterProductResponse
-import com.ayukrisna.skinsift.data.remote.response.IngredientsResponse
-import com.ayukrisna.skinsift.data.remote.response.ProductResponse
+import com.ayukrisna.skinsift.data.remote.response.product.DetailProductResponse
+import com.ayukrisna.skinsift.data.remote.response.product.FilterProductResponse
+import com.ayukrisna.skinsift.data.remote.response.product.ProductResponse
 import com.ayukrisna.skinsift.data.remote.retrofit.ApiConfig
 import com.ayukrisna.skinsift.domain.model.UserModel
 import com.ayukrisna.skinsift.domain.repository.ProductRepository

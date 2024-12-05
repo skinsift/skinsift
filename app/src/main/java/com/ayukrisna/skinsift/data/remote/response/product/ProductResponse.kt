@@ -1,4 +1,4 @@
-package com.ayukrisna.skinsift.data.remote.response
+package com.ayukrisna.skinsift.data.remote.response.product
 
 import com.google.gson.annotations.SerializedName
 

@@ -35,7 +35,7 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalLayoutDirection
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
-import com.ayukrisna.skinsift.data.remote.response.Filter
+import com.ayukrisna.skinsift.data.remote.response.ingredients.Filter
 import com.ayukrisna.skinsift.view.ui.component.CenterAppBar
 import org.koin.androidx.compose.koinViewModel
 import com.ayukrisna.skinsift.util.Result

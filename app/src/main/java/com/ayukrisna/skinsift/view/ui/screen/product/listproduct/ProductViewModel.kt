@@ -2,7 +2,7 @@ package com.ayukrisna.skinsift.view.ui.screen.product.listproduct
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.ayukrisna.skinsift.data.remote.response.ProductListItem
+import com.ayukrisna.skinsift.data.remote.response.product.ProductListItem
 import com.ayukrisna.skinsift.domain.usecase.product.ProductUseCase
 import com.ayukrisna.skinsift.domain.usecase.product.SearchProductUseCase
 import com.ayukrisna.skinsift.util.Result

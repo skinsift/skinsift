@@ -2,7 +2,7 @@ package com.ayukrisna.skinsift.view.ui.screen.dictionary.listdictionary
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.ayukrisna.skinsift.data.remote.response.IngredientListItem
+import com.ayukrisna.skinsift.data.remote.response.ingredients.IngredientListItem
 import com.ayukrisna.skinsift.domain.usecase.ingredient.IngredientsUseCase
 import com.ayukrisna.skinsift.domain.usecase.ingredient.SearchIngredientUseCase
 import kotlinx.coroutines.flow.MutableStateFlow

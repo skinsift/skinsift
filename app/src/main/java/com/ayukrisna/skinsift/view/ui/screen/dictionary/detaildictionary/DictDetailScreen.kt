@@ -33,7 +33,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import com.ayukrisna.skinsift.R
-import com.ayukrisna.skinsift.data.remote.response.Ingredient
+import com.ayukrisna.skinsift.data.remote.response.ingredients.Ingredient
 import com.ayukrisna.skinsift.view.ui.component.CenterAppBar
 import org.koin.androidx.compose.koinViewModel
 import com.ayukrisna.skinsift.util.Result
