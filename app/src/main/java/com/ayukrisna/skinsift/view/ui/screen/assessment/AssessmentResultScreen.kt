@@ -2,10 +2,8 @@ package com.ayukrisna.skinsift.view.ui.screen.assessment
 
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
-import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.calculateStartPadding
 import androidx.compose.foundation.layout.fillMaxHeight
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
@@ -13,10 +11,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalLayoutDirection
 import androidx.compose.ui.unit.dp
 import com.ayukrisna.skinsift.domain.model.ProductModel
-import com.ayukrisna.skinsift.view.ui.component.AssessmentNavButton
-import com.ayukrisna.skinsift.view.ui.component.AssessmentQuestion
-import com.ayukrisna.skinsift.view.ui.screen.preference.ChooseIngredient
-import com.ayukrisna.skinsift.view.ui.screen.product.ListProducts
+import com.ayukrisna.skinsift.view.ui.screen.product.listproduct.ListProducts
 
 @Composable
 fun AssessmentResultScreen(
@@ -75,7 +70,7 @@ fun AssessmentResultScreen(
                         bottom = innerPadding.calculateBottomPadding()
                     ),
             ) {
-                ListProducts(skincareProducts,) {onNavigateToDetail()}
+//                ListProducts(skincareProducts,) {onNavigateToDetail()}
             }
         },
     )

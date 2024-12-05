@@ -1,21 +1,22 @@
-package com.ayukrisna.skinsift.view.ui.screen.product
+package com.ayukrisna.skinsift.view.ui.screen.product.listproduct
 
-import androidx.compose.foundation.Image
+import android.widget.Toast
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.ExperimentalLayoutApi
-import androidx.compose.foundation.layout.FlowColumn
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.calculateStartPadding
-import androidx.compose.foundation.layout.fillMaxHeight
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.lazy.grid.GridCells
+import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
+import androidx.compose.foundation.lazy.grid.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
@@ -24,59 +25,40 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalLayoutDirection
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
-import com.ayukrisna.skinsift.R
-import com.ayukrisna.skinsift.domain.model.ProductModel
+import com.ayukrisna.skinsift.data.remote.response.ProductListItem
 import com.ayukrisna.skinsift.view.ui.component.AppBar
-import com.ayukrisna.skinsift.view.ui.theme.SkinSiftTheme
+import org.koin.androidx.compose.koinViewModel
+import com.ayukrisna.skinsift.util.Result
+import com.ayukrisna.skinsift.view.ui.component.LoadingProgress
 
 @OptIn(ExperimentalLayoutApi::class)
 @Composable
 fun ProductScreen (
+    productViewModel: ProductViewModel = koinViewModel(),
     paddingValues: PaddingValues,
     onNavigateToDetail: () -> Unit,
     modifier: Modifier = Modifier
 ){
-    val skincareProducts = listOf(
-        ProductModel(
-            id = 1,
-            name = "Hydrating Face Cream",
-            brand = "GlowSkin",
-            description = "A deeply hydrating cream that nourishes your skin and provides 24-hour moisture.",
-            imageUrl = "https://storage.googleapis.com/skinsift/products/acnes_creamywash.png"
-        ),
-        ProductModel(
-            id = 2,
-            name = "Brightening Serum",
-            brand = "RadiantCare",
-            description = "A serum infused with Vitamin C to brighten your skin and even out skin tone.",
-            imageUrl = "https://storage.googleapis.com/skinsift/products/acnes_creamywash.png"
-        ),
-        ProductModel(
-            id = 3,
-            name = "Sunscreen SPF 50",
-            brand = "SunShield",
-            description = "Lightweight, non-greasy sunscreen that protects your skin from harmful UV rays.",
-            imageUrl = "https://storage.googleapis.com/skinsift/products/acnes_creamywash.png"
-        ),
-        ProductModel(
-            id = 4,
-            name = "Purifying Clay Mask",
-            brand = "PureNature",
-            description = "A detoxifying mask that removes impurities and minimizes pores.",
-            imageUrl = "https://storage.googleapis.com/skinsift/products/acnes_creamywash.png"
-        ),
-    )
+    val productsState by productViewModel.productsState.collectAsState()
+    val context = LocalContext.current
+
+    LaunchedEffect(Unit) {
+        productViewModel.fetchProducts()
+    }
+
 
     Scaffold(
         topBar = {
@@ -85,7 +67,7 @@ fun ProductScreen (
         content = { innerPadding ->
             // Padding values should be applied if needed
             Column(modifier = Modifier
-                .fillMaxHeight()
+                .fillMaxSize()
                 .padding(
                     top = innerPadding.calculateTopPadding(),
                     start = paddingValues.calculateStartPadding(LocalLayoutDirection.current),
@@ -93,7 +75,23 @@ fun ProductScreen (
                     bottom = paddingValues.calculateBottomPadding()
                 )
             ) {
-                ListProducts(skincareProducts,) {onNavigateToDetail()}
+                when (productsState) {
+                    is Result.Idle -> Text("Idle State")
+                    is Result.Loading -> LoadingProgress()
+                    is Result.Success -> {
+                        val products: List<ProductListItem> = (productsState as Result.Success<List<ProductListItem>>).data
+                        if (products.isNotEmpty()) {
+                            ListProducts(products) {onNavigateToDetail()}
+                        } else {
+                            Text("Yah, belum ada produk di sini!")
+                        }
+                    }
+                    is Result.Error -> {
+                        val error = (productsState as Result.Error).error
+                        Text("Error: $error")
+                        Toast.makeText(context, "Error: $error", Toast.LENGTH_LONG).show()
+                    }
+                }
             }
         }
     )
@@ -101,20 +99,23 @@ fun ProductScreen (
 
 @OptIn(ExperimentalLayoutApi::class)
 @Composable
-fun ListProducts(skincareProducts: List<ProductModel>, onNavigateToDetail: () -> Unit) {
-    FlowColumn(
+fun ListProducts(skincareProducts: List<ProductListItem>, onNavigateToDetail: () -> Unit) {
+    LazyVerticalGrid (
+        columns = GridCells.Fixed(2),
+        contentPadding = PaddingValues(8.dp)
     ) {
-        skincareProducts.forEach() { product ->
+        items(skincareProducts) { product ->
             Box(
                 modifier = Modifier
                     .padding(2.dp)
             ) {
                 SkincareCard(
-                    product.name,
-                    product.brand,
-                    product.description,
+                    product.productName ?: "Belum ada nama",
+                    product.brand ?: "Belum ada brand",
+                    product.description ?: "Belum ada deskripsi",
                     product.imageUrl,
                     {onNavigateToDetail()}
+
                 )
             }
         }
@@ -139,7 +140,8 @@ fun SkincareCard(
     Card(
         modifier = Modifier
             .clickable { onNavigateToDetail() }
-            .width(180.dp),
+            .width(180.dp)
+            .height(240.dp),
 //            .padding(0.dp, 0.dp, 8.dp, 8.dp),
         shape = RoundedCornerShape(16.dp),
         colors = CardDefaults.cardColors(
@@ -194,21 +196,3 @@ fun SkincareCard(
         }
     }
 }
-
-//@Preview(showBackground = true)
-//@Composable
-//fun SkincareCardPreview(modifier: Modifier = Modifier) {
-//    SkincareCard(
-//        "Nama Skincare",
-//        "Merk Skincare",
-//        "Ini deskripsi singkat produknya"
-//    )
-//}
-
-//@Preview(showBackground = true)
-//@Composable
-//fun ProductScreenPreview() {
-//    SkinSiftTheme {
-//        ProductScreen()
-//    }
-//}

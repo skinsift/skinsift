@@ -65,7 +65,6 @@ fun DictionaryScreen(
     modifier : Modifier = Modifier
 ) {
     val ingredientsState by dictViewModel.ingredientsState.collectAsState()
-
     val context = LocalContext.current
 
     LaunchedEffect(Unit) {

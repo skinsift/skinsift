@@ -7,6 +7,7 @@ import com.ayukrisna.skinsift.data.remote.response.DetailIngredientsResponse
 import com.ayukrisna.skinsift.data.remote.response.FilterIngreResponse
 import com.ayukrisna.skinsift.data.remote.response.IngredientsResponse
 import com.ayukrisna.skinsift.data.remote.response.LoginResponse
+import com.ayukrisna.skinsift.data.remote.response.ProductResponse
 import com.ayukrisna.skinsift.data.remote.response.RegisterResponse
 import retrofit2.Response
 import retrofit2.http.Body
@@ -42,4 +43,7 @@ interface ApiService {
     suspend fun searchIngredient(
         @Body request: SearchIngredientRequest
     ) : Response<IngredientsResponse>
+
+    @GET("product")
+    suspend fun getProducts(): Response<ProductResponse>
 }

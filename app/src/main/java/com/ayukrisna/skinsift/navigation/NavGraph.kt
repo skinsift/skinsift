@@ -27,7 +27,7 @@ import com.ayukrisna.skinsift.view.ui.screen.auth.login.LoginScreen
 import com.ayukrisna.skinsift.view.ui.screen.preference.AddPreferenceScreen
 import com.ayukrisna.skinsift.view.ui.screen.preference.PreferenceScreen
 import com.ayukrisna.skinsift.view.ui.screen.product.ProductDetailScreen
-import com.ayukrisna.skinsift.view.ui.screen.product.ProductScreen
+import com.ayukrisna.skinsift.view.ui.screen.product.listproduct.ProductScreen
 import com.ayukrisna.skinsift.view.ui.screen.profile.ProfileScreen
 import com.ayukrisna.skinsift.view.ui.screen.auth.signup.SignupScreen
 
