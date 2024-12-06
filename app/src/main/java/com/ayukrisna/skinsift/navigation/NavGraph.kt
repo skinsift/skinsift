@@ -120,13 +120,16 @@ fun NavGraphBuilder.notesNavGraph(
                     navController.navigate(DictionaryScreen.Detail)
                 },
                 onNavigateToAdd = {
-                    navController.navigate(NotesScreen.AddNote)
+                    navController.navigate(NotesScreen.AddNote())
                 },
                 onBackClick = { navController.popBackStack() }
             )
         }
-        composable<NotesScreen.AddNote> {
+        composable<NotesScreen.AddNote> { entry ->
+            val note = entry.toRoute<NotesScreen.AddNote>()
             AddNoteScreen(
+                idIngredients = note.idIngredient,
+                name = note.name,
                 paddingValues = paddingValues,
                 onSearchIngredientNote = {
                     navController.navigate(NotesScreen.Search)
@@ -137,6 +140,11 @@ fun NavGraphBuilder.notesNavGraph(
         composable<NotesScreen.Search> {
             SearchNoteScreen(
                 paddingValues = paddingValues,
+                onNavigateToAddNote = { idIngredient, name ->
+                    navController.navigate(NotesScreen.AddNote(idIngredient, name)) {
+                        popUpTo(NotesScreen.Notes) { inclusive = false }
+                    }
+                },
                 onBackClick = { navController.popBackStack() }
             )
         }

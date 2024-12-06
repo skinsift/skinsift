@@ -20,6 +20,7 @@ import com.ayukrisna.skinsift.domain.usecase.auth.RegisterUseCase
 import com.ayukrisna.skinsift.domain.usecase.ingredient.DetailIngredientUseCase
 import com.ayukrisna.skinsift.domain.usecase.ingredient.FilterIngredientUseCase
 import com.ayukrisna.skinsift.domain.usecase.ingredient.SearchIngredientUseCase
+import com.ayukrisna.skinsift.domain.usecase.notes.AddNoteUseCase
 import com.ayukrisna.skinsift.domain.usecase.notes.NotesUseCase
 import com.ayukrisna.skinsift.domain.usecase.product.DetailProductUseCase
 import com.ayukrisna.skinsift.domain.usecase.product.FilterProductUseCase
@@ -28,9 +29,10 @@ import com.ayukrisna.skinsift.domain.usecase.product.SearchProductUseCase
 import com.ayukrisna.skinsift.view.ui.screen.dictionary.detaildictionary.DictDetailViewModel
 import com.ayukrisna.skinsift.view.ui.screen.dictionary.filterdictionary.DictFilterViewModel
 import com.ayukrisna.skinsift.view.ui.screen.dictionary.listdictionary.DictionaryViewModel
+import com.ayukrisna.skinsift.view.ui.screen.notes.addnotes.AddNoteViewModel
 import com.ayukrisna.skinsift.view.ui.screen.notes.listnotes.NotesViewModel
+import com.ayukrisna.skinsift.view.ui.screen.notes.searchnotes.SearchNoteViewModel
 import com.ayukrisna.skinsift.view.ui.screen.product.detailproduct.DetailProductViewModel
-import com.ayukrisna.skinsift.view.ui.screen.product.filterproduct.ProductFilterScreen
 import com.ayukrisna.skinsift.view.ui.screen.product.filterproduct.ProductFilterViewModel
 import com.ayukrisna.skinsift.view.ui.screen.product.listproduct.ProductViewModel
 import org.koin.androidx.viewmodel.dsl.viewModel
@@ -72,6 +74,7 @@ val useCaseModules = module {
     single { SearchProductUseCase(get()) }
 
     single { NotesUseCase(get()) }
+    single { AddNoteUseCase(get()) }
 }
 
 //View Model
@@ -88,4 +91,6 @@ val viewModelModules = module {
     viewModel{ DetailProductViewModel(get()) }
 
     viewModel{ NotesViewModel(get()) }
+    viewModel{ SearchNoteViewModel() }
+    viewModel{ AddNoteViewModel(get()) }
 }

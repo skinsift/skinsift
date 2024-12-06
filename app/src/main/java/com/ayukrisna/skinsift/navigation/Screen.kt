@@ -1,5 +1,6 @@
 package com.ayukrisna.skinsift.navigation
 
+import com.ayukrisna.skinsift.data.remote.response.ingredients.IngredientListItem
 import kotlinx.serialization.Serializable
 
 @Serializable
@@ -42,7 +43,7 @@ sealed class NotesScreen{
     data object Notes : NotesScreen()
 
     @Serializable
-    data object AddNote : NotesScreen()
+    data class AddNote(val idIngredient: Int? = null, val name: String? = null)
 
     @Serializable
     data object Search : NotesScreen()

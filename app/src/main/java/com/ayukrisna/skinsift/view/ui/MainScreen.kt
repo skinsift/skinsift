@@ -33,7 +33,7 @@ fun MainScreen() {
         AuthScreen.Login,
         AuthScreen.Signup,
         NotesScreen.Notes,
-        NotesScreen.AddNote,
+        NotesScreen.Search,
         AssessmentScreen.Start,
         AssessmentScreen.Skin,
         AssessmentScreen.Purpose,

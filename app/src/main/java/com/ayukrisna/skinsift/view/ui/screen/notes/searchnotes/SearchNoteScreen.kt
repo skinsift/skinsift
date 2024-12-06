@@ -1,8 +1,9 @@
 package com.ayukrisna.skinsift.view.ui.screen.notes.searchnotes
 
+import android.content.Context
 import android.widget.Toast
-import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
@@ -12,13 +13,13 @@ import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.RadioButton
 import androidx.compose.material3.Scaffold
@@ -30,12 +31,13 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clip
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalLayoutDirection
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
+import com.ayukrisna.skinsift.data.remote.response.ingredients.Ingredient
 import com.ayukrisna.skinsift.data.remote.response.ingredients.IngredientListItem
 import com.ayukrisna.skinsift.util.Result
 import com.ayukrisna.skinsift.view.ui.component.CenterAppBar
@@ -43,12 +45,15 @@ import com.ayukrisna.skinsift.view.ui.component.LoadingProgress
 import com.ayukrisna.skinsift.view.ui.component.getRatingColor
 import com.ayukrisna.skinsift.view.ui.screen.dictionary.listdictionary.DictionaryViewModel
 import com.ayukrisna.skinsift.view.ui.screen.dictionary.listdictionary.SearchBar
+import com.ayukrisna.skinsift.view.ui.screen.notes.addnotes.SavePreferenceFab
 import org.koin.androidx.compose.koinViewModel
 
 @Composable
 fun SearchNoteScreen(
     paddingValues: PaddingValues,
     dictionaryViewModel: DictionaryViewModel = koinViewModel(),
+    searchNotesViewModel: SearchNoteViewModel = koinViewModel(),
+    onNavigateToAddNote: (Int, String) -> Unit,
     onBackClick: () -> Unit,
     modifier: Modifier = Modifier
 ) {
@@ -63,6 +68,24 @@ fun SearchNoteScreen(
         topBar = {
             SearchNoteAppBar("Pilih Bahan Skincare", onBackClick)
         },
+        floatingActionButton = {
+            SaveIngredientFab (
+                context = context,
+                onClick = {
+                    val selectedIngredient = searchNotesViewModel.selectedIngredient.value
+
+                    if (selectedIngredient != null) {
+                        val idIngredients: Int = selectedIngredient.idIngredients
+                        val name: String = selectedIngredient.name!!
+
+                        onNavigateToAddNote(idIngredients, name)
+                    } else {
+                        (Toast.makeText(context, "Oops! Pilih dulu ingredientsnya!", Toast.LENGTH_LONG).show())
+                    }
+                }
+            )
+        },
+        floatingActionButtonPosition = androidx.compose.material3.FabPosition.Center,
         content = { innerPadding ->
             Column(modifier = Modifier
                 .fillMaxHeight()
@@ -86,7 +109,13 @@ fun SearchNoteScreen(
                     is Result.Success -> {
                         val ingredients: List<IngredientListItem> = (ingredientsState as Result.Success<List<IngredientListItem>>).data
                         if (ingredients.isNotEmpty()) {
-                            ChooseIngredient(ingredients)
+                            ChooseIngredient(
+                                ingredientList = ingredients,
+                                onSelectIngredient = { ingredient ->
+                                    searchNotesViewModel.selectIngredient(ingredient)
+                                },
+                                viewModel = searchNotesViewModel
+                            )
                         } else {
                             Text("Yah, belum ada bahan di sini!")
                         }
@@ -103,8 +132,10 @@ fun SearchNoteScreen(
 }
 
 @Composable
-fun ChooseIngredient(ingredientList: List<IngredientListItem>) {
-    var selectedItem by remember { mutableStateOf(ingredientList[0]) }
+fun ChooseIngredient(ingredientList: List<IngredientListItem>,
+                     onSelectIngredient: (IngredientListItem) -> Unit,
+                     viewModel: SearchNoteViewModel) {
+    val selectedItem by viewModel.selectedIngredient.collectAsState()
 
     LazyColumn(
         modifier = Modifier.fillMaxWidth()
@@ -114,31 +145,27 @@ fun ChooseIngredient(ingredientList: List<IngredientListItem>) {
             val ratingColor = item.rating?.let { getRatingColor(it) }
             Card (
                 modifier = Modifier
-                    .fillMaxWidth()
-                    .clip(shape = RoundedCornerShape(16.dp))
-                    .border(
-                        width = 0.5.dp,
-                        color = if (selectedItem == item) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.surfaceBright,
-                        shape = RoundedCornerShape(16.dp)
-                    )
-                    .clickable { selectedItem = item },
+                    .fillMaxWidth(),
                 colors = CardDefaults.cardColors(
                     containerColor =
                     if (isSelected) MaterialTheme.colorScheme.primaryContainer.copy(alpha = 0.4f)
-                    else MaterialTheme.colorScheme.surface
+                    else MaterialTheme.colorScheme.surfaceBright
                 ),
                 shape = RoundedCornerShape(16.dp),
-                elevation = CardDefaults.cardElevation(1.dp)
             ) {
                 Row(
                     modifier = Modifier
                         .fillMaxHeight()
+                        .clickable {
+                            onSelectIngredient(item) },
+                    verticalAlignment = Alignment.CenterVertically,
+                    horizontalArrangement = Arrangement.SpaceBetween
                 ) {
                     RadioButton(
-                        selected = selectedItem == item,
-                        onClick = { selectedItem = item }
+                        selected = isSelected,
+                        onClick = {
+                            onSelectIngredient(item)}
                     )
-                    Spacer(modifier = Modifier.width(4.dp))
                     Column(
                         modifier = Modifier
                             .fillMaxWidth()
@@ -186,4 +213,28 @@ fun SearchNoteAppBar(title: String, onBackClick: () -> Unit, ) {
         title = title,
         onBackClick = {onBackClick()}
     )
+}
+
+@Composable
+fun SaveIngredientFab(context: Context, onClick: () -> Unit) {
+    FloatingActionButton(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(horizontal = 16.dp),
+        onClick = { onClick() },
+        containerColor = MaterialTheme.colorScheme.primary,
+        contentColor = MaterialTheme.colorScheme.onPrimary,
+        shape = RoundedCornerShape(50)
+    ) {
+        Row(
+            verticalAlignment = Alignment.CenterVertically,
+            horizontalArrangement = Arrangement.spacedBy(8.dp),
+        ) {
+            Text(
+                text = "Simpan Catatan",
+                style = MaterialTheme.typography.labelLarge,
+                color = MaterialTheme.colorScheme.onPrimary
+            )
+        }
+    }
 }
