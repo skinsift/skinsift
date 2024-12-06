@@ -1,5 +1,6 @@
 package com.ayukrisna.skinsift.view.ui
 
+import android.util.Log
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.calculateEndPadding
 import androidx.compose.foundation.layout.calculateStartPadding
@@ -29,24 +30,36 @@ fun MainScreenPreview() {
 @Composable
 fun MainScreen() {
     val navController = rememberNavController()
-    val noBottomNavRoutes = listOf(
-        AuthScreen.Login,
-        AuthScreen.Signup,
-        NotesScreen.Notes,
-        NotesScreen.Search,
-        AssessmentScreen.Start,
-        AssessmentScreen.Skin,
-        AssessmentScreen.Purpose,
-        AssessmentScreen.Function,
-        AssessmentScreen.Allergy,
-        AssessmentScreen.Result,
-        DictionaryScreen.Filter,
-        ProductScreen.Filter
-    )
-
-    val argumentRoutes = setOf(
+//    val noBottomNavRoutes = listOf(
+//        AuthScreen.Login,
+//        AuthScreen.Signup,
+//        NotesScreen.Notes,
+//        NotesScreen.Search,
+//        AssessmentScreen.Start,
+//        AssessmentScreen.Skin,
+//        AssessmentScreen.Purpose,
+//        AssessmentScreen.Function,
+//        AssessmentScreen.Allergy,
+//        AssessmentScreen.Result,
+//        DictionaryScreen.Filter,
+//        ProductScreen.Filter
+//    )
+    val noBarRoutes = setOf(
+        "com.ayukrisna.skinsift.navigation.AuthScreen.Login",
+        "com.ayukrisna.skinsift.navigation.AuthScreen.Signup",
+        "com.ayukrisna.skinsift.navigation.NotesScreen.Notes",
+        "com.ayukrisna.skinsift.navigation.NotesScreen.Search",
+        "com.ayukrisna.skinsift.navigation.AssessmentScreen.Start",
+        "com.ayukrisna.skinsift.navigation.AssessmentScreen.Skin",
+        "com.ayukrisna.skinsift.navigation.AssessmentScreen.Purpose",
+        "com.ayukrisna.skinsift.navigation.AssessmentScreen.Function",
+        "com.ayukrisna.skinsift.navigation.AssessmentScreen.Allergy",
+        "com.ayukrisna.skinsift.navigation.AssessmentScreen.Result",
+        "com.ayukrisna.skinsift.navigation.DictionaryScreen.Filter",
+        "com.ayukrisna.skinsift.navigation.ProductScreen.Filter",
         "com.ayukrisna.skinsift.navigation.DictionaryScreen.Detail/{id}",
-        "com.ayukrisna.skinsift.navigation.ProductScreen.Detail/{id}"
+        "com.ayukrisna.skinsift.navigation.ProductScreen.Detail/{id}",
+        "com.ayukrisna.skinsift.navigation.NotesScreen.AddNote?idIngredient={idIngredient}&name={name}",
     )
 
     Scaffold(
@@ -55,10 +68,17 @@ fun MainScreen() {
             val currentDestination = navBackStackEntry?.destination
             val currentRoute = currentDestination?.route
 
-            val showBottomBar = noBottomNavRoutes.none {
-                if (currentDestination?.route == null) true
-                else (currentDestination.hasRoute(it::class) && currentRoute !in argumentRoutes)
-            }
+//            val showBottomBar = noBottomNavRoutes.none {
+//                if (currentDestination?.route == null) true
+//                else (currentDestination.hasRoute(it::class) && currentRoute !in argumentRoutes)
+//            }
+
+            val showBottomBar = currentRoute !in noBarRoutes
+
+
+            Log.d("Navigation", "Current route: $currentRoute \n Argument route: $noBarRoutes \n Is in argument: ${currentRoute !in noBarRoutes} \n Show bottom bar: $showBottomBar")
+            Log.d("Navigation", "If currentDestination?.route == null: ${currentDestination?.route == null}")
+
 
             if (showBottomBar) {
                 BottomNavigationBar(navController)
