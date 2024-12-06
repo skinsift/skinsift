@@ -22,3 +22,8 @@ data class SearchProductRequest(
     val kategori: List<String>? = null,
     val jenis_kulit: List<String>? = null,
 )
+
+data class AddNoteRequest(
+    val Id_Ingredients: Int,
+    val preference: String
+)

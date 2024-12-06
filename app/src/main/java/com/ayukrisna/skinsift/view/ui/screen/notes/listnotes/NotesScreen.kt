@@ -101,7 +101,7 @@ fun NotesScreen (
                         val notes = (notesState as Result.Success<List<Note?>>).data
                         when (selectedTabIndex) {
                             0 -> {
-                                val likedNotes = notes.filter { it?.category == "Suka" }
+                                val likedNotes = notes.filter { it?.preference == "Suka" }
                                 if (likedNotes.isEmpty()) {
                                     NullPreference()
                                 } else {
@@ -109,7 +109,7 @@ fun NotesScreen (
                                 }
                             }
                             1 -> {
-                                val dislikedNotes = notes.filter { it?.category == "Tidak Suka" }
+                                val dislikedNotes = notes.filter { it?.preference == "Tidak Suka" }
                                 if (dislikedNotes.isEmpty()) {
                                     NullPreference()
                                 } else {

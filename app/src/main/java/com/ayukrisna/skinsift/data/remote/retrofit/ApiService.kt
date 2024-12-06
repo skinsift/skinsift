@@ -1,5 +1,6 @@
 package com.ayukrisna.skinsift.data.remote.retrofit
 
+import com.ayukrisna.skinsift.data.remote.request.AddNoteRequest
 import com.ayukrisna.skinsift.data.remote.request.LoginRequest
 import com.ayukrisna.skinsift.data.remote.request.RegisterRequest
 import com.ayukrisna.skinsift.data.remote.request.SearchIngredientRequest
@@ -12,6 +13,7 @@ import com.ayukrisna.skinsift.data.remote.response.ingredients.IngredientsRespon
 import com.ayukrisna.skinsift.data.remote.response.auth.LoginResponse
 import com.ayukrisna.skinsift.data.remote.response.product.ProductResponse
 import com.ayukrisna.skinsift.data.remote.response.auth.RegisterResponse
+import com.ayukrisna.skinsift.data.remote.response.notes.AddNoteResponse
 import com.ayukrisna.skinsift.data.remote.response.notes.NotesResponse
 import retrofit2.Response
 import retrofit2.http.Body
@@ -64,4 +66,9 @@ interface ApiService {
 
     @GET("user/notes")
     suspend fun getNotes() : Response<NotesResponse>
+
+    @POST("user/notes")
+    suspend fun addNote(
+        @Body request: AddNoteRequest
+    ) : Response<AddNoteResponse>
 }

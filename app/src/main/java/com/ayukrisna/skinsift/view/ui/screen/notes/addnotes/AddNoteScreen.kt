@@ -1,7 +1,8 @@
-package com.ayukrisna.skinsift.view.ui.screen.notes
+package com.ayukrisna.skinsift.view.ui.screen.notes.addnotes
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
@@ -40,6 +41,7 @@ import com.ayukrisna.skinsift.view.ui.component.CenterAppBar
 fun AddNoteScreen(
     paddingValues: PaddingValues,
     onBackClick: () -> Unit,
+    onSearchIngredientNote: () -> Unit,
     modifier: Modifier = Modifier
 ) {
     Scaffold(
@@ -59,7 +61,7 @@ fun AddNoteScreen(
                         end = paddingValues.calculateStartPadding(LocalLayoutDirection.current),
                         bottom = paddingValues.calculateBottomPadding() - 32.dp)
             ) {
-                ChooseIngredient()
+                ChooseIngredient(onSearchIngredientNote)
                 ChoosePreferenceDropDown()
             }
         }
@@ -67,7 +69,7 @@ fun AddNoteScreen(
 }
 
 @Composable
-fun ChooseIngredient() {
+fun ChooseIngredient(onSearchIngredientNote: () -> Unit) {
     Text(
         text = "Nama Bahan",
         style = MaterialTheme.typography.labelMedium,
@@ -81,7 +83,8 @@ fun ChooseIngredient() {
             .background(MaterialTheme.colorScheme.surfaceBright)
             .height(54.dp)
             .border(1.dp, MaterialTheme.colorScheme.primary.copy(alpha = 0.5f), RoundedCornerShape(16.dp))
-            .padding(8.dp),
+            .padding(8.dp)
+            .clickable { onSearchIngredientNote() },
         verticalAlignment = Alignment.CenterVertically,
         horizontalArrangement = Arrangement.SpaceBetween
     ) {
@@ -98,7 +101,6 @@ fun ChooseIngredient() {
         )
     }
 }
-
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -119,7 +121,7 @@ fun ChoosePreferenceDropDown() {
     ) {
         TextField(
             value = selectedOption,
-            onValueChange = {}, // No changes as it is read-only
+            onValueChange = {},
             readOnly = true,
             trailingIcon = {
                 ExposedDropdownMenuDefaults.TrailingIcon(expanded = expanded)

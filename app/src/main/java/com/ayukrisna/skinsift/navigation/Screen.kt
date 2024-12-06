@@ -43,6 +43,9 @@ sealed class NotesScreen{
 
     @Serializable
     data object AddNote : NotesScreen()
+
+    @Serializable
+    data object Search : NotesScreen()
 }
 
 @Serializable

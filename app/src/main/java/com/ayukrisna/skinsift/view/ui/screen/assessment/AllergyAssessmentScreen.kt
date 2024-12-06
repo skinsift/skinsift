@@ -14,7 +14,7 @@ import androidx.compose.ui.platform.LocalLayoutDirection
 import androidx.compose.ui.unit.dp
 import com.ayukrisna.skinsift.view.ui.component.AssessmentNavButton
 import com.ayukrisna.skinsift.view.ui.component.AssessmentQuestion
-import com.ayukrisna.skinsift.view.ui.screen.notes.ChooseIngredient
+import com.ayukrisna.skinsift.view.ui.screen.notes.addnotes.ChooseIngredient
 
 
 @Composable
@@ -48,7 +48,7 @@ fun AllergyAssessmentScreen (
             ) {
                 AssessmentQuestion("4. Apakah kamu memiliki alergi terhadap bahan tertentu?")
                 Spacer(modifier = Modifier.height(12.dp))
-                ChooseIngredient()
+//                ChooseIngredient()
             }
         },
     )

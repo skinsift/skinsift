@@ -24,11 +24,12 @@ import com.ayukrisna.skinsift.view.ui.screen.dictionary.filterdictionary.DictFil
 import com.ayukrisna.skinsift.view.ui.screen.dictionary.listdictionary.DictionaryScreen
 import com.ayukrisna.skinsift.view.ui.screen.home.HomeScreen
 import com.ayukrisna.skinsift.view.ui.screen.auth.login.LoginScreen
-import com.ayukrisna.skinsift.view.ui.screen.notes.AddNoteScreen
+import com.ayukrisna.skinsift.view.ui.screen.notes.addnotes.AddNoteScreen
 import com.ayukrisna.skinsift.view.ui.screen.product.detailproduct.ProductDetailScreen
 import com.ayukrisna.skinsift.view.ui.screen.profile.ProfileScreen
 import com.ayukrisna.skinsift.view.ui.screen.auth.signup.SignupScreen
 import com.ayukrisna.skinsift.view.ui.screen.notes.listnotes.NotesScreen
+import com.ayukrisna.skinsift.view.ui.screen.notes.searchnotes.SearchNoteScreen
 import com.ayukrisna.skinsift.view.ui.screen.product.filterproduct.ProductFilterScreen
 import com.ayukrisna.skinsift.view.ui.screen.product.listproduct.ProductScreen
 
@@ -126,6 +127,15 @@ fun NavGraphBuilder.notesNavGraph(
         }
         composable<NotesScreen.AddNote> {
             AddNoteScreen(
+                paddingValues = paddingValues,
+                onSearchIngredientNote = {
+                    navController.navigate(NotesScreen.Search)
+                },
+                onBackClick = { navController.popBackStack() }
+            )
+        }
+        composable<NotesScreen.Search> {
+            SearchNoteScreen(
                 paddingValues = paddingValues,
                 onBackClick = { navController.popBackStack() }
             )
