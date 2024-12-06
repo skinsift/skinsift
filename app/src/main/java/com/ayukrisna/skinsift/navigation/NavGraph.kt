@@ -69,7 +69,9 @@ fun NavGraphBuilder.authNavGraph(
                     navController.navigate(AuthScreen.Signup)
                 },
                 onNavigateToHome = {
-                    navController.navigate(HomeScreen.Home)
+                    navController.navigate(HomeScreen.Home) {
+                        popUpTo(HomeScreen.Home) { inclusive = true }
+                    }
                 },
                 paddingValues = paddingValues
             )
@@ -116,8 +118,8 @@ fun NavGraphBuilder.notesNavGraph(
         composable<NotesScreen.Notes> {
             NotesScreen(
                 paddingValues = paddingValues,
-                onNavigateToDetail = {
-                    navController.navigate(DictionaryScreen.Detail)
+                onNavigateToDetail = { id ->
+                    navController.navigate(DictionaryScreen.Detail(id))
                 },
                 onNavigateToAdd = {
                     navController.navigate(NotesScreen.AddNote())

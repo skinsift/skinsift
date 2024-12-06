@@ -50,7 +50,7 @@ import org.koin.androidx.compose.koinViewModel
 @Composable
 fun NotesScreen (
     paddingValues: PaddingValues,
-    onNavigateToDetail: () -> Unit,
+    onNavigateToDetail: (Int) -> Unit,
     onNavigateToAdd: () -> Unit,
     onBackClick: () -> Unit,
     notesViewModel: NotesViewModel = koinViewModel(),
@@ -71,7 +71,7 @@ fun NotesScreen (
             PreferenceAppBar("Catatan Bahan", onBackClick)
         },
         floatingActionButton = {
-            AddPreferenceButton(onNavigateToAdd)
+            AddPreferenceButton({onNavigateToAdd()})
         },
         content = { innerPadding ->
             Column(
@@ -81,7 +81,7 @@ fun NotesScreen (
                         start = paddingValues.calculateStartPadding(LocalLayoutDirection.current),
                         end = paddingValues.calculateStartPadding(LocalLayoutDirection.current),
                         bottom = paddingValues.calculateBottomPadding() - 32.dp)
-                ) {
+            ) {
                 TabRow(
                     selectedTabIndex = selectedTabIndex,
                 ) {
@@ -105,7 +105,20 @@ fun NotesScreen (
                                 if (likedNotes.isEmpty()) {
                                     NullPreference()
                                 } else {
-                                    FilledPreference(likedNotes, onNavigateToDetail)
+                                    Spacer(modifier = Modifier.height(24.dp))
+                                    LazyColumn {
+                                        items(likedNotes) { item ->
+                                            val ingredient : IngredientListItem =
+                                                IngredientListItem(
+                                                    idIngredients = item!!.id!!,
+                                                    name = item.name,
+                                                    rating = item.rating,
+                                                    category = item.category,
+                                                )
+                                            IngredientsItem(ingredient) { onNavigateToDetail(item.id!!) }
+                                            Spacer(modifier = Modifier.height(10.dp))
+                                        }
+                                    }
                                 }
                             }
                             1 -> {
@@ -113,7 +126,20 @@ fun NotesScreen (
                                 if (dislikedNotes.isEmpty()) {
                                     NullPreference()
                                 } else {
-                                    FilledPreference(dislikedNotes, onNavigateToDetail)
+                                    Spacer(modifier = Modifier.height(24.dp))
+                                    LazyColumn {
+                                        items(dislikedNotes) { item ->
+                                            val ingredient : IngredientListItem =
+                                                IngredientListItem(
+                                                    idIngredients = item!!.id!!,
+                                                    name = item.name,
+                                                    rating = item.rating,
+                                                    category = item.category,
+                                                )
+                                            IngredientsItem(ingredient) { onNavigateToDetail(item.id!!) }
+                                            Spacer(modifier = Modifier.height(10.dp))
+                                        }
+                                    }
                                 }
                             }
                         }
@@ -131,23 +157,6 @@ fun NotesScreen (
             }
         }
     )
-}
-
-@Composable
-fun FilledPreference(lists: List<Note?>, onNavigateToDetail: () -> Unit) {
-    LazyColumn {
-        items(lists) { item ->
-            val ingredient : IngredientListItem =
-                IngredientListItem(
-                    idIngredients = item!!.id!!,
-                    name = item.name,
-                    rating = item.rating,
-                    category = item.category,
-                )
-            IngredientsItem(ingredient) { onNavigateToDetail() }
-            Spacer(modifier = Modifier.height(10.dp))
-        }
-    }
 }
 
 @Composable
