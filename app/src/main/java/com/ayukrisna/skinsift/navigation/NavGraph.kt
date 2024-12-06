@@ -70,7 +70,8 @@ fun NavGraphBuilder.authNavGraph(
                 },
                 onNavigateToHome = {
                     navController.navigate(HomeScreen.Home) {
-                        popUpTo(HomeScreen.Home) { inclusive = true }
+                        popUpTo(navController.graph.startDestinationId) { inclusive = true }
+//                        launchSingleTop
                     }
                 },
                 paddingValues = paddingValues

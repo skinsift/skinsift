@@ -76,8 +76,8 @@ fun MainScreen() {
             val showBottomBar = currentRoute !in noBarRoutes
 
 
-            Log.d("Navigation", "Current route: $currentRoute \n Argument route: $noBarRoutes \n Is in argument: ${currentRoute !in noBarRoutes} \n Show bottom bar: $showBottomBar")
-            Log.d("Navigation", "If currentDestination?.route == null: ${currentDestination?.route == null}")
+//            Log.d("Navigation", "Current route: $currentRoute \n Argument route: $noBarRoutes \n Is in argument: ${currentRoute !in noBarRoutes} \n Show bottom bar: $showBottomBar")
+//            Log.d("Navigation", "If currentDestination?.route == null: ${currentDestination?.route == null}")
 
 
             if (showBottomBar) {

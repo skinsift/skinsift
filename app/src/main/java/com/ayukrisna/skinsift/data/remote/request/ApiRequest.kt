@@ -27,3 +27,7 @@ data class AddNoteRequest(
     val Id_Ingredients: Int,
     val preference: String
 )
+
+data class DeleteNoteRequest(
+    val Id_Ingredients: Int,
+)

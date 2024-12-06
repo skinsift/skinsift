@@ -1,6 +1,7 @@
 package com.ayukrisna.skinsift.data.remote.retrofit
 
 import com.ayukrisna.skinsift.data.remote.request.AddNoteRequest
+import com.ayukrisna.skinsift.data.remote.request.DeleteNoteRequest
 import com.ayukrisna.skinsift.data.remote.request.LoginRequest
 import com.ayukrisna.skinsift.data.remote.request.RegisterRequest
 import com.ayukrisna.skinsift.data.remote.request.SearchIngredientRequest
@@ -14,9 +15,11 @@ import com.ayukrisna.skinsift.data.remote.response.auth.LoginResponse
 import com.ayukrisna.skinsift.data.remote.response.product.ProductResponse
 import com.ayukrisna.skinsift.data.remote.response.auth.RegisterResponse
 import com.ayukrisna.skinsift.data.remote.response.notes.AddNoteResponse
+import com.ayukrisna.skinsift.data.remote.response.notes.DeleteNoteResponse
 import com.ayukrisna.skinsift.data.remote.response.notes.NotesResponse
 import retrofit2.Response
 import retrofit2.http.Body
+import retrofit2.http.DELETE
 import retrofit2.http.GET
 import retrofit2.http.POST
 import retrofit2.http.Path
@@ -71,4 +74,9 @@ interface ApiService {
     suspend fun addNote(
         @Body request: AddNoteRequest
     ) : Response<AddNoteResponse>
+
+    @DELETE("user/notes")
+    suspend fun deleteNote(
+        @Body request: DeleteNoteRequest
+    ) : Response<DeleteNoteResponse>
 }
