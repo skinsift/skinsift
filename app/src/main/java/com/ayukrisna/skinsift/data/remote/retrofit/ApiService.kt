@@ -2,10 +2,12 @@ package com.ayukrisna.skinsift.data.remote.retrofit
 
 import com.ayukrisna.skinsift.data.remote.request.AddNoteRequest
 import com.ayukrisna.skinsift.data.remote.request.DeleteNoteRequest
+import com.ayukrisna.skinsift.data.remote.request.DeleteUserRequest
 import com.ayukrisna.skinsift.data.remote.request.LoginRequest
 import com.ayukrisna.skinsift.data.remote.request.RegisterRequest
 import com.ayukrisna.skinsift.data.remote.request.SearchIngredientRequest
 import com.ayukrisna.skinsift.data.remote.request.SearchProductRequest
+import com.ayukrisna.skinsift.data.remote.response.auth.DeleteUserResponse
 import com.ayukrisna.skinsift.data.remote.response.ingredients.DetailIngredientsResponse
 import com.ayukrisna.skinsift.data.remote.response.product.DetailProductResponse
 import com.ayukrisna.skinsift.data.remote.response.ingredients.FilterIngreResponse
@@ -35,6 +37,11 @@ interface ApiService {
     suspend fun loginUser(
         @Body request: LoginRequest
     ) : Response<LoginResponse>
+
+    @HTTP(method = "DELETE", path = "delete-account", hasBody = true)
+    suspend fun deleteUser(
+        @Body request: DeleteUserRequest
+    ) : Response<DeleteUserResponse>
 
     @GET("ingredient")
     suspend fun getIngredients(): Response<IngredientsResponse>

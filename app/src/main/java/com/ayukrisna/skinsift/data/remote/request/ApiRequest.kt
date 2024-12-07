@@ -13,6 +13,13 @@ data class LoginRequest(
     val password: String
 )
 
+data class DeleteUserRequest(
+    @SerializedName("password")
+    val password: String
+)
+
+
+
 data class SearchIngredientRequest(
     val nama: String? = null,
     val rating: List<String>? = null,

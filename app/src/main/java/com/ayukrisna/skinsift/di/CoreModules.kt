@@ -13,6 +13,7 @@ import com.ayukrisna.skinsift.domain.repository.ProductRepository
 import com.ayukrisna.skinsift.domain.repository.UserRepository
 import com.ayukrisna.skinsift.domain.usecase.ingredient.IngredientsUseCase
 import com.ayukrisna.skinsift.domain.usecase.auth.LoginUseCase
+import com.ayukrisna.skinsift.domain.usecase.auth.ProfileUseCase
 import com.ayukrisna.skinsift.util.provideDataStore
 import org.koin.core.module.Module
 import org.koin.dsl.module
@@ -36,6 +37,8 @@ import com.ayukrisna.skinsift.view.ui.screen.notes.searchnotes.SearchNoteViewMod
 import com.ayukrisna.skinsift.view.ui.screen.product.detailproduct.DetailProductViewModel
 import com.ayukrisna.skinsift.view.ui.screen.product.filterproduct.ProductFilterViewModel
 import com.ayukrisna.skinsift.view.ui.screen.product.listproduct.ProductViewModel
+import com.ayukrisna.skinsift.view.ui.screen.profile.delete.DeleteAccountViewModel
+import com.ayukrisna.skinsift.view.ui.screen.profile.profile.ProfileViewModel
 import org.koin.androidx.viewmodel.dsl.viewModel
 import org.koin.core.module.dsl.singleOf
 import org.koin.dsl.bind
@@ -63,6 +66,7 @@ var repositoryModules : Module = module {
 val useCaseModules = module {
     single { RegisterUseCase(get()) }
     single { LoginUseCase(get()) }
+    single { ProfileUseCase(get()) }
 
     single { IngredientsUseCase(get()) }
     single { DetailIngredientUseCase(get()) }
@@ -83,6 +87,8 @@ val useCaseModules = module {
 val viewModelModules = module {
     viewModel{ SignupViewModel(get()) }
     viewModel{ LoginViewModel(get()) }
+    viewModel{ DeleteAccountViewModel(get()) }
+    viewModel{ ProfileViewModel(get()) }
 
     viewModel{ DictFilterViewModel(get()) }
     viewModel{ DictionaryViewModel(get(), get()) }

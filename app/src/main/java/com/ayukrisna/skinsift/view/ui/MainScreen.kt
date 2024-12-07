@@ -47,19 +47,26 @@ fun MainScreen() {
     val noBarRoutes = setOf(
         "com.ayukrisna.skinsift.navigation.AuthScreen.Login",
         "com.ayukrisna.skinsift.navigation.AuthScreen.Signup",
+
         "com.ayukrisna.skinsift.navigation.NotesScreen.Notes",
         "com.ayukrisna.skinsift.navigation.NotesScreen.Search",
+
         "com.ayukrisna.skinsift.navigation.AssessmentScreen.Start",
         "com.ayukrisna.skinsift.navigation.AssessmentScreen.Skin",
         "com.ayukrisna.skinsift.navigation.AssessmentScreen.Purpose",
         "com.ayukrisna.skinsift.navigation.AssessmentScreen.Function",
         "com.ayukrisna.skinsift.navigation.AssessmentScreen.Allergy",
         "com.ayukrisna.skinsift.navigation.AssessmentScreen.Result",
+
         "com.ayukrisna.skinsift.navigation.DictionaryScreen.Filter",
         "com.ayukrisna.skinsift.navigation.ProductScreen.Filter",
+
         "com.ayukrisna.skinsift.navigation.DictionaryScreen.Detail/{id}",
         "com.ayukrisna.skinsift.navigation.ProductScreen.Detail/{id}",
+
         "com.ayukrisna.skinsift.navigation.NotesScreen.AddNote?idIngredient={idIngredient}&name={name}",
+
+        "com.ayukrisna.skinsift.navigation.ProfileScreen.Delete",
     )
 
     Scaffold(

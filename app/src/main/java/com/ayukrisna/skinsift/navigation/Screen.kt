@@ -1,6 +1,5 @@
 package com.ayukrisna.skinsift.navigation
 
-import com.ayukrisna.skinsift.data.remote.response.ingredients.IngredientListItem
 import kotlinx.serialization.Serializable
 
 @Serializable
@@ -98,4 +97,7 @@ sealed class ProductScreen {
 sealed class ProfileScreen {
     @Serializable
     data object Profile : ProfileScreen()
+
+    @Serializable
+    data object Delete : ProfileScreen()
 }

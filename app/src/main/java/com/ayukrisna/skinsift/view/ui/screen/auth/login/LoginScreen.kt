@@ -1,5 +1,6 @@
 package com.ayukrisna.skinsift.view.ui.screen.auth.login
 
+import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -37,6 +38,7 @@ import com.ayukrisna.skinsift.R
 import com.ayukrisna.skinsift.view.ui.component.CustomTextField
 import com.ayukrisna.skinsift.view.ui.theme.SkinSiftTheme
 import org.koin.androidx.compose.koinViewModel
+import kotlin.system.exitProcess
 
 
 @Composable
@@ -48,6 +50,10 @@ fun LoginScreen(
     modifier: Modifier = Modifier,
 ) {
     val loginState by viewModel.loginState.observeAsState(initial = Result.Loading)
+
+    BackHandler {
+        exitProcess(0)
+    }
 
     Surface {
         Column (

@@ -26,12 +26,14 @@ import com.ayukrisna.skinsift.view.ui.screen.home.HomeScreen
 import com.ayukrisna.skinsift.view.ui.screen.auth.login.LoginScreen
 import com.ayukrisna.skinsift.view.ui.screen.notes.addnotes.AddNoteScreen
 import com.ayukrisna.skinsift.view.ui.screen.product.detailproduct.ProductDetailScreen
-import com.ayukrisna.skinsift.view.ui.screen.profile.ProfileScreen
+import com.ayukrisna.skinsift.view.ui.screen.profile.profile.ProfileScreen
 import com.ayukrisna.skinsift.view.ui.screen.auth.signup.SignupScreen
+import com.ayukrisna.skinsift.view.ui.screen.home.Profile
 import com.ayukrisna.skinsift.view.ui.screen.notes.listnotes.NotesScreen
 import com.ayukrisna.skinsift.view.ui.screen.notes.searchnotes.SearchNoteScreen
 import com.ayukrisna.skinsift.view.ui.screen.product.filterproduct.ProductFilterScreen
 import com.ayukrisna.skinsift.view.ui.screen.product.listproduct.ProductScreen
+import com.ayukrisna.skinsift.view.ui.screen.profile.delete.DeleteAccountScreen
 
 @Composable
 fun NavGraph (
@@ -302,7 +304,28 @@ fun NavGraphBuilder.profileNavGraph(
         startDestination = ProfileScreen.Profile
     ) {
         composable<ProfileScreen.Profile> {
-            ProfileScreen()
+            ProfileScreen(
+                onLogOut = {
+                    navController.navigate(AuthScreen.Login) {
+                        popUpTo(ProfileScreen.Profile) { inclusive = true }
+                    }
+                },
+                onNavigateToDeleteAccount = {
+                    navController.navigate(ProfileScreen.Delete)
+                }
+            )
+        }
+        composable<ProfileScreen.Delete> {
+            DeleteAccountScreen(
+                onNavigateToLogin = {
+                    navController.navigate(AuthScreen.Login) {
+                        popUpTo(navController.graph.startDestinationId) { inclusive = true }
+                    }
+                },
+                onBackClick = {
+                    navController.popBackStack()
+                },
+            )
         }
     }
 }
