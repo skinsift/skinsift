@@ -26,7 +26,7 @@ class LoginUseCase(private val userRepository: UserRepository) {
     private fun createUserModel(loginResult: LoginResult, email: String): UserModel {
         return UserModel(
             username = loginResult.name ?: throw IllegalArgumentException("Name is null"),
-            email = email,
+            email = loginResult.email ?: throw IllegalArgumentException("Email is null"),
             id = loginResult.userId ?: throw IllegalArgumentException("User ID is null"),
             token = loginResult.token ?: throw IllegalArgumentException("Token is null"),
             isLogin = true
