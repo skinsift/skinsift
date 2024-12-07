@@ -21,6 +21,7 @@ import retrofit2.Response
 import retrofit2.http.Body
 import retrofit2.http.DELETE
 import retrofit2.http.GET
+import retrofit2.http.HTTP
 import retrofit2.http.POST
 import retrofit2.http.Path
 
@@ -75,7 +76,7 @@ interface ApiService {
         @Body request: AddNoteRequest
     ) : Response<AddNoteResponse>
 
-    @DELETE("user/notes")
+    @HTTP(method = "DELETE", path = "user/notes", hasBody = true)
     suspend fun deleteNote(
         @Body request: DeleteNoteRequest
     ) : Response<DeleteNoteResponse>

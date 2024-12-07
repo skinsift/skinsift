@@ -1,5 +1,7 @@
 package com.ayukrisna.skinsift.data.remote.request
 
+import com.google.gson.annotations.SerializedName
+
 data class RegisterRequest(
     val Username: String,
     val Password: String,
@@ -29,5 +31,6 @@ data class AddNoteRequest(
 )
 
 data class DeleteNoteRequest(
-    val Id_Ingredients: Int,
+    @SerializedName("Id_Ingredients")
+    val idIngredients: Int
 )

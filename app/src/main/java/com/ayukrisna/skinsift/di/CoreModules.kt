@@ -21,6 +21,7 @@ import com.ayukrisna.skinsift.domain.usecase.ingredient.DetailIngredientUseCase
 import com.ayukrisna.skinsift.domain.usecase.ingredient.FilterIngredientUseCase
 import com.ayukrisna.skinsift.domain.usecase.ingredient.SearchIngredientUseCase
 import com.ayukrisna.skinsift.domain.usecase.notes.AddNoteUseCase
+import com.ayukrisna.skinsift.domain.usecase.notes.DeleteNoteUseCase
 import com.ayukrisna.skinsift.domain.usecase.notes.NotesUseCase
 import com.ayukrisna.skinsift.domain.usecase.product.DetailProductUseCase
 import com.ayukrisna.skinsift.domain.usecase.product.FilterProductUseCase
@@ -75,6 +76,7 @@ val useCaseModules = module {
 
     single { NotesUseCase(get()) }
     single { AddNoteUseCase(get()) }
+    single { DeleteNoteUseCase(get()) }
 }
 
 //View Model
@@ -90,7 +92,7 @@ val viewModelModules = module {
     viewModel{ ProductViewModel(get(), get()) }
     viewModel{ DetailProductViewModel(get()) }
 
-    viewModel{ NotesViewModel(get()) }
+    viewModel{ NotesViewModel(get(), get()) }
     viewModel{ SearchNoteViewModel() }
     viewModel{ AddNoteViewModel(get()) }
 }

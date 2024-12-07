@@ -1,21 +1,30 @@
 package com.ayukrisna.skinsift.view.ui.screen.notes.listnotes
 
+import android.util.Log
 import android.widget.Toast
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.calculateStartPadding
+import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
+import androidx.compose.material.icons.filled.Delete
+import androidx.compose.material3.Card
+import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.ExtendedFloatingActionButton
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
@@ -37,6 +46,7 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalLayoutDirection
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import com.ayukrisna.skinsift.R
 import com.ayukrisna.skinsift.data.remote.response.ingredients.IngredientListItem
@@ -44,6 +54,7 @@ import com.ayukrisna.skinsift.data.remote.response.notes.Note
 import com.ayukrisna.skinsift.util.Result
 import com.ayukrisna.skinsift.view.ui.component.CenterAppBar
 import com.ayukrisna.skinsift.view.ui.component.LoadingProgress
+import com.ayukrisna.skinsift.view.ui.component.getRatingColor
 import com.ayukrisna.skinsift.view.ui.screen.dictionary.listdictionary.IngredientsItem
 import org.koin.androidx.compose.koinViewModel
 
@@ -60,10 +71,25 @@ fun NotesScreen (
     val tabs = listOf("Suka", "Tidak Suka")
 
     val notesState by notesViewModel.notesState.collectAsState()
+    val deleteNoteState by notesViewModel.deleteNoteState.collectAsState()
     val context = LocalContext.current
 
     LaunchedEffect (Unit) {
         notesViewModel.fetchNotes()
+    }
+
+    LaunchedEffect(deleteNoteState) {
+        when (val result = deleteNoteState) {
+            is Result.Success -> {
+                Toast.makeText(context, "Note sudah dihapus.", Toast.LENGTH_SHORT).show()
+                notesViewModel.fetchNotes()
+            }
+            is Result.Error -> {
+                Toast.makeText(context, "Note gagal dihapus: ${result.error}", Toast.LENGTH_LONG).show()
+                Log.d("Notes", "Notes gagal dihapus: ${result.error}")
+            }
+            else -> Unit
+        }
     }
 
     Scaffold (
@@ -115,7 +141,11 @@ fun NotesScreen (
                                                     rating = item.rating,
                                                     category = item.category,
                                                 )
-                                            IngredientsItem(ingredient) { onNavigateToDetail(item.id!!) }
+                                            IngredientsNoteItem(
+                                                item = ingredient,
+                                                onNavigateToDetail = { onNavigateToDetail(item.id!!) },
+                                                onDelete = { id -> notesViewModel.deleteNote(id) }
+                                            )
                                             Spacer(modifier = Modifier.height(10.dp))
                                         }
                                     }
@@ -136,7 +166,11 @@ fun NotesScreen (
                                                     rating = item.rating,
                                                     category = item.category,
                                                 )
-                                            IngredientsItem(ingredient) { onNavigateToDetail(item.id!!) }
+                                            IngredientsNoteItem(
+                                                item = ingredient,
+                                                onNavigateToDetail = { onNavigateToDetail(item.id!!) },
+                                                onDelete = { id -> notesViewModel.deleteNote(id) }
+                                            )
                                             Spacer(modifier = Modifier.height(10.dp))
                                         }
                                     }
@@ -158,6 +192,80 @@ fun NotesScreen (
         }
     )
 }
+
+
+@Composable
+fun IngredientsNoteItem(
+    item: IngredientListItem,
+    onNavigateToDetail: () -> Unit,
+    onDelete: (Int) -> Unit
+) {
+    val ratingColor = item.rating?.let { getRatingColor(it) }
+
+    Card(
+        modifier = Modifier
+            .fillMaxWidth(),
+        colors = CardDefaults.cardColors(
+            containerColor = MaterialTheme.colorScheme.surfaceBright
+        ),
+        shape = RoundedCornerShape(16.dp),
+        elevation = CardDefaults.elevatedCardElevation(1.dp)
+    ) {
+        Row(
+            modifier = Modifier
+                .fillMaxWidth(),
+//                .padding(16.dp),
+            verticalAlignment = Alignment.CenterVertically,
+            horizontalArrangement = Arrangement.SpaceBetween
+        ) {
+            Column(
+                modifier = Modifier
+                    .weight(3f)
+                    .padding(16.dp)
+                    .clickable { onNavigateToDetail() },
+            ) {
+                item.rating?.let {
+                    if (ratingColor != null) {
+                        Text(
+                            text = it,
+                            style = MaterialTheme.typography.labelSmall,
+                            fontWeight = FontWeight.ExtraBold,
+                            color = ratingColor
+                        )
+                    }
+                }
+                Spacer(modifier = Modifier.height(2.dp))
+                item.name?.let {
+                    Text(
+                        text = it,
+                        style = MaterialTheme.typography.titleMedium,
+                        fontWeight = FontWeight.ExtraBold,
+                        color = MaterialTheme.colorScheme.primary
+                    )
+                }
+                Spacer(modifier = Modifier.height(2.dp))
+                item.category?.let {
+                    Text(
+                        text = it,
+                        style = MaterialTheme.typography.bodyMedium,
+                        color = MaterialTheme.colorScheme.onSurface
+                    )
+                }
+            }
+            Icon(
+                imageVector = Icons.Default.Delete,
+                contentDescription = "Delete Item",
+                modifier = Modifier
+                    .weight(0.5f)
+                    .size(24.dp)
+                    .clickable { onDelete(item.idIngredients) },
+                tint = MaterialTheme.colorScheme.primary.copy(alpha = 0.5f)
+            )
+        }
+    }
+}
+
+
 
 @Composable
 fun NullPreference() {
