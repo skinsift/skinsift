@@ -19,7 +19,7 @@ class AssessmentRepositoryImp (private val userPreference: UserPreference) : Ass
         photoUri: MultipartBody.Part,
         sensitive: String,
         reason: String,
-        function: String,
+        function: List<String>,
         pregnantOrBreastfeeding: String
     ): AssessmentResponse {
         val token = userPreference.getSession().first().token

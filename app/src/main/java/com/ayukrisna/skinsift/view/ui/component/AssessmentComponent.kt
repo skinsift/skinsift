@@ -102,7 +102,8 @@ fun AssessmentSelector(
 @Composable
 fun AssessmentNavButton(
     onClick: () -> Unit,
-    onBackClick: () -> Unit
+    onBackClick: () -> Unit,
+    isEnabled: Boolean = true
 ) {
     Row(
         modifier = Modifier
@@ -120,7 +121,12 @@ fun AssessmentNavButton(
         Button(
             onClick = {onClick()},
             shape = RoundedCornerShape(50),
-            colors = ButtonDefaults.buttonColors(containerColor = MaterialTheme.colorScheme.primary),
+            colors = ButtonDefaults.buttonColors(
+                containerColor = if (isEnabled)
+                    MaterialTheme.colorScheme.primary
+                else
+                    MaterialTheme.colorScheme.onSurface.copy(alpha = 0.12f) // Disabled color
+            )
         ) {
             Text(text = "Lanjutkan", color = MaterialTheme.colorScheme.onPrimary)
         }

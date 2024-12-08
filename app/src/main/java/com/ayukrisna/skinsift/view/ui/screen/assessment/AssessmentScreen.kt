@@ -1,6 +1,7 @@
 package com.ayukrisna.skinsift.view.ui.screen.assessment
 
 import android.net.Uri
+import android.util.Log
 import android.widget.Toast
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.PickVisualMediaRequest
@@ -24,6 +25,7 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.KeyboardArrowRight
+import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Button
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
@@ -49,15 +51,21 @@ import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import coil.compose.AsyncImage
+import com.ayukrisna.skinsift.data.remote.response.ingredients.Filter
+import com.ayukrisna.skinsift.data.remote.response.ml.AssessmentResponse
+import com.ayukrisna.skinsift.data.remote.response.product.ProductListItem
 import com.ayukrisna.skinsift.util.CameraHelper
 import com.ayukrisna.skinsift.view.ui.component.AssessmentSelector
 import org.koin.androidx.compose.koinViewModel
+import com.ayukrisna.skinsift.util.Result
+import com.ayukrisna.skinsift.view.ui.component.LoadingProgress
 
 @Composable
 fun AssessmentScreen (
@@ -70,17 +78,24 @@ fun AssessmentScreen (
     /***
      * Assessment Variables
      */
+    val assessmentState by viewModel.assessmentState.collectAsState()
+
     val sensitiveItems = viewModel.sensitiveItems
     val sensitiveOptions= viewModel.sensitiveOptions
+    val selectedSensitive by viewModel.selectedSensitive.collectAsState()
 
     val tujuanItems = viewModel.tujuanItems
     val tujuanLetters = viewModel.tujuanOptions
+    val selectedTujuan by viewModel.selectedTujuan.collectAsState()
 
     val fungsiItems = viewModel.fungsiItems
     val fungsiLetters = viewModel.fungsiOptions
+    val selectedFungsi by viewModel.selectedFungsi.collectAsState()
 
     val hamilMenyusuiItems = viewModel.hamilMenyusuiItems
     val hamilMenyusuiLetters = viewModel.hamilMenyusuiOptions
+    val selectedHamilMenyusui by viewModel.selectedHamilMenyusui.collectAsState()
+
 
     /**
      * Camera and Gallery
@@ -226,11 +241,65 @@ fun AssessmentScreen (
             )
             Spacer(modifier = Modifier.height(24.dp))
 
+            val isSubmitEnabled = selectedUri != null && selectedSensitive != null && selectedTujuan != null && selectedFungsi != null && selectedHamilMenyusui != null
+            if (!isSubmitEnabled) {
+                Log.d("whyyyy", "selectedUri: $selectedUri\n selectedsensitive: $selectedSensitive\n selectedtujuan: $selectedTujuan\n selectedfungsi: $selectedFungsi\n selectedHamilMenyusui: $selectedHamilMenyusui")
+            }
             AssessmentNavButton(
                 onClick = {
-                viewModel.submitAssessment()
-                onDoneClick()
-            }, {onBackClick()} )
+                    viewModel.validateAndSubmit(selectedUri, selectedSensitive, selectedTujuan, selectedFungsi, selectedHamilMenyusui)
+                },
+                onBackClick = {
+                    onBackClick()
+                },
+                isEnabled = isSubmitEnabled
+            )
+        }
+        when (assessmentState) {
+            is Result.Idle -> {}
+            is Result.Loading -> LoadingProgress()
+            is Result.Success -> {
+                var showSuccessDialog by remember { mutableStateOf(true) }
+                val assessmentResult: AssessmentResponse = (assessmentState as Result.Success<AssessmentResponse>).data
+
+                Log.d("Assessment Result", "Assessment Result: $assessmentResult")
+
+                if (showSuccessDialog) {
+                    AlertDialog(
+                        onDismissRequest = { showSuccessDialog = false },
+                        title = { Text(text = "Berhasil!") },
+                        text = { Text(text = "Assessmen berhasil! Yuk, lihat produk yang sesuai dengan kebutuhanmu.")},
+                        confirmButton = {
+                            Button(onClick = {
+                                showSuccessDialog = false
+//                                onDoneClick()
+                            }) {
+                                Text("OK")
+                            }
+                        }
+                    )
+                }
+            }
+            is Result.Error -> {
+                val error = (assessmentState as Result.Error).error
+                var showErrorDialog by remember { mutableStateOf(true) }
+
+                if (showErrorDialog) {
+                    AlertDialog(
+                        onDismissRequest = { showErrorDialog = false },
+                        title = { Text(text = "Ada yang salah...") },
+                        text = { Text(text = "Mohon maaf. Terdapat eror: $error")},
+                        confirmButton = {
+                            Button(onClick = {
+                                showErrorDialog = false
+                                onBackClick()
+                            }) {
+                                Text("OK")
+                            }
+                        }
+                    )
+                }
+            }
         }
     },
         )

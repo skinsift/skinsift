@@ -3,17 +3,24 @@ package com.ayukrisna.skinsift.view.ui.screen.assessment
 import android.net.Uri
 import android.util.Log
 import androidx.lifecycle.ViewModel
-import com.ayukrisna.skinsift.data.remote.response.product.ProductListItem
+import androidx.lifecycle.viewModelScope
+import com.ayukrisna.skinsift.data.remote.response.ml.AssessmentResponse
 import com.ayukrisna.skinsift.domain.usecase.assessment.AssessmentUseCase
+import com.ayukrisna.skinsift.util.FileHelper
 import kotlinx.coroutines.flow.MutableStateFlow
 import com.ayukrisna.skinsift.util.Result
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.launch
+import okhttp3.MediaType.Companion.toMediaType
+import okhttp3.MultipartBody
+import okhttp3.RequestBody.Companion.asRequestBody
 
 class AssessmentViewModel(
-    private val assessmentUseCase: AssessmentUseCase
+    private val assessmentUseCase: AssessmentUseCase,
+    private val fileHelper: FileHelper
 ) : ViewModel() {
-    private val _assessmentState = MutableStateFlow<Result<List<ProductListItem>>>(Result.Idle)
-    val assessmentState: StateFlow<Result<List<ProductListItem>>> = _assessmentState
+    private val _assessmentState = MutableStateFlow<Result<AssessmentResponse>>(Result.Idle)
+    val assessmentState: StateFlow<Result<AssessmentResponse>> = _assessmentState
 
     /**
      * Questions: 1. Skin Type
@@ -24,6 +31,18 @@ class AssessmentViewModel(
     fun setSelectedUri(uri: Uri?) {
         _selectedUri.value = uri
         Log.d("Set URI", "Selected URI: $uri")
+    }
+
+    private fun imageUriToMultiPart(photoUri: Uri) : MultipartBody.Part {
+        val imageFile = fileHelper.uriToFile(photoUri)
+        val reducedImageFile = fileHelper.reduceFileImage(imageFile)
+        val requestImageFile = reducedImageFile.asRequestBody("image/jpeg".toMediaType())
+        val multipartBody = MultipartBody.Part.createFormData(
+            "file",
+            imageFile.name,
+            requestImageFile
+        )
+        return multipartBody
     }
 
     /**
@@ -106,11 +125,24 @@ class AssessmentViewModel(
         Log.d("Set hamil menyusui", "set hamil menyusui: ${_selectedHamilMenyusui.value}")
     }
 
-    fun submitAssessment() {
-        // Example logic to validate and log the answers
-        Log.d("Submit Assessment", "Sensitive: ${_selectedSensitive.value}")
-        Log.d("Submit Assessment", "Tujuan: ${_selectedTujuan.value}")
-        Log.d("Submit Assessment", "Fungsi: ${_selectedFungsi.value}")
-        Log.d("Submit Assessment", "Hamil Menyusui: ${_selectedHamilMenyusui.value}")
+
+    fun validateAndSubmit(photoUri: Uri?, sensitive: String?, tujuan: String?, fungsi: String?, hamilMenyusui: String?) {
+        if (photoUri == null || sensitive == null || tujuan == null || fungsi == null || hamilMenyusui == null) {
+            _assessmentState.value = Result.Error("All fields are required.")
+            return
+        }
+        val fungsiList = fungsi.split(",").map { it.trim() }
+        submitAssessment(photoUri, sensitive, tujuan, fungsiList, hamilMenyusui)
+    }
+
+    private fun submitAssessment(photoUri: Uri, sensitive: String, tujuan: String, fungsi: List<String>, hamilMenyusui: String) {
+        val multipartBody = imageUriToMultiPart(photoUri)
+
+        viewModelScope.launch {
+            _assessmentState.value = Result.Loading
+            val result = assessmentUseCase.execute(multipartBody, sensitive,tujuan, fungsi, hamilMenyusui)
+            _assessmentState.value = result
+        }
+
     }
 }

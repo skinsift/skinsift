@@ -9,12 +9,12 @@ import retrofit2.http.Part
 
 interface MLApiService {
     @Multipart
-    @POST
+    @POST("asesmen")
     suspend fun submitAssessment(
-        @Part file: MultipartBody.Part?,
+        @Part file: MultipartBody.Part,
         @Part("sensitif") sensitif: String,
         @Part("tujuan") tujuan: String,
-        @Part("fungsi") fungsi: String,
+        @Part("fungsi") fungsi: List<String>,
         @Part("hamil_menyusui") hamilMenyusui: String
     ) : Response<AssessmentResponse>
 }

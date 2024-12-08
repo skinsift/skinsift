@@ -2,6 +2,7 @@ package com.ayukrisna.skinsift
 
 import android.app.Application
 import com.ayukrisna.skinsift.di.dataStoreModule
+import com.ayukrisna.skinsift.di.fileHelperModule
 import com.ayukrisna.skinsift.di.preferenceModule
 import com.ayukrisna.skinsift.di.repositoryModules
 import com.ayukrisna.skinsift.di.useCaseModules
@@ -19,6 +20,7 @@ class MyApp: Application() {
             androidContext(this@MyApp)
             modules(
                 listOf(
+                    fileHelperModule,
                     dataStoreModule,
                     preferenceModule,
                     repositoryModules,

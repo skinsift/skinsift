@@ -31,6 +31,7 @@ import com.ayukrisna.skinsift.domain.usecase.product.DetailProductUseCase
 import com.ayukrisna.skinsift.domain.usecase.product.FilterProductUseCase
 import com.ayukrisna.skinsift.domain.usecase.product.ProductUseCase
 import com.ayukrisna.skinsift.domain.usecase.product.SearchProductUseCase
+import com.ayukrisna.skinsift.util.FileHelper
 import com.ayukrisna.skinsift.view.ui.screen.assessment.AssessmentViewModel
 import com.ayukrisna.skinsift.view.ui.screen.dictionary.detaildictionary.DictDetailViewModel
 import com.ayukrisna.skinsift.view.ui.screen.dictionary.filterdictionary.DictFilterViewModel
@@ -43,10 +44,15 @@ import com.ayukrisna.skinsift.view.ui.screen.product.filterproduct.ProductFilter
 import com.ayukrisna.skinsift.view.ui.screen.product.listproduct.ProductViewModel
 import com.ayukrisna.skinsift.view.ui.screen.profile.delete.DeleteAccountViewModel
 import com.ayukrisna.skinsift.view.ui.screen.profile.profile.ProfileViewModel
+import org.koin.android.ext.koin.androidContext
 import org.koin.androidx.viewmodel.dsl.viewModel
 import org.koin.core.module.dsl.singleOf
 import org.koin.dsl.bind
 
+// File Helper Module
+val fileHelperModule = module {
+    single { FileHelper(androidContext()) }
+}
 
 // Data Store Module
 val dataStoreModule = module {
@@ -109,5 +115,5 @@ val viewModelModules = module {
     viewModel{ SearchNoteViewModel() }
     viewModel{ AddNoteViewModel(get()) }
 
-    viewModel{ AssessmentViewModel(get()) }
+    viewModel{ AssessmentViewModel(get(), get()) }
 }
