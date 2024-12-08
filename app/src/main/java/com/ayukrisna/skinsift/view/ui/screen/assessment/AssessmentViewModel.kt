@@ -1,5 +1,6 @@
 package com.ayukrisna.skinsift.view.ui.screen.assessment
 
+import android.net.Uri
 import android.util.Log
 import androidx.lifecycle.ViewModel
 import com.ayukrisna.skinsift.data.remote.response.product.ProductListItem
@@ -13,6 +14,17 @@ class AssessmentViewModel(
 ) : ViewModel() {
     private val _assessmentState = MutableStateFlow<Result<List<ProductListItem>>>(Result.Idle)
     val assessmentState: StateFlow<Result<List<ProductListItem>>> = _assessmentState
+
+    /**
+     * Questions: 1. Skin Type
+     */
+    private val _selectedUri = MutableStateFlow<Uri?>(null)
+    val selectedUri: StateFlow<Uri?> = _selectedUri
+
+    fun setSelectedUri(uri: Uri?) {
+        _selectedUri.value = uri
+        Log.d("Set URI", "Selected URI: $uri")
+    }
 
     /**
      * Questions: 2. Sensitive
@@ -94,8 +106,11 @@ class AssessmentViewModel(
         Log.d("Set hamil menyusui", "set hamil menyusui: ${_selectedHamilMenyusui.value}")
     }
 
-
     fun submitAssessment() {
-
+        // Example logic to validate and log the answers
+        Log.d("Submit Assessment", "Sensitive: ${_selectedSensitive.value}")
+        Log.d("Submit Assessment", "Tujuan: ${_selectedTujuan.value}")
+        Log.d("Submit Assessment", "Fungsi: ${_selectedFungsi.value}")
+        Log.d("Submit Assessment", "Hamil Menyusui: ${_selectedHamilMenyusui.value}")
     }
 }

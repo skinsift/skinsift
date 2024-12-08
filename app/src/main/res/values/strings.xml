@@ -1,5 +1,7 @@
 <resources>
     <string name="app_name">SkinSift</string>
+    <string name="fileprovider">com.ayukrisna.skinsift.fileprovider</string>
+
     <string name="nameCannotBeBlank">Eits! Namamu tidak boleh kosong.</string>
     <string name="emailCannotBeBlank">Eits! Isi username atau emailmu dulu, ya.</string>
     <string name="emailIsNotValid">Emailmu tidak valid, nih.</string>

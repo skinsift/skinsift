@@ -1,6 +1,12 @@
 package com.ayukrisna.skinsift.view.ui.screen.assessment
 
+import android.net.Uri
+import android.widget.Toast
+import androidx.activity.compose.rememberLauncherForActivityResult
+import androidx.activity.result.PickVisualMediaRequest
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -18,11 +24,13 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.KeyboardArrowRight
+import androidx.compose.material3.Button
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
-import androidx.compose.material3.FabPosition
+import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.ModalBottomSheet
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalLayoutDirection
 import androidx.compose.ui.res.painterResource
@@ -35,12 +43,19 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.saveable.rememberSaveable
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
+import coil.compose.AsyncImage
+import com.ayukrisna.skinsift.util.CameraHelper
 import com.ayukrisna.skinsift.view.ui.component.AssessmentSelector
 import org.koin.androidx.compose.koinViewModel
 
@@ -53,7 +68,7 @@ fun AssessmentScreen (
     modifier: Modifier = Modifier
 ){
     /***
-     * Assessment options
+     * Assessment Variables
      */
     val sensitiveItems = viewModel.sensitiveItems
     val sensitiveOptions= viewModel.sensitiveOptions
@@ -67,6 +82,59 @@ fun AssessmentScreen (
     val hamilMenyusuiItems = viewModel.hamilMenyusuiItems
     val hamilMenyusuiLetters = viewModel.hamilMenyusuiOptions
 
+    /**
+     * Camera and Gallery
+     */
+    val context = LocalContext.current
+    val authority = stringResource(id = R.string.fileprovider)
+    val cameraHelper = remember { CameraHelper(context, authority) }
+
+    val selectedUri by viewModel.selectedUri.collectAsState()
+    val tempUri = rememberSaveable { mutableStateOf<Uri?>(null) }
+
+    val onSetUri: (Uri) -> Unit = { newUri ->
+        viewModel.setSelectedUri(newUri)
+    }
+
+    val imagePicker = rememberLauncherForActivityResult(
+        contract = ActivityResultContracts.PickVisualMedia(),
+        onResult = { uri -> uri?.let(onSetUri) }
+    )
+
+    val takePhotoLauncher = rememberLauncherForActivityResult(
+        contract = ActivityResultContracts.TakePicture(),
+        onResult = { isSaved -> if (isSaved) tempUri.value?.let(onSetUri) }
+    )
+
+    val cameraPermissionLauncher = rememberLauncherForActivityResult(
+        contract = ActivityResultContracts.RequestPermission()
+    ) { isGranted ->
+        if (isGranted) {
+            tempUri.value = cameraHelper.getTempUri()
+            tempUri.value?.let { takePhotoLauncher.launch(it) }
+        } else {
+            Toast.makeText(context, "Camera permission is required to take photos.", Toast.LENGTH_LONG).show()
+        }
+    }
+
+    var showBottomSheet by remember { mutableStateOf(false) }
+
+    if (showBottomSheet) {
+        PhotoModalBottomSheet(
+            onDismiss = { showBottomSheet = false },
+            onTakePhotoClick = {
+                showBottomSheet = false
+                cameraHelper.requestCameraPermission(cameraPermissionLauncher) {
+                    tempUri.value = cameraHelper.getTempUri()
+                    tempUri.value?.let { takePhotoLauncher.launch(it) }
+                }
+            },
+            onPhotoGalleryClick = {
+                showBottomSheet = false
+                imagePicker.launch(PickVisualMediaRequest(ActivityResultContracts.PickVisualMedia.ImageOnly))
+            },
+        )
+    }
 
     Scaffold(
     topBar = {
@@ -90,12 +158,21 @@ fun AssessmentScreen (
             /***
              * PERTANYAAN 1
              */
-//            AssessmentQuestion("1. Apa tipe kulitmu?")
-//            Spacer(modifier = Modifier.height(12.dp))
-//            ScannerCard("Deteksi Tipe Kulit", "Kurang yakin dengan tipe kulitmu? Deteksi tipe kulit dengan mengupload foto wajahmu atau lakukan selfie pada kamera.")
-//            Spacer(modifier = Modifier.height(12.dp))
-//            ScannerCard("Hasil Scan: Kulit Kering", "Lakukan scan kembali", painterResource(id = R.drawable.skin_dummy))
-//            Spacer(modifier = Modifier.height(12.dp))
+            AssessmentQuestion("1. Apa tipe kulitmu?")
+            Spacer(modifier = Modifier.height(12.dp))
+            if (selectedUri == null) {
+                ScannerCard(
+                    title = "Deteksi Tipe Kulit",
+                    subtitle = "Kurang yakin dengan tipe kulitmu? Deteksi tipe kulit dengan mengupload foto wajahmu atau lakukan selfie pada kamera.",
+                    onClick = { showBottomSheet = true },)
+            } else {
+                ScannerCard(
+                    title = "Foto berhasil ditambahkan.",
+                    subtitle = "Lakukan scan kembali",
+                    selectedUri = selectedUri,
+                    onClick = { showBottomSheet = true },)
+            }
+            Spacer(modifier = Modifier.height(24.dp))
 
             /***
              * PERTANYAAN 2
@@ -149,7 +226,11 @@ fun AssessmentScreen (
             )
             Spacer(modifier = Modifier.height(24.dp))
 
-            AssessmentNavButton({onDoneClick()}, {onBackClick()} )
+            AssessmentNavButton(
+                onClick = {
+                viewModel.submitAssessment()
+                onDoneClick()
+            }, {onBackClick()} )
         }
     },
         )
@@ -159,13 +240,15 @@ fun AssessmentScreen (
 fun ScannerCard(
     title: String,
     subtitle: String,
-    image: Painter? = null,
+    selectedUri: Uri? = null,
+    onClick: () -> Unit,
     modifier: Modifier = Modifier
 ) {
     Card(
         shape = RoundedCornerShape(16.dp),
         modifier = Modifier
-            .fillMaxWidth(),
+            .fillMaxWidth()
+            .clickable { onClick() },
         elevation = CardDefaults.cardElevation(1.dp)
     ) {
         Box(
@@ -187,10 +270,10 @@ fun ScannerCard(
                     verticalAlignment = Alignment.CenterVertically,
                     modifier = Modifier.fillMaxWidth()
                 ){
-                    if (image != null) {
-                        Image(
-                            painter = image,
-                            contentDescription = null,
+                    if (selectedUri != null) {
+                        AsyncImage(
+                            model = selectedUri,
+                            contentDescription = "Selected Skin Image",
                             contentScale = ContentScale.Crop,
                             modifier = Modifier
                                 .height(120.dp)
@@ -225,6 +308,55 @@ fun ScannerCard(
                         tint = MaterialTheme.colorScheme.onPrimary
                     )
                 }
+            }
+        }
+    }
+}
+
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+fun PhotoModalBottomSheet(
+    onDismiss: () -> Unit,
+    onTakePhotoClick: () -> Unit,
+    onPhotoGalleryClick: () -> Unit
+) {
+    ModalBottomSheet(
+        onDismissRequest = { onDismiss() }
+    ) {
+        Column(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(16.dp),
+            horizontalAlignment = Alignment.CenterHorizontally,
+            verticalArrangement = Arrangement.spacedBy(16.dp)
+        ) {
+            Text(text = "Ambil Gambar", modifier = Modifier.padding(bottom = 4.dp))
+
+            Button(
+                onClick = onTakePhotoClick,
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(bottom = 2.dp)
+            ) {
+                Text(text = "Ambil dari Kamera")
+            }
+
+            Button(
+                onClick = onPhotoGalleryClick,
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(bottom = 2.dp)
+            ) {
+                Text(text = "Ambil dari Galeri")
+            }
+
+            Button(
+                onClick = onDismiss,
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(bottom = 2.dp)
+            ) {
+                Text(text = "Cancel")
             }
         }
     }

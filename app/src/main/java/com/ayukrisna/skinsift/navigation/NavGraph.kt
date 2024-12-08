@@ -13,11 +13,8 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.navigation
 import androidx.navigation.toRoute
-import com.ayukrisna.skinsift.view.ui.screen.assessment.AllergyAssessmentScreen
 import com.ayukrisna.skinsift.view.ui.screen.assessment.AssessmentResultScreen
 import com.ayukrisna.skinsift.view.ui.screen.assessment.AssessmentScreen
-import com.ayukrisna.skinsift.view.ui.screen.assessment.FunctionAssessmentScreen
-import com.ayukrisna.skinsift.view.ui.screen.assessment.PurposeAssessmentScreen
 import com.ayukrisna.skinsift.view.ui.screen.assessment.StartAssessmentScreen
 import com.ayukrisna.skinsift.view.ui.screen.dictionary.detaildictionary.DictDetailScreen
 import com.ayukrisna.skinsift.view.ui.screen.dictionary.filterdictionary.DictFilterScreen
@@ -173,27 +170,6 @@ fun NavGraphBuilder.assessNavGraph(
             AssessmentScreen(
                 paddingValues = paddingValues,
                 onDoneClick = { navController.navigate(AssessmentScreen.Result) },
-                onBackClick = { navController.popBackStack() },
-            )
-        }
-        composable<AssessmentScreen.Purpose> {
-            PurposeAssessmentScreen(
-                paddingValues = paddingValues,
-                onNextClick = { navController.navigate(AssessmentScreen.Function) },
-                onBackClick = { navController.popBackStack() },
-            )
-        }
-        composable<AssessmentScreen.Function> {
-            FunctionAssessmentScreen(
-                paddingValues = paddingValues,
-                onNextClick = { navController.navigate(AssessmentScreen.Allergy) },
-                onBackClick = { navController.popBackStack() },
-            )
-        }
-        composable<AssessmentScreen.Allergy> {
-            AllergyAssessmentScreen(
-                paddingValues = paddingValues,
-                onNextClick = { navController.navigate(AssessmentScreen.Result) },
                 onBackClick = { navController.popBackStack() },
             )
         }

@@ -101,7 +101,7 @@ fun AssessmentSelector(
 
 @Composable
 fun AssessmentNavButton(
-    onNextClick: () -> Unit,
+    onClick: () -> Unit,
     onBackClick: () -> Unit
 ) {
     Row(
@@ -118,7 +118,7 @@ fun AssessmentNavButton(
             Text(text = "Kembali", color = MaterialTheme.colorScheme.primary)
         }
         Button(
-            onClick = {onNextClick()},
+            onClick = {onClick()},
             shape = RoundedCornerShape(50),
             colors = ButtonDefaults.buttonColors(containerColor = MaterialTheme.colorScheme.primary),
         ) {
