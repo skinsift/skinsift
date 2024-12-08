@@ -3,11 +3,10 @@ package com.ayukrisna.skinsift.data.repository
 import com.ayukrisna.skinsift.data.local.pref.UserPreference
 import com.ayukrisna.skinsift.data.remote.request.AddNoteRequest
 import com.ayukrisna.skinsift.data.remote.request.DeleteNoteRequest
-import com.ayukrisna.skinsift.data.remote.response.ingredients.IngredientsResponse
 import com.ayukrisna.skinsift.data.remote.response.notes.AddNoteResponse
 import com.ayukrisna.skinsift.data.remote.response.notes.DeleteNoteResponse
 import com.ayukrisna.skinsift.data.remote.response.notes.NotesResponse
-import com.ayukrisna.skinsift.data.remote.retrofit.ApiConfig
+import com.ayukrisna.skinsift.data.remote.retrofit.api.ApiConfig
 import com.ayukrisna.skinsift.domain.model.UserModel
 import com.ayukrisna.skinsift.domain.repository.NotesRepository
 import com.google.gson.Gson

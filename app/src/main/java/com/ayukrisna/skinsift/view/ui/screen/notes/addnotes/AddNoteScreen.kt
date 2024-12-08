@@ -34,6 +34,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.draw.shadow
@@ -57,7 +58,7 @@ fun AddNoteScreen(
     modifier: Modifier = Modifier
 ) {
     val addNoteState by viewModel.addNoteState.observeAsState(initial = Result.Loading)
-    var selectedPreference by remember { mutableStateOf<String?>(null) }
+    var selectedPreference by rememberSaveable { mutableStateOf<String?>(null) }
     val context = LocalContext.current
 
     Scaffold(

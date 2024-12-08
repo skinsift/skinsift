@@ -18,6 +18,7 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.RadioButton
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -28,6 +29,8 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
+import com.ayukrisna.skinsift.view.ui.screen.assessment.AssessmentViewModel
+import kotlinx.coroutines.flow.StateFlow
 
 @Composable
 fun AssessmentQuestion(
@@ -41,7 +44,7 @@ fun AssessmentQuestion(
     ){
         Text(
             title,
-            style = MaterialTheme.typography.titleLarge,
+            style = MaterialTheme.typography.titleMedium,
             fontWeight = FontWeight.Bold,
             modifier = Modifier
                 .padding(0.dp, 0.dp, 0.dp, 0.dp)
@@ -50,35 +53,40 @@ fun AssessmentQuestion(
 }
 
 @Composable
-fun AssessmentSelector(items: List<String>) {
-    var selectedItem by remember { mutableStateOf(items[0]) }
+fun AssessmentSelector(
+    items: List<String>,
+    options: List<String>,
+    selectedItemFlow: StateFlow<String?>,
+    onSelectOption: (Int) -> Unit,
+) {
+    val selectedItem by selectedItemFlow.collectAsState()
 
     Column(
         modifier = Modifier.fillMaxWidth()
     ) {
-        items.forEach { item ->
-            val isSelected = selectedItem == item
+        items.forEachIndexed { index, item ->
+            val isSelected = selectedItem == options.getOrNull(index)
             Row(
                 modifier = Modifier
                     .fillMaxWidth()
                     .clip(shape = RoundedCornerShape(20.dp))
                     .background(
-                        if (isSelected) MaterialTheme.colorScheme.primaryContainer
-                        else MaterialTheme.colorScheme.primaryContainer.copy(alpha = 0.2f)
+                        if (isSelected) MaterialTheme.colorScheme.primaryContainer.copy(alpha = 0.2f)
+                        else MaterialTheme.colorScheme.surfaceBright
                     )
                     .border(
                         width = 1.dp,
-                        color = if (selectedItem == item) MaterialTheme.colorScheme.primary else Color.Gray.copy(alpha = 0.5f),
+                        color = if (isSelected) MaterialTheme.colorScheme.primary else Color.Gray.copy(alpha = 0.5f),
                         shape = RoundedCornerShape(20.dp)
                     )
-                    .clickable { selectedItem = item }
+                    .clickable { onSelectOption(index) }
                     .padding(vertical = 12.dp, horizontal = 12.dp),
                 verticalAlignment = Alignment.CenterVertically,
                 horizontalArrangement = Arrangement.Start
             ) {
                 RadioButton(
-                    selected = selectedItem == item,
-                    onClick = { selectedItem = item }
+                    selected = isSelected,
+                    onClick = { onSelectOption(index) }
                 )
                 Spacer(modifier = Modifier.width(4.dp))
                 Text(

@@ -54,7 +54,7 @@ sealed class AssessmentScreen {
     data object Start : AssessmentScreen()
 
     @Serializable
-    data object Skin : AssessmentScreen()
+    data object Assessment : AssessmentScreen()
 
     @Serializable
     data object Purpose : AssessmentScreen()

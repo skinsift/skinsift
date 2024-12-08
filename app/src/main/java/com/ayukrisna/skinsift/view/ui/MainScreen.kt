@@ -52,7 +52,7 @@ fun MainScreen() {
         "com.ayukrisna.skinsift.navigation.NotesScreen.Search",
 
         "com.ayukrisna.skinsift.navigation.AssessmentScreen.Start",
-        "com.ayukrisna.skinsift.navigation.AssessmentScreen.Skin",
+        "com.ayukrisna.skinsift.navigation.AssessmentScreen.Assessment",
         "com.ayukrisna.skinsift.navigation.AssessmentScreen.Purpose",
         "com.ayukrisna.skinsift.navigation.AssessmentScreen.Function",
         "com.ayukrisna.skinsift.navigation.AssessmentScreen.Allergy",

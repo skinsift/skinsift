@@ -5,7 +5,7 @@ import com.ayukrisna.skinsift.data.remote.request.SearchIngredientRequest
 import com.ayukrisna.skinsift.data.remote.response.ingredients.DetailIngredientsResponse
 import com.ayukrisna.skinsift.data.remote.response.ingredients.FilterIngreResponse
 import com.ayukrisna.skinsift.data.remote.response.ingredients.IngredientsResponse
-import com.ayukrisna.skinsift.data.remote.retrofit.ApiConfig
+import com.ayukrisna.skinsift.data.remote.retrofit.api.ApiConfig
 import com.ayukrisna.skinsift.domain.model.UserModel
 import com.ayukrisna.skinsift.domain.repository.IngredientRepository
 import com.google.gson.Gson

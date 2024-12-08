@@ -15,9 +15,9 @@ import androidx.navigation.navigation
 import androidx.navigation.toRoute
 import com.ayukrisna.skinsift.view.ui.screen.assessment.AllergyAssessmentScreen
 import com.ayukrisna.skinsift.view.ui.screen.assessment.AssessmentResultScreen
+import com.ayukrisna.skinsift.view.ui.screen.assessment.AssessmentScreen
 import com.ayukrisna.skinsift.view.ui.screen.assessment.FunctionAssessmentScreen
 import com.ayukrisna.skinsift.view.ui.screen.assessment.PurposeAssessmentScreen
-import com.ayukrisna.skinsift.view.ui.screen.assessment.SkinAssessmentScreen
 import com.ayukrisna.skinsift.view.ui.screen.assessment.StartAssessmentScreen
 import com.ayukrisna.skinsift.view.ui.screen.dictionary.detaildictionary.DictDetailScreen
 import com.ayukrisna.skinsift.view.ui.screen.dictionary.filterdictionary.DictFilterScreen
@@ -28,7 +28,6 @@ import com.ayukrisna.skinsift.view.ui.screen.notes.addnotes.AddNoteScreen
 import com.ayukrisna.skinsift.view.ui.screen.product.detailproduct.ProductDetailScreen
 import com.ayukrisna.skinsift.view.ui.screen.profile.profile.ProfileScreen
 import com.ayukrisna.skinsift.view.ui.screen.auth.signup.SignupScreen
-import com.ayukrisna.skinsift.view.ui.screen.home.Profile
 import com.ayukrisna.skinsift.view.ui.screen.notes.listnotes.NotesScreen
 import com.ayukrisna.skinsift.view.ui.screen.notes.searchnotes.SearchNoteScreen
 import com.ayukrisna.skinsift.view.ui.screen.product.filterproduct.ProductFilterScreen
@@ -166,14 +165,14 @@ fun NavGraphBuilder.assessNavGraph(
         composable<AssessmentScreen.Start> {
             StartAssessmentScreen(
                 paddingValues = paddingValues,
-                onNavigateToNext = {navController.navigate(AssessmentScreen.Skin)},
+                onNavigateToNext = {navController.navigate(AssessmentScreen.Assessment)},
                 onBackClick = { navController.popBackStack() }
             )
         }
-        composable<AssessmentScreen.Skin> {
-            SkinAssessmentScreen(
+        composable<AssessmentScreen.Assessment> {
+            AssessmentScreen(
                 paddingValues = paddingValues,
-                onNextClick = { navController.navigate(AssessmentScreen.Purpose) },
+                onDoneClick = { navController.navigate(AssessmentScreen.Result) },
                 onBackClick = { navController.popBackStack() },
             )
         }

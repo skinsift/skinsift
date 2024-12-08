@@ -5,7 +5,7 @@ import com.ayukrisna.skinsift.data.remote.request.SearchProductRequest
 import com.ayukrisna.skinsift.data.remote.response.product.DetailProductResponse
 import com.ayukrisna.skinsift.data.remote.response.product.FilterProductResponse
 import com.ayukrisna.skinsift.data.remote.response.product.ProductResponse
-import com.ayukrisna.skinsift.data.remote.retrofit.ApiConfig
+import com.ayukrisna.skinsift.data.remote.retrofit.api.ApiConfig
 import com.ayukrisna.skinsift.domain.model.UserModel
 import com.ayukrisna.skinsift.domain.repository.ProductRepository
 import com.google.gson.Gson

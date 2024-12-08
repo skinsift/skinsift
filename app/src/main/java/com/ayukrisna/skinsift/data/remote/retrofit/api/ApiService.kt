@@ -1,4 +1,4 @@
-package com.ayukrisna.skinsift.data.remote.retrofit
+package com.ayukrisna.skinsift.data.remote.retrofit.api
 
 import com.ayukrisna.skinsift.data.remote.request.AddNoteRequest
 import com.ayukrisna.skinsift.data.remote.request.DeleteNoteRequest
@@ -21,7 +21,6 @@ import com.ayukrisna.skinsift.data.remote.response.notes.DeleteNoteResponse
 import com.ayukrisna.skinsift.data.remote.response.notes.NotesResponse
 import retrofit2.Response
 import retrofit2.http.Body
-import retrofit2.http.DELETE
 import retrofit2.http.GET
 import retrofit2.http.HTTP
 import retrofit2.http.POST

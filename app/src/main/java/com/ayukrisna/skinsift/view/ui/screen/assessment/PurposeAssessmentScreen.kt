@@ -57,7 +57,7 @@ fun PurposeAssessmentScreen (
             ) {
                 AssessmentQuestion("2. Apa tujuan utama kamu menggunakan produk ini?")
                 Spacer(modifier = Modifier.height(12.dp))
-                AssessmentSelector(selectionItems)
+//                AssessmentSelector(selectionItems)
             }
         },
     )

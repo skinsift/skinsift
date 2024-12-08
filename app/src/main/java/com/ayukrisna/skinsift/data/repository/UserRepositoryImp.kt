@@ -7,7 +7,7 @@ import com.ayukrisna.skinsift.data.remote.request.RegisterRequest
 import com.ayukrisna.skinsift.data.remote.response.auth.DeleteUserResponse
 import com.ayukrisna.skinsift.data.remote.response.auth.LoginResponse
 import com.ayukrisna.skinsift.data.remote.response.auth.RegisterResponse
-import com.ayukrisna.skinsift.data.remote.retrofit.ApiConfig
+import com.ayukrisna.skinsift.data.remote.retrofit.api.ApiConfig
 import com.ayukrisna.skinsift.domain.model.UserModel
 import com.ayukrisna.skinsift.domain.repository.UserRepository
 import com.google.gson.Gson

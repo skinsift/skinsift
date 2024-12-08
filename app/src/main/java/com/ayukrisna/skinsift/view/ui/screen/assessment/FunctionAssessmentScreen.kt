@@ -60,7 +60,7 @@ fun FunctionAssessmentScreen (
             ) {
                 AssessmentQuestion("3. Apakah kamu mencari produk dengan fungsi tambahan?")
                 Spacer(modifier = Modifier.height(12.dp))
-                AssessmentSelector(selectionItems)
+//                AssessmentSelector(selectionItems)
             }
         },
     )

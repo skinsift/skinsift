@@ -18,8 +18,6 @@ data class DeleteUserRequest(
     val password: String
 )
 
-
-
 data class SearchIngredientRequest(
     val nama: String? = null,
     val rating: List<String>? = null,
