@@ -37,6 +37,7 @@ import com.ayukrisna.skinsift.data.remote.response.ingredients.Ingredient
 import com.ayukrisna.skinsift.view.ui.component.CenterAppBar
 import org.koin.androidx.compose.koinViewModel
 import com.ayukrisna.skinsift.util.Result
+import com.ayukrisna.skinsift.view.ui.component.ErrorLayout
 import com.ayukrisna.skinsift.view.ui.component.LoadingProgress
 import com.ayukrisna.skinsift.view.ui.component.getRatingColor
 
@@ -82,7 +83,7 @@ fun DictDetailScreen(
                     }
                     is Result.Error -> {
                         val error = (ingredientState as Result.Error).error
-                        Toast.makeText(context, "Error: $error", Toast.LENGTH_LONG).show()
+                        ErrorLayout(error = error)
                     }
                 }
             }

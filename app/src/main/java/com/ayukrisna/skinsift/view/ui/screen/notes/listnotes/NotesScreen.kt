@@ -53,6 +53,7 @@ import com.ayukrisna.skinsift.data.remote.response.ingredients.IngredientListIte
 import com.ayukrisna.skinsift.data.remote.response.notes.Note
 import com.ayukrisna.skinsift.util.Result
 import com.ayukrisna.skinsift.view.ui.component.CenterAppBar
+import com.ayukrisna.skinsift.view.ui.component.ErrorLayout
 import com.ayukrisna.skinsift.view.ui.component.LoadingProgress
 import com.ayukrisna.skinsift.view.ui.component.getRatingColor
 import com.ayukrisna.skinsift.view.ui.screen.dictionary.listdictionary.IngredientsItem
@@ -183,8 +184,7 @@ fun NotesScreen (
                         if (error == "No notes found for user") {
                             NullPreference()
                         } else {
-                            Text("Error: $error")
-                            Toast.makeText(context, "Error: $error", Toast.LENGTH_LONG).show()
+                            ErrorLayout(error = error)
                         }
                     }
                 }

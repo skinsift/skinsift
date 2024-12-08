@@ -39,6 +39,7 @@ import com.ayukrisna.skinsift.data.remote.response.ingredients.Filter
 import com.ayukrisna.skinsift.view.ui.component.CenterAppBar
 import org.koin.androidx.compose.koinViewModel
 import com.ayukrisna.skinsift.util.Result
+import com.ayukrisna.skinsift.view.ui.component.ErrorLayout
 import com.ayukrisna.skinsift.view.ui.component.LoadingProgress
 
 @Composable
@@ -97,7 +98,7 @@ fun DictFilterScreen(
                     }
                     is Result.Error -> {
                         val error = (filterState as Result.Error).error
-                        Text("Error: $error")
+                        ErrorLayout(error = error)
                     }
                 }
             }

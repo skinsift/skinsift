@@ -46,6 +46,7 @@ import com.ayukrisna.skinsift.data.remote.response.product.ProductListItem
 import com.ayukrisna.skinsift.view.ui.component.AppBar
 import org.koin.androidx.compose.koinViewModel
 import com.ayukrisna.skinsift.util.Result
+import com.ayukrisna.skinsift.view.ui.component.ErrorLayout
 import com.ayukrisna.skinsift.view.ui.component.LoadingProgress
 import com.ayukrisna.skinsift.view.ui.screen.dictionary.listdictionary.SearchBar
 import com.ayukrisna.skinsift.view.ui.screen.dictionary.listdictionary.ShowFilter
@@ -132,8 +133,7 @@ fun ProductScreen (
                     }
                     is Result.Error -> {
                         val error = (productsState as Result.Error).error
-                        Text("Error: $error")
-                        Toast.makeText(context, "Error: $error", Toast.LENGTH_LONG).show()
+                        ErrorLayout(error = error)
                     }
                 }
             }

@@ -47,6 +47,7 @@ import com.ayukrisna.skinsift.view.ui.component.getRatingColor
 import com.ayukrisna.skinsift.data.remote.response.ingredients.IngredientListItem
 import org.koin.androidx.compose.koinViewModel
 import com.ayukrisna.skinsift.util.Result
+import com.ayukrisna.skinsift.view.ui.component.ErrorLayout
 import com.ayukrisna.skinsift.view.ui.component.LoadingProgress
 
 @Composable
@@ -110,13 +111,12 @@ fun DictionaryScreen(
                                 }
                             }
                         } else {
-                            Text("Yah, belum ada bahan di sini!")
+                            ErrorLayout(description = "Yah, belum ada bahan di sini!")
                         }
                     }
                     is Result.Error -> {
                         val error = (ingredientsState as Result.Error).error
-                        Text("Error: $error")
-                        Toast.makeText(context, "Error: $error", Toast.LENGTH_LONG).show()
+                        ErrorLayout(error = error)
                     }
                 }
             }
