@@ -11,7 +11,7 @@ interface AssessmentRepository {
         photoUri: MultipartBody.Part,
         sensitive: String,
         reason: String,
-        function: List<String>,
+        function: String,
         pregnantOrBreastfeeding: String
     ): AssessmentResponse
 }

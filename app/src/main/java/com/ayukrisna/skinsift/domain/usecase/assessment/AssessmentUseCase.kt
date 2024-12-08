@@ -10,7 +10,7 @@ class AssessmentUseCase(private val assessmentRepository: AssessmentRepository){
     suspend fun execute(photoUri: MultipartBody.Part,
                         sensitive: String,
                         reason: String,
-                        function: List<String>,
+                        function: String,
                         pregnantOrBreastfeeding: String)  : Result<AssessmentResponse>  {
         return try {
             val response = assessmentRepository.submitAssessment(photoUri, sensitive, reason, function, pregnantOrBreastfeeding)

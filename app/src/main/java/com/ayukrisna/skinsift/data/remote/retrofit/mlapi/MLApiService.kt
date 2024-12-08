@@ -2,6 +2,7 @@ package com.ayukrisna.skinsift.data.remote.retrofit.mlapi
 
 import com.ayukrisna.skinsift.data.remote.response.ml.AssessmentResponse
 import okhttp3.MultipartBody
+import okhttp3.RequestBody
 import retrofit2.Response
 import retrofit2.http.Multipart
 import retrofit2.http.POST
@@ -12,9 +13,9 @@ interface MLApiService {
     @POST("asesmen")
     suspend fun submitAssessment(
         @Part file: MultipartBody.Part,
-        @Part("sensitif") sensitif: String,
-        @Part("tujuan") tujuan: String,
-        @Part("fungsi") fungsi: List<String>,
-        @Part("hamil_menyusui") hamilMenyusui: String
+        @Part("sensitif") sensitif: RequestBody,
+        @Part("tujuan") tujuan: RequestBody,
+        @Part("fungsi") fungsi: RequestBody,
+        @Part("hamil_menyusui") hamilMenyusui: RequestBody
     ) : Response<AssessmentResponse>
 }

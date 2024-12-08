@@ -23,7 +23,7 @@ class FileHelper(private val context: Context) {
 
     private fun createCustomTempFile(): File {
         val filesDir = context.externalCacheDir
-        return File.createTempFile(timeStamp, ".jpeg", filesDir)
+        return File.createTempFile(timeStamp, ".png", filesDir)
     }
 
     fun uriToFile(imageUri: Uri): File {
@@ -48,12 +48,12 @@ class FileHelper(private val context: Context) {
         var streamLength: Int
         do {
             val bmpStream = ByteArrayOutputStream()
-            bitmap.compress(Bitmap.CompressFormat.JPEG, compressQuality, bmpStream)
+            bitmap.compress(Bitmap.CompressFormat.PNG, compressQuality, bmpStream)
             val bmpPicByteArray = bmpStream.toByteArray()
             streamLength = bmpPicByteArray.size
             compressQuality -= 5
         } while (streamLength > MAXIMAL_SIZE)
-        bitmap.compress(Bitmap.CompressFormat.JPEG, compressQuality, FileOutputStream(file))
+        bitmap.compress(Bitmap.CompressFormat.PNG, compressQuality, FileOutputStream(file))
         return file
     }
 

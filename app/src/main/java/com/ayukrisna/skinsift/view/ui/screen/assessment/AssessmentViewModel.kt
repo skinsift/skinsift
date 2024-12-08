@@ -35,8 +35,8 @@ class AssessmentViewModel(
 
     private fun imageUriToMultiPart(photoUri: Uri) : MultipartBody.Part {
         val imageFile = fileHelper.uriToFile(photoUri)
-        val reducedImageFile = fileHelper.reduceFileImage(imageFile)
-        val requestImageFile = reducedImageFile.asRequestBody("image/jpeg".toMediaType())
+//        val reducedImageFile = fileHelper.reduceFileImage(imageFile)
+        val requestImageFile = imageFile.asRequestBody("image/png".toMediaType())
         val multipartBody = MultipartBody.Part.createFormData(
             "file",
             imageFile.name,
@@ -131,11 +131,10 @@ class AssessmentViewModel(
             _assessmentState.value = Result.Error("All fields are required.")
             return
         }
-        val fungsiList = fungsi.split(",").map { it.trim() }
-        submitAssessment(photoUri, sensitive, tujuan, fungsiList, hamilMenyusui)
+        submitAssessment(photoUri, sensitive, tujuan, fungsi, hamilMenyusui)
     }
 
-    private fun submitAssessment(photoUri: Uri, sensitive: String, tujuan: String, fungsi: List<String>, hamilMenyusui: String) {
+    private fun submitAssessment(photoUri: Uri, sensitive: String, tujuan: String, fungsi: String, hamilMenyusui: String) {
         val multipartBody = imageUriToMultiPart(photoUri)
 
         viewModelScope.launch {

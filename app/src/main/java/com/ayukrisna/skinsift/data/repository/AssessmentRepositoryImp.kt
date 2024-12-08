@@ -8,7 +8,9 @@ import com.ayukrisna.skinsift.domain.repository.AssessmentRepository
 import com.google.gson.Gson
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.first
+import okhttp3.MediaType.Companion.toMediaTypeOrNull
 import okhttp3.MultipartBody
+import okhttp3.RequestBody.Companion.toRequestBody
 
 class AssessmentRepositoryImp (private val userPreference: UserPreference) : AssessmentRepository{
     override fun getSession(): Flow<UserModel> {
@@ -19,13 +21,18 @@ class AssessmentRepositoryImp (private val userPreference: UserPreference) : Ass
         photoUri: MultipartBody.Part,
         sensitive: String,
         reason: String,
-        function: List<String>,
+        function: String,
         pregnantOrBreastfeeding: String
     ): AssessmentResponse {
         val token = userPreference.getSession().first().token
         val apiService = MLApiConfig.getApiService(token)
 
-        val response = apiService.submitAssessment(photoUri, sensitive, reason, function, pregnantOrBreastfeeding)
+        val sensitiveBody = sensitive.toRequestBody("text/plain".toMediaTypeOrNull())
+        val reasonBody = sensitive.toRequestBody("text/plain".toMediaTypeOrNull())
+        val functionBody = sensitive.toRequestBody("text/plain".toMediaTypeOrNull())
+        val pregnantOrBreastfeedingBody = sensitive.toRequestBody("text/plain".toMediaTypeOrNull())
+
+        val response = apiService.submitAssessment(photoUri, sensitiveBody, reasonBody, functionBody, pregnantOrBreastfeedingBody)
 
         if (response.isSuccessful) {
             return response.body() ?: throw Exception("Response body is null")
