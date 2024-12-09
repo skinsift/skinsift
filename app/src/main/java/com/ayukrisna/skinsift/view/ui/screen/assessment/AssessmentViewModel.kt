@@ -35,8 +35,8 @@ class AssessmentViewModel(
 
     private fun imageUriToMultiPart(photoUri: Uri) : MultipartBody.Part {
         val imageFile = fileHelper.uriToFile(photoUri)
-//        val reducedImageFile = fileHelper.reduceFileImage(imageFile)
-        val requestImageFile = imageFile.asRequestBody("image/png".toMediaType())
+        val reducedImageFile = fileHelper.reduceFileImage(imageFile)
+        val requestImageFile = reducedImageFile.asRequestBody("image/png".toMediaType())
         val multipartBody = MultipartBody.Part.createFormData(
             "file",
             imageFile.name,
