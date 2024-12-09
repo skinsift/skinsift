@@ -1,5 +1,6 @@
 package com.ayukrisna.skinsift.navigation
 
+import androidx.activity.compose.BackHandler
 import androidx.compose.animation.EnterTransition
 import androidx.compose.animation.ExitTransition
 import androidx.compose.animation.core.tween
@@ -13,6 +14,7 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.navigation
 import androidx.navigation.toRoute
+import com.ayukrisna.skinsift.data.remote.response.product.ProductListItem
 import com.ayukrisna.skinsift.view.ui.screen.assessment.AssessmentResultScreen
 import com.ayukrisna.skinsift.view.ui.screen.assessment.AssessmentScreen
 import com.ayukrisna.skinsift.view.ui.screen.assessment.StartAssessmentScreen
@@ -30,6 +32,8 @@ import com.ayukrisna.skinsift.view.ui.screen.notes.searchnotes.SearchNoteScreen
 import com.ayukrisna.skinsift.view.ui.screen.product.filterproduct.ProductFilterScreen
 import com.ayukrisna.skinsift.view.ui.screen.product.listproduct.ProductScreen
 import com.ayukrisna.skinsift.view.ui.screen.profile.delete.DeleteAccountScreen
+import com.google.gson.Gson
+import com.google.gson.reflect.TypeToken
 
 @Composable
 fun NavGraph (
@@ -169,18 +173,33 @@ fun NavGraphBuilder.assessNavGraph(
         composable<AssessmentScreen.Assessment> {
             AssessmentScreen(
                 paddingValues = paddingValues,
-                onDoneClick = { navController.navigate(AssessmentScreen.Result) },
+                onDoneClick = { productList, isHamil ->
+                    val gson = Gson()
+                    val productJson = gson.toJson(productList)
+                    navController.navigate(AssessmentScreen.Result(productJson, isHamil)) },
                 onBackClick = { navController.popBackStack() },
             )
         }
-        composable<AssessmentScreen.Result> {
+        composable<AssessmentScreen.Result> { entry ->
+            val isHamil = entry.toRoute<AssessmentScreen.Result>().isHamil
+            val productsJson = entry.toRoute<AssessmentScreen.Result>().productItem
+            val gson = Gson()
+            val productListType = object : TypeToken<List<ProductListItem>>() {}.type
+            val products: List<ProductListItem> = gson.fromJson(productsJson, productListType)
+
             AssessmentResultScreen(
+                isHamil = isHamil,
+                products = products,
                 paddingValues = paddingValues,
-                onBackClick = { navController.popBackStack() },
-                onNavigateToDetail = {
-                    navController.navigate(DictionaryScreen.Detail)
+                onBackClick = { navController.popBackStack(AssessmentScreen.Start, false) },
+                onNavigateToDetail = { idProduct ->
+                    navController.navigate(ProductScreen.Detail(idProduct))
                 },
             )
+
+            BackHandler {
+                navController.popBackStack(AssessmentScreen.Start, false)
+            }
         }
     }
 }

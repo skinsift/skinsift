@@ -71,7 +71,7 @@ import com.ayukrisna.skinsift.view.ui.component.LoadingProgress
 fun AssessmentScreen (
     paddingValues: PaddingValues,
     viewModel: AssessmentViewModel = koinViewModel(),
-    onDoneClick: () -> Unit,
+    onDoneClick: (List<ProductListItem?>?, Boolean) -> Unit,
     onBackClick: () -> Unit,
     modifier: Modifier = Modifier
 ){
@@ -262,6 +262,8 @@ fun AssessmentScreen (
                 var showSuccessDialog by remember { mutableStateOf(true) }
                 val assessmentResult: AssessmentResponse = (assessmentState as Result.Success<AssessmentResponse>).data
 
+                val isHamil = { selectedHamilMenyusui?.equals("a") ?: false }
+
                 Log.d("Assessment Result", "Assessment Result: $assessmentResult")
 
                 if (showSuccessDialog) {
@@ -272,7 +274,7 @@ fun AssessmentScreen (
                         confirmButton = {
                             Button(onClick = {
                                 showSuccessDialog = false
-//                                onDoneClick()
+                                onDoneClick(assessmentResult.productList, isHamil())
                             }) {
                                 Text("OK")
                             }

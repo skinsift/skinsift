@@ -57,7 +57,7 @@ sealed class AssessmentScreen {
     data object Assessment : AssessmentScreen()
 
     @Serializable
-    data object Result : AssessmentScreen()
+    data class Result(val productItem: String, val isHamil: Boolean)
 }
 
 @Serializable

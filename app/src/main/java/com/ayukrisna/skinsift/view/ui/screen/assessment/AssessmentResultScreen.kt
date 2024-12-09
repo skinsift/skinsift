@@ -35,6 +35,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import com.ayukrisna.skinsift.data.remote.response.product.ProductListItem
 import com.ayukrisna.skinsift.domain.model.ProductModel
 import com.ayukrisna.skinsift.view.ui.screen.product.listproduct.SkincareCard
 import com.ayukrisna.skinsift.view.ui.theme.SkinSiftTheme
@@ -42,41 +43,12 @@ import com.ayukrisna.skinsift.view.ui.theme.SkinSiftTheme
 @Composable
 fun AssessmentResultScreen(
     paddingValues: PaddingValues,
-    onNavigateToDetail: () -> Unit,
+    isHamil: Boolean,
+    products: List<ProductListItem>,
+    onNavigateToDetail: (Int) -> Unit,
     onBackClick: () -> Unit,
     modifier: Modifier = Modifier
 ) {
-    val skincareProducts = listOf(
-        ProductModel(
-            id = 1,
-            name = "Hydrating Face Cream",
-            brand = "GlowSkin",
-            description = "A deeply hydrating cream that nourishes your skin and provides 24-hour moisture.",
-            imageUrl = "https://storage.googleapis.com/skinsift/products/acnes_creamywash.png"
-        ),
-        ProductModel(
-            id = 2,
-            name = "Brightening Serum",
-            brand = "RadiantCare",
-            description = "A serum infused with Vitamin C to brighten your skin and even out skin tone.",
-            imageUrl = "https://storage.googleapis.com/skinsift/products/acnes_creamywash.png"
-        ),
-        ProductModel(
-            id = 3,
-            name = "Sunscreen SPF 50",
-            brand = "SunShield",
-            description = "Lightweight, non-greasy sunscreen that protects your skin from harmful UV rays.",
-            imageUrl = "https://storage.googleapis.com/skinsift/products/acnes_creamywash.png"
-        ),
-        ProductModel(
-            id = 4,
-            name = "Purifying Clay Mask",
-            brand = "PureNature",
-            description = "A detoxifying mask that removes impurities and minimizes pores.",
-            imageUrl = "https://storage.googleapis.com/skinsift/products/acnes_creamywash.png"
-        ),
-    )
-
     Scaffold(
         topBar = {
             AssessmentAppBar(
@@ -96,27 +68,29 @@ fun AssessmentResultScreen(
                         bottom = innerPadding.calculateBottomPadding()
                     ),
             ) {
-                PregnancyWarning()
-//                LazyVerticalGrid (
-//                    columns = GridCells.Fixed(2),
-//                    contentPadding = PaddingValues(4.dp, 8.dp, 4.dp, 8.dp)
-//                ) {
-//                    items(products) { product ->
-//                        Box(
-//                            modifier = Modifier
-//                                .padding(2.dp)
-//                        ) {
-//                            SkincareCard(
-//                                product.productName ?: "Belum ada nama",
-//                                product.brand ?: "Belum ada brand",
-//                                product.description ?: "Belum ada deskripsi",
-//                                product.imageUrl,
-//                                {onNavigateToDetail(product.id)}
-//
-//                            )
-//                        }
-//                    }
-//                }
+                if (isHamil) {
+                    PregnancyWarning()
+                }
+                LazyVerticalGrid (
+                    columns = GridCells.Fixed(2),
+                    contentPadding = PaddingValues(4.dp, 8.dp, 4.dp, 8.dp)
+                ) {
+                    items(products) { product ->
+                        Box(
+                            modifier = Modifier
+                                .padding(2.dp)
+                        ) {
+                            SkincareCard(
+                                product.productName ?: "Belum ada nama",
+                                product.brand ?: "Belum ada brand",
+                                product.description ?: "Belum ada deskripsi",
+                                product.imageUrl,
+                                {onNavigateToDetail(product.id)}
+
+                            )
+                        }
+                    }
+                }
             }
         },
     )
@@ -138,12 +112,12 @@ fun PregnancyWarning() {
     if (isVisible) {
         Card(
             modifier = Modifier
-                .padding(16.dp)
+//                .padding(16.dp)
                 .fillMaxWidth(),
-            elevation = CardDefaults.cardElevation(1.dp),
             colors = CardDefaults.cardColors(
-                containerColor = MaterialTheme.colorScheme.surface
+                containerColor = MaterialTheme.colorScheme.surfaceBright
             ),
+            elevation = CardDefaults.cardElevation(1.dp),
         ) {
             Box(
                 modifier = Modifier

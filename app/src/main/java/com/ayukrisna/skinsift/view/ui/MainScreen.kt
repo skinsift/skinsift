@@ -53,10 +53,7 @@ fun MainScreen() {
 
         "com.ayukrisna.skinsift.navigation.AssessmentScreen.Start",
         "com.ayukrisna.skinsift.navigation.AssessmentScreen.Assessment",
-        "com.ayukrisna.skinsift.navigation.AssessmentScreen.Purpose",
-        "com.ayukrisna.skinsift.navigation.AssessmentScreen.Function",
-        "com.ayukrisna.skinsift.navigation.AssessmentScreen.Allergy",
-        "com.ayukrisna.skinsift.navigation.AssessmentScreen.Result",
+        "com.ayukrisna.skinsift.navigation.AssessmentScreen.Result/{productItem}/{isHamil}",
 
         "com.ayukrisna.skinsift.navigation.DictionaryScreen.Filter",
         "com.ayukrisna.skinsift.navigation.ProductScreen.Filter",
@@ -81,7 +78,7 @@ fun MainScreen() {
 //            }
 
             val showBottomBar = currentRoute !in noBarRoutes
-
+            Log.d("Navigation", "Current route: $currentRoute")
 
 //            Log.d("Navigation", "Current route: $currentRoute \n Argument route: $noBarRoutes \n Is in argument: ${currentRoute !in noBarRoutes} \n Show bottom bar: $showBottomBar")
 //            Log.d("Navigation", "If currentDestination?.route == null: ${currentDestination?.route == null}")
