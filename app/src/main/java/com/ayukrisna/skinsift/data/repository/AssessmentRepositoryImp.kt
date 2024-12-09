@@ -18,7 +18,7 @@ class AssessmentRepositoryImp (private val userPreference: UserPreference) : Ass
     }
 
     override suspend fun submitAssessment(
-        photoUri: MultipartBody.Part,
+        file: MultipartBody.Part,
         sensitive: String,
         reason: String,
         function: String,
@@ -32,7 +32,7 @@ class AssessmentRepositoryImp (private val userPreference: UserPreference) : Ass
         val functionBody = sensitive.toRequestBody("text/plain".toMediaTypeOrNull())
         val pregnantOrBreastfeedingBody = sensitive.toRequestBody("text/plain".toMediaTypeOrNull())
 
-        val response = apiService.submitAssessment(photoUri, sensitiveBody, reasonBody, functionBody, pregnantOrBreastfeedingBody)
+        val response = apiService.submitAssessment(file, sensitiveBody, reasonBody, functionBody, pregnantOrBreastfeedingBody)
 
         if (response.isSuccessful) {
             return response.body() ?: throw Exception("Response body is null")

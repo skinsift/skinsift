@@ -8,7 +8,7 @@ import okhttp3.MultipartBody
 interface AssessmentRepository {
     fun getSession(): Flow<UserModel>
     suspend fun submitAssessment(
-        photoUri: MultipartBody.Part,
+        file: MultipartBody.Part,
         sensitive: String,
         reason: String,
         function: String,

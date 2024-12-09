@@ -55,6 +55,8 @@ fun MainScreen() {
         "com.ayukrisna.skinsift.navigation.AssessmentScreen.Assessment",
         "com.ayukrisna.skinsift.navigation.AssessmentScreen.Result/{productItem}/{isHamil}",
 
+        "com.ayukrisna.skinsift.navigation.OcrScreen.Ocr",
+
         "com.ayukrisna.skinsift.navigation.DictionaryScreen.Filter",
         "com.ayukrisna.skinsift.navigation.ProductScreen.Filter",
 

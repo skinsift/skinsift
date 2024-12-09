@@ -13,6 +13,8 @@ sealed class RootScreen {
     @Serializable
     object AssessNav
     @Serializable
+    object OcrNav
+    @Serializable
     object DictionaryNav
     @Serializable
     object ProductNav
@@ -58,6 +60,12 @@ sealed class AssessmentScreen {
 
     @Serializable
     data class Result(val productItem: String, val isHamil: Boolean)
+}
+
+@Serializable
+sealed class OcrScreen {
+    @Serializable
+    data object Ocr : OcrScreen()
 }
 
 @Serializable

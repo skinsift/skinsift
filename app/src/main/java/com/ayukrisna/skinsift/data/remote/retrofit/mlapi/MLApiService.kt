@@ -1,6 +1,7 @@
 package com.ayukrisna.skinsift.data.remote.retrofit.mlapi
 
 import com.ayukrisna.skinsift.data.remote.response.ml.AssessmentResponse
+import com.ayukrisna.skinsift.data.remote.response.ml.OcrResponse
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
 import retrofit2.Response
@@ -18,4 +19,10 @@ interface MLApiService {
         @Part("fungsi") fungsi: RequestBody,
         @Part("hamil_menyusui") hamilMenyusui: RequestBody
     ) : Response<AssessmentResponse>
+
+    @Multipart
+    @POST("ocr")
+    suspend fun submitOcr(
+        @Part file: MultipartBody.Part,
+    ) : Response<OcrResponse>
 }

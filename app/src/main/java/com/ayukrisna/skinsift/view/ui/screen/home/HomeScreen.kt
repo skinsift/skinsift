@@ -51,6 +51,7 @@ import com.ayukrisna.skinsift.R
 @Composable
 fun HomeScreen(
     onNavigateToNotes: () -> Unit,
+    onNavigateToOcr: () -> Unit,
     onNavigateToAssessment: () -> Unit,
     modifier: Modifier = Modifier,
     paddingValues: PaddingValues,
@@ -69,7 +70,7 @@ fun HomeScreen(
             Spacer(modifier = Modifier.height(24.dp))
             TitleHome("Pahami Kebutuhanmu")
             Spacer(modifier = Modifier.height(12.dp))
-            ScannerRow({onNavigateToAssessment()})
+            ScannerRow({onNavigateToAssessment()}, {onNavigateToOcr()})
             Spacer(modifier = Modifier.height(24.dp))
             TitleHome("Bahan Skincare Tersimpan")
             Spacer(modifier = Modifier.height(12.dp))
@@ -129,8 +130,7 @@ fun Profile(modifier: Modifier = Modifier) {
 
 
 @Composable
-fun HomeIntro(modifier : Modifier = Modifier
-) {
+fun HomeIntro(modifier : Modifier = Modifier) {
     Text(
         buildAnnotatedString {
             append(stringResource(R.string.home_intro1))
@@ -373,13 +373,13 @@ fun ArticleCard(
 //}
 
 @Composable
-fun ScannerRow(assessment: () -> Unit, modifier: Modifier = Modifier) {
+fun ScannerRow(assessment: () -> Unit, ocr: () -> Unit, modifier: Modifier = Modifier) {
     Row(
         Modifier.fillMaxWidth(),
         horizontalArrangement = Arrangement.SpaceBetween,
     ){
         SkincareScannerCard(
-            {assessment()},
+            {ocr()},
             Modifier.fillMaxWidth()
         )
         Spacer(modifier = Modifier.height(4.dp))

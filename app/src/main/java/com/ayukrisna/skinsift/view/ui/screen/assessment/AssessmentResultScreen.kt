@@ -112,7 +112,6 @@ fun PregnancyWarning() {
     if (isVisible) {
         Card(
             modifier = Modifier
-//                .padding(16.dp)
                 .fillMaxWidth(),
             colors = CardDefaults.cardColors(
                 containerColor = MaterialTheme.colorScheme.surfaceBright

@@ -1,4 +1,4 @@
-package com.ayukrisna.skinsift.data.remote.response.ocr
+package com.ayukrisna.skinsift.data.remote.response.ml
 
 import com.google.gson.annotations.SerializedName
 
@@ -11,7 +11,7 @@ data class OcrResponse(
 	val matchedIngredients: List<MatchedIngredientsItem?>? = null,
 
 	@field:SerializedName("error")
-	val error: String? = null,
+	val error: Boolean? = null,
 
 	@field:SerializedName("message")
 	val message: String? = null
@@ -29,13 +29,13 @@ data class WarningsItem(
 data class MatchedIngredientsItem(
 
 	@field:SerializedName("nama")
-	val nama: String? = null,
+	val name: String? = null,
 
 	@field:SerializedName("rating")
 	val rating: String? = null,
 
 	@field:SerializedName("kategoriidn")
-	val kategoriidn: String? = null,
+	val category: String? = null,
 
 	@field:SerializedName("id")
 	val id: Int? = null

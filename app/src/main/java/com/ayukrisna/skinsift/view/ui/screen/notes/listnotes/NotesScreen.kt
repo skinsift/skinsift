@@ -47,6 +47,7 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalLayoutDirection
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import com.ayukrisna.skinsift.R
 import com.ayukrisna.skinsift.data.remote.response.ingredients.IngredientListItem
@@ -287,7 +288,8 @@ fun NullPreference() {
                 text = "Kamu belum menyimpan ingredients yang kamu suka, nih.\n" +
                         "Yuk, tambahkan dulu!",
                 style = MaterialTheme.typography.bodySmall,
-                color = MaterialTheme.colorScheme.primary.copy(alpha = 0.5f)
+                color = MaterialTheme.colorScheme.primary.copy(alpha = 0.5f),
+                textAlign = TextAlign.Center
             )
         }
     }

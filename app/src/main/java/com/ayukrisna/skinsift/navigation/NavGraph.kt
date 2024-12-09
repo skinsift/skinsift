@@ -22,6 +22,7 @@ import com.ayukrisna.skinsift.view.ui.screen.dictionary.detaildictionary.DictDet
 import com.ayukrisna.skinsift.view.ui.screen.dictionary.filterdictionary.DictFilterScreen
 import com.ayukrisna.skinsift.view.ui.screen.dictionary.listdictionary.DictionaryScreen
 import com.ayukrisna.skinsift.view.ui.screen.home.HomeScreen
+import com.ayukrisna.skinsift.view.ui.screen.ocr.OcrScreen
 import com.ayukrisna.skinsift.view.ui.screen.auth.login.LoginScreen
 import com.ayukrisna.skinsift.view.ui.screen.notes.addnotes.AddNoteScreen
 import com.ayukrisna.skinsift.view.ui.screen.product.detailproduct.ProductDetailScreen
@@ -52,6 +53,7 @@ fun NavGraph (
         homeNavGraph(navController, paddingValues)
         notesNavGraph(navController, paddingValues)
         assessNavGraph(navController, paddingValues)
+        ocrNavGraph(navController, paddingValues)
         dictionaryNavGraph(navController, paddingValues)
         productNavGraph(navController, paddingValues)
         profileNavGraph(navController, paddingValues)
@@ -105,6 +107,8 @@ fun NavGraphBuilder.homeNavGraph(
                 },
                 onNavigateToAssessment = {
                     navController.navigate(AssessmentScreen.Start)
+                },onNavigateToOcr = {
+                    navController.navigate(OcrScreen.Ocr)
                 },
             )
         }
@@ -149,6 +153,25 @@ fun NavGraphBuilder.notesNavGraph(
                     navController.navigate(NotesScreen.AddNote(idIngredient, name)) {
                         popUpTo(NotesScreen.Notes) { inclusive = false }
                     }
+                },
+                onBackClick = { navController.popBackStack() }
+            )
+        }
+    }
+}
+
+fun NavGraphBuilder.ocrNavGraph(
+    navController: NavHostController,
+    paddingValues: PaddingValues,
+) {
+    navigation<RootScreen.OcrNav>(
+        startDestination = OcrScreen.Ocr
+    ) {
+        composable<OcrScreen.Ocr> {
+            OcrScreen(
+                paddingValues = paddingValues,
+                onNavigateToDetail = { id ->
+                    navController.navigate(DictionaryScreen.Detail(id))
                 },
                 onBackClick = { navController.popBackStack() }
             )
