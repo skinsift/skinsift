@@ -32,6 +32,7 @@ fun MainScreen() {
     val navController = rememberNavController()
 
     val noBarRoutes = setOf(
+        "com.ayukrisna.skinsift.navigation.AuthScreen.Splash",
         "com.ayukrisna.skinsift.navigation.AuthScreen.Login",
         "com.ayukrisna.skinsift.navigation.AuthScreen.Signup",
 

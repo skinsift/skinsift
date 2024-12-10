@@ -52,6 +52,7 @@ import com.ayukrisna.skinsift.view.ui.screen.product.filterproduct.ProductFilter
 import com.ayukrisna.skinsift.view.ui.screen.product.listproduct.ProductViewModel
 import com.ayukrisna.skinsift.view.ui.screen.profile.delete.DeleteAccountViewModel
 import com.ayukrisna.skinsift.view.ui.screen.profile.profile.ProfileViewModel
+import com.ayukrisna.skinsift.view.ui.screen.splash.SplashViewModel
 import org.koin.android.ext.koin.androidContext
 import org.koin.androidx.viewmodel.dsl.viewModel
 import org.koin.core.module.dsl.singleOf
@@ -110,6 +111,7 @@ val useCaseModules = module {
 
 //View Model
 val viewModelModules = module {
+    viewModel{ SplashViewModel(get()) }
     viewModel{ SignupViewModel(get()) }
     viewModel{ LoginViewModel(get()) }
 

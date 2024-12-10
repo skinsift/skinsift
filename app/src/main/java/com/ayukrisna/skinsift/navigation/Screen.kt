@@ -26,6 +26,9 @@ sealed class RootScreen {
 @Serializable
 sealed class AuthScreen {
     @Serializable
+    data object Splash : AuthScreen()
+
+    @Serializable
     data object Login : AuthScreen()
 
     @Serializable

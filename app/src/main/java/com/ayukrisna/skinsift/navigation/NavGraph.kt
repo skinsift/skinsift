@@ -1,5 +1,6 @@
 package com.ayukrisna.skinsift.navigation
 
+import android.app.Activity
 import androidx.activity.compose.BackHandler
 import androidx.compose.animation.EnterTransition
 import androidx.compose.animation.ExitTransition
@@ -8,6 +9,7 @@ import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.platform.LocalContext
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.compose.composable
 import androidx.navigation.NavHostController
@@ -22,6 +24,7 @@ import com.ayukrisna.skinsift.view.ui.screen.dictionary.detaildictionary.DictDet
 import com.ayukrisna.skinsift.view.ui.screen.dictionary.filterdictionary.DictFilterScreen
 import com.ayukrisna.skinsift.view.ui.screen.dictionary.listdictionary.DictionaryScreen
 import com.ayukrisna.skinsift.view.ui.screen.home.HomeScreen
+import com.ayukrisna.skinsift.view.ui.screen.splash.SplashScreen
 import com.ayukrisna.skinsift.view.ui.screen.ocr.OcrScreen
 import com.ayukrisna.skinsift.view.ui.screen.auth.login.LoginScreen
 import com.ayukrisna.skinsift.view.ui.screen.notes.addnotes.AddNoteScreen
@@ -65,8 +68,22 @@ fun NavGraphBuilder.authNavGraph(
     paddingValues: PaddingValues,
 ) {
     navigation<RootScreen.AuthNav>(
-        startDestination = AuthScreen.Login
+        startDestination = AuthScreen.Splash
     ) {
+        composable<AuthScreen.Splash> {
+            SplashScreen(
+                onNavigateToLogin = {
+                    navController.navigate(AuthScreen.Login) {
+                        popUpTo(AuthScreen.Splash) { inclusive = true }
+                    }
+                },
+                onNavigateToHome = {
+                    navController.navigate(HomeScreen.Home) {
+                        popUpTo(AuthScreen.Splash) { inclusive = true }
+                    }
+                }
+            )
+        }
         composable<AuthScreen.Login> {
             LoginScreen(
                 onNavigateToSignup = {
@@ -100,6 +117,8 @@ fun NavGraphBuilder.homeNavGraph(
         startDestination = HomeScreen.Home
     ) {
         composable<HomeScreen.Home> {
+            val context = LocalContext.current
+            val activity = context as? Activity
             HomeScreen(
                 paddingValues = paddingValues,
                 onNavigateToNotes = {
@@ -111,6 +130,10 @@ fun NavGraphBuilder.homeNavGraph(
                     navController.navigate(OcrScreen.Ocr)
                 },
             )
+
+            BackHandler {
+                activity?.finish()
+            }
         }
     }
 }
@@ -247,6 +270,10 @@ fun NavGraphBuilder.dictionaryNavGraph(
                     navController.navigate(DictionaryScreen.Filter)
                 },
             )
+
+            BackHandler {
+                navController.popBackStack(HomeScreen.Home, false)
+            }
         }
         composable<DictionaryScreen.Detail> { entry ->
             val detailIngredient = entry.toRoute<DictionaryScreen.Detail>()
@@ -290,6 +317,10 @@ fun NavGraphBuilder.productNavGraph(
                     navController.navigate(ProductScreen.Filter)
                 }
             )
+
+            BackHandler {
+                navController.popBackStack(HomeScreen.Home, false)
+            }
         }
         composable<ProductScreen.Detail> { entry ->
             val detailProduct = entry.toRoute<ProductScreen.Detail>()
@@ -331,6 +362,10 @@ fun NavGraphBuilder.profileNavGraph(
                     navController.navigate(ProfileScreen.Delete)
                 }
             )
+
+            BackHandler {
+                navController.popBackStack(HomeScreen.Home, false)
+            }
         }
         composable<ProfileScreen.Delete> {
             DeleteAccountScreen(
