@@ -30,20 +30,7 @@ fun MainScreenPreview() {
 @Composable
 fun MainScreen() {
     val navController = rememberNavController()
-//    val noBottomNavRoutes = listOf(
-//        AuthScreen.Login,
-//        AuthScreen.Signup,
-//        NotesScreen.Notes,
-//        NotesScreen.Search,
-//        AssessmentScreen.Start,
-//        AssessmentScreen.Skin,
-//        AssessmentScreen.Purpose,
-//        AssessmentScreen.Function,
-//        AssessmentScreen.Allergy,
-//        AssessmentScreen.Result,
-//        DictionaryScreen.Filter,
-//        ProductScreen.Filter
-//    )
+
     val noBarRoutes = setOf(
         "com.ayukrisna.skinsift.navigation.AuthScreen.Login",
         "com.ayukrisna.skinsift.navigation.AuthScreen.Signup",

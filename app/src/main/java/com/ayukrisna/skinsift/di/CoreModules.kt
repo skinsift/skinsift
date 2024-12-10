@@ -9,12 +9,15 @@ import com.ayukrisna.skinsift.data.repository.ProductRepositoryImp
 import com.ayukrisna.skinsift.data.repository.NotesRepositoryImp
 import com.ayukrisna.skinsift.data.repository.AssessmentRepositoryImp
 import com.ayukrisna.skinsift.data.repository.OcrRepositoryImp
+import com.ayukrisna.skinsift.data.repository.ArticleRepositoryImp
+import com.ayukrisna.skinsift.domain.repository.ArticleRepository
 import com.ayukrisna.skinsift.domain.repository.AssessmentRepository
 import com.ayukrisna.skinsift.domain.repository.IngredientRepository
 import com.ayukrisna.skinsift.domain.repository.NotesRepository
 import com.ayukrisna.skinsift.domain.repository.OcrRepository
 import com.ayukrisna.skinsift.domain.repository.ProductRepository
 import com.ayukrisna.skinsift.domain.repository.UserRepository
+import com.ayukrisna.skinsift.domain.usecase.article.ArticleUseCase
 import com.ayukrisna.skinsift.domain.usecase.assessment.AssessmentUseCase
 import com.ayukrisna.skinsift.domain.usecase.ingredient.IngredientsUseCase
 import com.ayukrisna.skinsift.domain.usecase.auth.LoginUseCase
@@ -39,6 +42,7 @@ import com.ayukrisna.skinsift.view.ui.screen.assessment.AssessmentViewModel
 import com.ayukrisna.skinsift.view.ui.screen.dictionary.detaildictionary.DictDetailViewModel
 import com.ayukrisna.skinsift.view.ui.screen.dictionary.filterdictionary.DictFilterViewModel
 import com.ayukrisna.skinsift.view.ui.screen.dictionary.listdictionary.DictionaryViewModel
+import com.ayukrisna.skinsift.view.ui.screen.home.HomeViewModel
 import com.ayukrisna.skinsift.view.ui.screen.notes.addnotes.AddNoteViewModel
 import com.ayukrisna.skinsift.view.ui.screen.notes.listnotes.NotesViewModel
 import com.ayukrisna.skinsift.view.ui.screen.notes.searchnotes.SearchNoteViewModel
@@ -76,6 +80,7 @@ var repositoryModules : Module = module {
     singleOf(::NotesRepositoryImp) bind NotesRepository::class
     singleOf(::AssessmentRepositoryImp) bind AssessmentRepository::class
     singleOf(::OcrRepositoryImp) bind OcrRepository::class
+    singleOf(::ArticleRepositoryImp) bind ArticleRepository::class
 }
 
 // Use Case
@@ -100,12 +105,16 @@ val useCaseModules = module {
 
     single { AssessmentUseCase(get()) }
     single { OcrUseCase(get()) }
+    single { ArticleUseCase(get()) }
 }
 
 //View Model
 val viewModelModules = module {
     viewModel{ SignupViewModel(get()) }
     viewModel{ LoginViewModel(get()) }
+
+    viewModel{ HomeViewModel(get()) }
+
     viewModel{ DeleteAccountViewModel(get()) }
     viewModel{ ProfileViewModel(get()) }
 

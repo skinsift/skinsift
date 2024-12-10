@@ -1,5 +1,6 @@
 package com.ayukrisna.skinsift.view.ui.screen.home
 
+import android.util.Log
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.horizontalScroll
@@ -31,12 +32,16 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.SpanStyle
@@ -47,15 +52,29 @@ import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.ayukrisna.skinsift.R
+import com.ayukrisna.skinsift.data.remote.response.article.NewsResultsItem
+import com.ayukrisna.skinsift.data.remote.response.product.ProductListItem
+import com.ayukrisna.skinsift.util.Result
+import com.ayukrisna.skinsift.view.ui.component.ErrorLayout
+import com.ayukrisna.skinsift.view.ui.component.LoadingProgress
+import org.koin.androidx.compose.koinViewModel
 
 @Composable
 fun HomeScreen(
     onNavigateToNotes: () -> Unit,
     onNavigateToOcr: () -> Unit,
     onNavigateToAssessment: () -> Unit,
+    viewModel: HomeViewModel = koinViewModel(),
     modifier: Modifier = Modifier,
     paddingValues: PaddingValues,
 ) {
+    val articleState by viewModel.articleState.collectAsState()
+    val context = LocalContext.current
+
+    LaunchedEffect(Unit) {
+        viewModel.fetchArticle()
+    }
+
     Surface {
         Column (
             verticalArrangement = Arrangement.Top,
@@ -85,6 +104,26 @@ fun HomeScreen(
                 "Polyacrylamide, PTFE, Petrolatum",
                 onNavigateToNotes
             )
+            Spacer(modifier = Modifier.height(24.dp))
+            TitleHome("Artikel Terkait")
+
+            when (articleState) {
+                is Result.Idle -> Text("Idle State")
+                is Result.Loading -> LoadingProgress()
+                is Result.Success -> {
+                    val articles: List<NewsResultsItem?> = (articleState as Result.Success<List<NewsResultsItem?>>).data
+                    if (articles.isNotEmpty()) {
+                        Text("Wow, ada artikel di sini!")
+                        Log.d("Artikel", "$articles")
+                    } else {
+                        Text("Yah, belum artikel di sini!")
+                    }
+                }
+                is Result.Error -> {
+                    val error = (articleState as Result.Error).error
+                    ErrorLayout(error = error)
+                }
+            }
         }
     }
 }
