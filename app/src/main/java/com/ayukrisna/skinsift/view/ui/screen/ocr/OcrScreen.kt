@@ -54,8 +54,12 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalLayoutDirection
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.SpanStyle
+import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.text.withStyle
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
 import com.ayukrisna.skinsift.R
@@ -70,6 +74,7 @@ import org.koin.androidx.compose.koinViewModel
 import com.ayukrisna.skinsift.util.Result
 import com.ayukrisna.skinsift.view.ui.component.ErrorLayout
 import com.ayukrisna.skinsift.view.ui.component.LoadingProgress
+import com.ayukrisna.skinsift.view.ui.screen.home.TitleHome
 import com.canhub.cropper.CropImage
 import com.canhub.cropper.CropImageContract
 import com.canhub.cropper.CropImageContractOptions
@@ -217,6 +222,8 @@ fun OcrScreen (
                     }
 
                     is Result.Success -> {
+                        TitleHome("Hasil Pindai Bahan Skincare")
+                        Spacer(Modifier.height(12.dp))
                         val response = (ocrState as Result.Success<OcrResponse>).data
 
                         response.warnings?.forEach { warning ->
@@ -260,7 +267,6 @@ fun OcrAppBar(title: String, onBackClick: () -> Unit,) {
         onBackClick = {onBackClick()})
 }
 
-
 @Composable
 fun WarningPreference(
     warningItem: WarningsItem,
@@ -298,11 +304,9 @@ fun WarningPreference(
                         tint = textColor
                     )
                 }
-
-                // Content (Text) centered
                 Column(
                     verticalArrangement = Arrangement.Center,
-                    horizontalAlignment = Alignment.CenterHorizontally,
+                    horizontalAlignment = Alignment.Start,
                     modifier = Modifier.fillMaxWidth()
                 ) {
                     Text(
@@ -311,14 +315,20 @@ fun WarningPreference(
                         fontWeight = FontWeight.ExtraBold,
                     )
                     Spacer(modifier = Modifier.height(8.dp))
+                    val text = if (isSuitable) {
+                        "Yay! Kami menemukan bahan yang cocok untukmu."
+                    } else {
+                        "Perhatian! Ada bahan yang berbahaya untukmu."
+                    }
+
                     Text(
-                        text = if (isSuitable) {
-                            "Ada bahan yang cocok untukmu!\nBahan Cocok: $combinedDetails"
-                        } else {
-                            "Ada bahan yang berbahaya untukmu!\nBahan Berbahaya: $combinedDetails"
+                        text = buildAnnotatedString {
+                            append("$text \nBahan: ")
+                            withStyle(style = SpanStyle(fontWeight = FontWeight.Bold)) {
+                                append(combinedDetails)
+                            }
                         },
                         style = MaterialTheme.typography.bodyMedium,
-                        textAlign = TextAlign.Center,
                     )
                 }
             }
@@ -383,8 +393,7 @@ fun MatchingIngredientsItem(
 fun AddImageOcr(text: String, onClick: () -> Unit) {
     Button(
         modifier = Modifier
-            .fillMaxWidth()
-            .padding(horizontal = 16.dp),
+            .fillMaxWidth(),
         onClick = onClick,
         shape = RoundedCornerShape(50)
     ) {
