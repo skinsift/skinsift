@@ -1,6 +1,8 @@
 package com.ayukrisna.skinsift.view.ui.screen.ocr
 
+import android.app.Activity
 import android.net.Uri
+import android.util.Log
 import android.widget.Toast
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.PickVisualMediaRequest
@@ -68,6 +70,11 @@ import org.koin.androidx.compose.koinViewModel
 import com.ayukrisna.skinsift.util.Result
 import com.ayukrisna.skinsift.view.ui.component.ErrorLayout
 import com.ayukrisna.skinsift.view.ui.component.LoadingProgress
+import com.canhub.cropper.CropImage
+import com.canhub.cropper.CropImageContract
+import com.canhub.cropper.CropImageContractOptions
+import com.canhub.cropper.CropImageOptions
+import com.canhub.cropper.CropImageView
 
 @Composable
 fun OcrScreen (
@@ -82,11 +89,11 @@ fun OcrScreen (
      */
     val context = LocalContext.current
     val authority = stringResource(id = R.string.fileprovider)
-    val cameraHelper = remember { CameraHelper(context, authority) }
+//    val cameraHelper = remember { CameraHelper(context, authority) }
 
     val selectedUri by viewModel.selectedUri.collectAsState()
     val ocrState by viewModel.ocrState.collectAsState()
-    val tempUri = rememberSaveable { mutableStateOf<Uri?>(null) }
+//    val tempUri = rememberSaveable { mutableStateOf<Uri?>(null) }
 
     LaunchedEffect(selectedUri) {
         selectedUri?.let { uri ->
@@ -94,50 +101,71 @@ fun OcrScreen (
         }
     }
 
-
     val onSetUri: (Uri) -> Unit = { newUri ->
         viewModel.setSelectedUri(newUri)
     }
 
-    val imagePicker = rememberLauncherForActivityResult(
-        contract = ActivityResultContracts.PickVisualMedia(),
-        onResult = { uri -> uri?.let(onSetUri) }
-    )
+//    val imagePicker = rememberLauncherForActivityResult(
+//        contract = ActivityResultContracts.PickVisualMedia(),
+//        onResult = { uri ->
+//            uri?.let(onSetUri)
+//        }
+//    )
+//
+//    val takePhotoLauncher = rememberLauncherForActivityResult(
+//        contract = ActivityResultContracts.TakePicture(),
+//        onResult = { isSaved -> if (isSaved) tempUri.value?.let(onSetUri) }
+//    )
+//
+//    val cameraPermissionLauncher = rememberLauncherForActivityResult(
+//        contract = ActivityResultContracts.RequestPermission()
+//    ) { isGranted ->
+//        if (isGranted) {
+//            tempUri.value = cameraHelper.getTempUri()
+//            tempUri.value?.let { takePhotoLauncher.launch(it) }
+//        } else {
+//            Toast.makeText(context, "Camera permission is required to take photos.", Toast.LENGTH_LONG).show()
+//        }
+//    }
 
-    val takePhotoLauncher = rememberLauncherForActivityResult(
-        contract = ActivityResultContracts.TakePicture(),
-        onResult = { isSaved -> if (isSaved) tempUri.value?.let(onSetUri) }
-    )
 
-    val cameraPermissionLauncher = rememberLauncherForActivityResult(
-        contract = ActivityResultContracts.RequestPermission()
-    ) { isGranted ->
-        if (isGranted) {
-            tempUri.value = cameraHelper.getTempUri()
-            tempUri.value?.let { takePhotoLauncher.launch(it) }
-        } else {
-            Toast.makeText(context, "Camera permission is required to take photos.", Toast.LENGTH_LONG).show()
+    /**
+     * testing android image cropper
+     */
+    val imageCropLauncher = rememberLauncherForActivityResult(CropImageContract()) { result ->
+        if (result.isSuccessful) {
+            if (result.isSuccessful) {
+                val croppedUri = result.uriContent
+                if (croppedUri != null) {
+                    onSetUri(croppedUri)
+                }
+            } else {
+                Log.e("ImageCrop", "Cropping failed: ${result.error}")
+            }
         }
     }
 
-    var showBottomSheet by remember { mutableStateOf(false) }
-
-    if (showBottomSheet) {
-        PhotoModalBottomSheet(
-            onDismiss = { showBottomSheet = false },
-            onTakePhotoClick = {
-                showBottomSheet = false
-                cameraHelper.requestCameraPermission(cameraPermissionLauncher) {
-                    tempUri.value = cameraHelper.getTempUri()
-                    tempUri.value?.let { takePhotoLauncher.launch(it) }
-                }
-            },
-            onPhotoGalleryClick = {
-                showBottomSheet = false
-                imagePicker.launch(PickVisualMediaRequest(ActivityResultContracts.PickVisualMedia.ImageOnly))
-            },
-        )
-    }
+//    var showBottomSheet by remember { mutableStateOf(false) }
+//
+//    if (showBottomSheet) {
+//        PhotoModalBottomSheet(
+//            onDismiss = { showBottomSheet = false },
+//            onTakePhotoClick = {
+//                showBottomSheet = false
+//                cameraHelper.requestCameraPermission(cameraPermissionLauncher) {
+//                    tempUri.value = cameraHelper.getTempUri()
+//                    tempUri.value?.let { takePhotoLauncher.launch(it) }
+//                }
+//            },
+//            onPhotoGalleryClick = {
+//                showBottomSheet = false
+////                imagePicker.launch(
+////                    PickVisualMediaRequest(ActivityResultContracts.PickVisualMedia.ImageOnly))
+//                val cropOption = CropImageContractOptions(uri = null, CropImageOptions())
+//                imageCropLauncher.launch(cropOption)
+//            },
+//        )
+//    }
 
     Scaffold(
         topBar = {
@@ -177,7 +205,10 @@ fun OcrScreen (
                 Spacer(modifier = Modifier.height(8.dp))
                 AddImageOcr(
                     text = "Scan Komposisi Skincare",
-                    onClick = { showBottomSheet = true }
+                    onClick = {
+                        val cropOption = CropImageContractOptions(uri = null, CropImageOptions())
+                        imageCropLauncher.launch(cropOption)
+                    }
                 )
                 Spacer(modifier = Modifier.height(16.dp))
                 when (ocrState) {

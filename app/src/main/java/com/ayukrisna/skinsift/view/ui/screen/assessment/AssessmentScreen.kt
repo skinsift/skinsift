@@ -66,6 +66,9 @@ import com.ayukrisna.skinsift.view.ui.component.AssessmentSelector
 import org.koin.androidx.compose.koinViewModel
 import com.ayukrisna.skinsift.util.Result
 import com.ayukrisna.skinsift.view.ui.component.LoadingProgress
+import com.canhub.cropper.CropImageContract
+import com.canhub.cropper.CropImageContractOptions
+import com.canhub.cropper.CropImageOptions
 
 @Composable
 fun AssessmentScreen (
@@ -100,56 +103,73 @@ fun AssessmentScreen (
     /**
      * Camera and Gallery
      */
+
     val context = LocalContext.current
     val authority = stringResource(id = R.string.fileprovider)
-    val cameraHelper = remember { CameraHelper(context, authority) }
+//    val cameraHelper = remember { CameraHelper(context, authority) }
 
     val selectedUri by viewModel.selectedUri.collectAsState()
-    val tempUri = rememberSaveable { mutableStateOf<Uri?>(null) }
+//    val tempUri = rememberSaveable { mutableStateOf<Uri?>(null) }
 
     val onSetUri: (Uri) -> Unit = { newUri ->
         viewModel.setSelectedUri(newUri)
     }
 
-    val imagePicker = rememberLauncherForActivityResult(
-        contract = ActivityResultContracts.PickVisualMedia(),
-        onResult = { uri -> uri?.let(onSetUri) }
-    )
-
-    val takePhotoLauncher = rememberLauncherForActivityResult(
-        contract = ActivityResultContracts.TakePicture(),
-        onResult = { isSaved -> if (isSaved) tempUri.value?.let(onSetUri) }
-    )
-
-    val cameraPermissionLauncher = rememberLauncherForActivityResult(
-        contract = ActivityResultContracts.RequestPermission()
-    ) { isGranted ->
-        if (isGranted) {
-            tempUri.value = cameraHelper.getTempUri()
-            tempUri.value?.let { takePhotoLauncher.launch(it) }
-        } else {
-            Toast.makeText(context, "Camera permission is required to take photos.", Toast.LENGTH_LONG).show()
+    /**
+     * testing android image cropper
+     */
+    val imageCropLauncher = rememberLauncherForActivityResult(CropImageContract()) { result ->
+        if (result.isSuccessful) {
+            if (result.isSuccessful) {
+                val croppedUri = result.uriContent
+                if (croppedUri != null) {
+                    onSetUri(croppedUri)
+                }
+            } else {
+                Log.e("ImageCrop", "Cropping failed: ${result.error}")
+            }
         }
     }
 
-    var showBottomSheet by remember { mutableStateOf(false) }
+//    val imagePicker = rememberLauncherForActivityResult(
+//        contract = ActivityResultContracts.PickVisualMedia(),
+//        onResult = { uri -> uri?.let(onSetUri) }
+//    )
+//
+//    val takePhotoLauncher = rememberLauncherForActivityResult(
+//        contract = ActivityResultContracts.TakePicture(),
+//        onResult = { isSaved -> if (isSaved) tempUri.value?.let(onSetUri) }
+//    )
+//
+//    val cameraPermissionLauncher = rememberLauncherForActivityResult(
+//        contract = ActivityResultContracts.RequestPermission()
+//    ) { isGranted ->
+//        if (isGranted) {
+//            tempUri.value = cameraHelper.getTempUri()
+//            tempUri.value?.let { takePhotoLauncher.launch(it) }
+//        } else {
+//            Toast.makeText(context, "Camera permission is required to take photos.", Toast.LENGTH_LONG).show()
+//        }
+//    }
 
-    if (showBottomSheet) {
-        PhotoModalBottomSheet(
-            onDismiss = { showBottomSheet = false },
-            onTakePhotoClick = {
-                showBottomSheet = false
-                cameraHelper.requestCameraPermission(cameraPermissionLauncher) {
-                    tempUri.value = cameraHelper.getTempUri()
-                    tempUri.value?.let { takePhotoLauncher.launch(it) }
-                }
-            },
-            onPhotoGalleryClick = {
-                showBottomSheet = false
-                imagePicker.launch(PickVisualMediaRequest(ActivityResultContracts.PickVisualMedia.ImageOnly))
-            },
-        )
-    }
+//    var showBottomSheet by remember { mutableStateOf(false) }
+//
+//    if (showBottomSheet) {
+//        PhotoModalBottomSheet(
+//            onDismiss = { showBottomSheet = false },
+//            onTakePhotoClick = {
+//                showBottomSheet = false
+//                cameraHelper.requestCameraPermission(cameraPermissionLauncher) {
+//                    tempUri.value = cameraHelper.getTempUri()
+//                    tempUri.value?.let { takePhotoLauncher.launch(it) }
+//                }
+//            },
+//            onPhotoGalleryClick = {
+//                showBottomSheet = false
+//                imagePicker.launch(PickVisualMediaRequest(ActivityResultContracts.PickVisualMedia.ImageOnly))
+//            },
+//        )
+//    }
 
     Scaffold(
     topBar = {
@@ -179,13 +199,19 @@ fun AssessmentScreen (
                 ScannerCard(
                     title = "Deteksi Tipe Kulit",
                     subtitle = "Kurang yakin dengan tipe kulitmu? Deteksi tipe kulit dengan mengupload foto wajahmu atau lakukan selfie pada kamera.",
-                    onClick = { showBottomSheet = true },)
+                    onClick = {
+                        val cropOption = CropImageContractOptions(uri = null, CropImageOptions())
+                        imageCropLauncher.launch(cropOption)
+                    })
             } else {
                 ScannerCard(
                     title = "Foto berhasil ditambahkan.",
                     subtitle = "Lakukan scan kembali",
                     selectedUri = selectedUri,
-                    onClick = { showBottomSheet = true },)
+                    onClick = {
+                        val cropOption = CropImageContractOptions(uri = null, CropImageOptions())
+                        imageCropLauncher.launch(cropOption)
+                    })
             }
             Spacer(modifier = Modifier.height(24.dp))
 

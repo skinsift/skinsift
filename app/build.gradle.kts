@@ -83,6 +83,7 @@ dependencies {
     implementation(libs.koin.android)
     implementation (libs.koin.androidx.compose)
     implementation(libs.androidx.navigation.compose)
+    implementation(libs.androidx.core.splashscreen)
 
     androidTestImplementation(libs.androidx.ui.test.junit4)
     debugImplementation(libs.androidx.ui.tooling)
@@ -92,4 +93,6 @@ dependencies {
     implementation(libs.converter.gson)
     implementation(libs.logging.interceptor)
     implementation(libs.android.async.http)
+
+    implementation(libs.android.image.cropper)
 }

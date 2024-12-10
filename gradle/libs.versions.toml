@@ -1,8 +1,10 @@
 [versions]
 agp = "8.7.2"
+androidImageCropper = "4.6.0"
 animation = "1.7.5"
 coilCompose = "2.4.0"
 converterGson = "2.9.0"
+coreSplashscreen = "1.0.1"
 datastorePreferences = "1.1.1"
 koinAndroid = "3.5.6"
 koinAndroidxCompose = "3.5.6"
@@ -35,8 +37,10 @@ material3Jvmstubs = "1.4.0-alpha04"
 exifinterface = "1.3.6"
 
 [libraries]
+android-image-cropper = { module = "com.vanniktech:android-image-cropper", version.ref = "androidImageCropper" }
 androidx-animation = { module = "androidx.compose.animation:animation", version.ref = "animation" }
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
+androidx-core-splashscreen = { module = "androidx.core:core-splashscreen", version.ref = "coreSplashscreen" }
 androidx-datastore-preferences = { module = "androidx.datastore:datastore-preferences", version.ref = "datastorePreferences" }
 androidx-lifecycle-viewmodel-compose = { module = "androidx.lifecycle:lifecycle-viewmodel-compose", version.ref = "lifecycleRuntimeKtx" }
 androidx-material = { module = "androidx.compose.material:material", version.ref = "materialVersion" }
