@@ -1,5 +1,7 @@
 package com.ayukrisna.skinsift.view.ui.screen.home
 
+import android.content.Intent
+import android.net.Uri
 import android.util.Log
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
@@ -7,18 +9,23 @@ import androidx.compose.foundation.horizontalScroll
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.IntrinsicSize
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.aspectRatio
+import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowForward
 import androidx.compose.material.icons.automirrored.filled.KeyboardArrowRight
@@ -51,6 +58,7 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import coil.compose.AsyncImage
 import com.ayukrisna.skinsift.R
 import com.ayukrisna.skinsift.data.remote.response.article.NewsResultsItem
 import com.ayukrisna.skinsift.data.remote.response.product.ProductListItem
@@ -76,52 +84,96 @@ fun HomeScreen(
     }
 
     Surface {
-        Column (
+        LazyColumn (
             verticalArrangement = Arrangement.Top,
             horizontalAlignment = Alignment.Start,
             modifier = Modifier
                 .fillMaxSize()
                 .padding(paddingValues)
         ) {
-            HomeTopBar()
-            Spacer(modifier = Modifier.height(12.dp))
-            HomeIntro()
-            Spacer(modifier = Modifier.height(24.dp))
-            TitleHome("Pahami Kebutuhanmu")
-            Spacer(modifier = Modifier.height(12.dp))
-            ScannerRow({onNavigateToAssessment()}, {onNavigateToOcr()})
-            Spacer(modifier = Modifier.height(24.dp))
-            TitleHome("Bahan Skincare Tersimpan")
-            Spacer(modifier = Modifier.height(12.dp))
-            ScannerHistoryItem(
-                "Cocok Denganmu \uD83D\uDC90",
-                "Niacinamide, Retinoid, Hexylresorcinol",
-                onNavigateToNotes
-            )
-            Spacer(modifier = Modifier.height(12.dp))
-            ScannerHistoryItem(
-                "Wajib Dihindari ☠",
-                "Polyacrylamide, PTFE, Petrolatum",
-                onNavigateToNotes
-            )
-            Spacer(modifier = Modifier.height(24.dp))
-            TitleHome("Artikel Terkait")
-
+            item {
+                HomeTopBar()
+            }
+            item {
+                Spacer(modifier = Modifier.height(12.dp))
+            }
+            item {
+                HomeIntro()
+            }
+            item {
+                Spacer(modifier = Modifier.height(24.dp))
+            }
+            item {
+                TitleHome("Pahami Kebutuhanmu")
+            }
+            item {
+                Spacer(modifier = Modifier.height(12.dp))
+            }
+            item {
+                ScannerRow(onNavigateToAssessment, onNavigateToOcr)
+            }
+            item {
+                Spacer(modifier = Modifier.height(24.dp))
+            }
+            item {
+                TitleHome("Bahan Skincare Tersimpan")
+            }
+            item {
+                Spacer(modifier = Modifier.height(12.dp))
+            }
+            item {
+                ScannerHistoryItem(
+                     "Cocok Denganmu \uD83D\uDC90",
+                    "Catat bahan-bahan yang kamu sukai",
+                    onNavigateToNotes
+                )
+            }
+            item {
+                Spacer(modifier = Modifier.height(12.dp))
+            }
+            item {
+                ScannerHistoryItem(
+                    "Wajib Dihindari ☠",
+                    "Catat bahan-bahan yang kamu hindari",
+                    onNavigateToNotes
+                )
+            }
+            item {
+                Spacer(modifier = Modifier.height(24.dp))
+            }
+            item {
+                TitleHome("Artikel Terkait")
+            }
+            item {
+                Spacer(modifier = Modifier.height(12.dp))
+            }
             when (articleState) {
-                is Result.Idle -> Text("Idle State")
-                is Result.Loading -> LoadingProgress()
+                is Result.Idle -> item { Text("Idle State") }
+                is Result.Loading -> item { LoadingProgress() }
                 is Result.Success -> {
                     val articles: List<NewsResultsItem?> = (articleState as Result.Success<List<NewsResultsItem?>>).data
                     if (articles.isNotEmpty()) {
-                        Text("Wow, ada artikel di sini!")
+                            items(articles) { article ->
+                                article?.let {
+                                    LongArticleCard(
+                                        title = it.title.orEmpty(),
+                                        source = it.source.orEmpty(),
+                                        date = it.date.orEmpty(),
+                                        snippet = it.snippet.orEmpty(),
+                                        thumbnailUrl = it.thumbnail.orEmpty(),
+                                        link = it.link.orEmpty()
+                                    )
+                                    Spacer(modifier = Modifier.height(8.dp))
+                                }
+                            }
                         Log.d("Artikel", "$articles")
                     } else {
-                        Text("Yah, belum artikel di sini!")
+                        item { Text("Yah, belum artikel di sini!") }
                     }
                 }
                 is Result.Error -> {
                     val error = (articleState as Result.Error).error
-                    ErrorLayout(error = error)
+                    item { ErrorLayout(error = error) }
                 }
             }
         }
@@ -582,4 +634,94 @@ fun ArticleCardPreview(modifier: Modifier = Modifier) {
 @Composable
 fun ArticleCardListPreview(modifier: Modifier = Modifier) {
     ArticleCardList()
+}
+
+
+
+@Composable
+fun LongArticleCard(
+    title: String,
+    source: String,
+    date: String,
+    snippet: String,
+    thumbnailUrl: String,
+    link: String
+) {
+    val context = LocalContext.current
+
+    Card(
+        modifier = Modifier
+            .fillMaxWidth()
+            .clickable {
+                val intent = Intent(Intent.ACTION_VIEW, Uri.parse(link))
+                context.startActivity(intent)
+            },
+        shape = RoundedCornerShape(12.dp),
+        colors = CardDefaults.cardColors(containerColor = Color.White),
+        elevation = CardDefaults.cardElevation(defaultElevation = 1.dp)
+    ) {
+        Row(
+            modifier = Modifier
+                .fillMaxWidth()
+                .height(172.dp),
+            horizontalArrangement = Arrangement.SpaceBetween,
+            verticalAlignment = Alignment.CenterVertically,
+        ) {
+            AsyncImage(
+                model = thumbnailUrl,
+                contentDescription = "Article Image",
+                modifier = Modifier
+                    .fillMaxHeight()
+                    .width(120.dp)
+                    .padding(8.dp)
+                    .clip(RoundedCornerShape(16.dp)),
+                contentScale = ContentScale.Crop
+            )
+            Spacer(modifier = Modifier.width(8.dp))
+            Column(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .weight(1f)
+            ) {
+                Text(
+                    text = title,
+                    style = MaterialTheme.typography.titleSmall,
+                    fontWeight = FontWeight.Bold,
+                    maxLines = 2,
+                    overflow = TextOverflow.Ellipsis
+                )
+
+                Spacer(modifier = Modifier.height(4.dp))
+
+                Text(
+                    text = "$source • $date",
+                    style = MaterialTheme.typography.bodySmall,
+                    color = Color.Gray
+                )
+
+                Spacer(modifier = Modifier.height(8.dp))
+
+                Text(
+                    text = snippet,
+                    style = MaterialTheme.typography.bodySmall,
+                    maxLines = 3,
+                    overflow = TextOverflow.Ellipsis
+                )
+            }
+        }
+    }
+}
+
+
+@Preview(showBackground = true)
+@Composable
+fun PreviewLongArticleCard() {
+    LongArticleCard(
+        title = "Pelembap Anti-Aging Super Ringan yang Sempurna untuk Iklim Tropis",
+        source = "Fimela",
+        date = "2 jam yang lalu",
+        snippet = "Glowell, merek premium skincare baru menghadirkan inovasi produk anti-aging dengan tekstur ringan untuk iklim tropis.",
+        thumbnailUrl = "https://serpapi.com/searches/6757bb931d0f30c20756d960/images/97327ba4d99b6fe617bad086ec39b4f82e8b343daf04788559298c901b65e910.jpeg",
+        link = "https://www.fimela.com/beauty/read/5826704/pelembap-anti-aging-super-ringan-yang-sempurna-untuk-iklim-tropis"
+    )
 }
