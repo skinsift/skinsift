@@ -1,5 +1,6 @@
 package com.ayukrisna.skinsift.view.ui.screen.assessment
 
+import android.Manifest
 import android.net.Uri
 import android.util.Log
 import android.widget.Toast
@@ -141,16 +142,15 @@ fun AssessmentScreen (
 //        onResult = { isSaved -> if (isSaved) tempUri.value?.let(onSetUri) }
 //    )
 //
-//    val cameraPermissionLauncher = rememberLauncherForActivityResult(
-//        contract = ActivityResultContracts.RequestPermission()
-//    ) { isGranted ->
-//        if (isGranted) {
-//            tempUri.value = cameraHelper.getTempUri()
-//            tempUri.value?.let { takePhotoLauncher.launch(it) }
-//        } else {
-//            Toast.makeText(context, "Camera permission is required to take photos.", Toast.LENGTH_LONG).show()
-//        }
-//    }
+    val cameraPermissionLauncher = rememberLauncherForActivityResult(
+        contract = ActivityResultContracts.RequestPermission()
+    ) { isGranted ->
+        if (isGranted) {
+            imageCropLauncher.launch(CropImageContractOptions(uri = null, CropImageOptions()))
+        } else {
+            Toast.makeText(context, "Camera permission is required to take photos.", Toast.LENGTH_LONG).show()
+        }
+    }
 
 //    var showBottomSheet by remember { mutableStateOf(false) }
 //
@@ -200,8 +200,7 @@ fun AssessmentScreen (
                     title = "Deteksi Tipe Kulit",
                     subtitle = "Kurang yakin dengan tipe kulitmu? Deteksi tipe kulit dengan mengupload foto wajahmu atau lakukan selfie pada kamera.",
                     onClick = {
-                        val cropOption = CropImageContractOptions(uri = null, CropImageOptions())
-                        imageCropLauncher.launch(cropOption)
+                        cameraPermissionLauncher.launch(Manifest.permission.CAMERA)
                     })
             } else {
                 ScannerCard(

@@ -1,5 +1,6 @@
 package com.ayukrisna.skinsift.view.ui.screen.ocr
 
+import android.Manifest
 import android.app.Activity
 import android.net.Uri
 import android.util.Log
@@ -122,18 +123,6 @@ fun OcrScreen (
 //        onResult = { isSaved -> if (isSaved) tempUri.value?.let(onSetUri) }
 //    )
 //
-//    val cameraPermissionLauncher = rememberLauncherForActivityResult(
-//        contract = ActivityResultContracts.RequestPermission()
-//    ) { isGranted ->
-//        if (isGranted) {
-//            tempUri.value = cameraHelper.getTempUri()
-//            tempUri.value?.let { takePhotoLauncher.launch(it) }
-//        } else {
-//            Toast.makeText(context, "Camera permission is required to take photos.", Toast.LENGTH_LONG).show()
-//        }
-//    }
-
-
     /**
      * testing android image cropper
      */
@@ -149,6 +138,17 @@ fun OcrScreen (
             }
         }
     }
+
+    val cameraPermissionLauncher = rememberLauncherForActivityResult(
+        contract = ActivityResultContracts.RequestPermission()
+    ) { isGranted ->
+        if (isGranted) {
+            imageCropLauncher.launch(CropImageContractOptions(uri = null, CropImageOptions()))
+        } else {
+            Toast.makeText(context, "Camera permission is required to take photos.", Toast.LENGTH_LONG).show()
+        }
+    }
+
 
 //    var showBottomSheet by remember { mutableStateOf(false) }
 //
@@ -211,8 +211,7 @@ fun OcrScreen (
                 AddImageOcr(
                     text = "Scan Komposisi Skincare",
                     onClick = {
-                        val cropOption = CropImageContractOptions(uri = null, CropImageOptions())
-                        imageCropLauncher.launch(cropOption)
+                        cameraPermissionLauncher.launch(Manifest.permission.CAMERA)
                     }
                 )
                 Spacer(modifier = Modifier.height(16.dp))
