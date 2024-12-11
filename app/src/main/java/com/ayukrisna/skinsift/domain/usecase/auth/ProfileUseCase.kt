@@ -19,6 +19,7 @@ class ProfileUseCase(private val userRepository: UserRepository) {
         return try {
             val response = userRepository.deleteAccount(password)
             if (response.error == false) {
+                userRepository.logout()
                 Result.Success(response)
             } else {
                 Result.Error(response.message ?: "Unknown error occurred")
