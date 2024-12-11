@@ -51,10 +51,6 @@ fun LoginScreen(
 ) {
     val loginState by viewModel.loginState.observeAsState(initial = Result.Loading)
 
-    BackHandler {
-        exitProcess(0)
-    }
-
     Surface {
         Column (
             verticalArrangement = Arrangement.Top,

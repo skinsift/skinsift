@@ -663,7 +663,7 @@ fun LongArticleCard(
         Row(
             modifier = Modifier
                 .fillMaxWidth()
-                .height(172.dp),
+                .height(154.dp),
             horizontalArrangement = Arrangement.SpaceBetween,
             verticalAlignment = Alignment.CenterVertically,
         ) {
@@ -672,15 +672,15 @@ fun LongArticleCard(
                 contentDescription = "Article Image",
                 modifier = Modifier
                     .fillMaxHeight()
-                    .width(120.dp)
+                    .width(96.dp)
                     .padding(8.dp)
                     .clip(RoundedCornerShape(16.dp)),
                 contentScale = ContentScale.Crop
             )
-            Spacer(modifier = Modifier.width(8.dp))
             Column(
                 modifier = Modifier
                     .fillMaxWidth()
+                    .padding(8.dp)
                     .weight(1f)
             ) {
                 Text(

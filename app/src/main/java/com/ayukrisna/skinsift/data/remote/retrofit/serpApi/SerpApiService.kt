@@ -9,7 +9,7 @@ interface SerpApiService {
     @GET("search.json")
     suspend fun getNews(
         @Query("engine") engine: String = "google",
-        @Query("q") query: String = "skincare",
+        @Query("q") query: String = "tips+skincare",
         @Query("location") location: String = "Indonesia",
         @Query("google_domain") googleDomain: String = "google.co.id",
         @Query("gl") gl: String = "id",
