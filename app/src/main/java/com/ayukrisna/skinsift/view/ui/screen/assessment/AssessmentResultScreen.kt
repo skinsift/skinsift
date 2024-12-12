@@ -36,7 +36,6 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.ayukrisna.skinsift.data.remote.response.product.ProductListItem
-import com.ayukrisna.skinsift.domain.model.ProductModel
 import com.ayukrisna.skinsift.view.ui.screen.product.listproduct.SkincareCard
 import com.ayukrisna.skinsift.view.ui.theme.SkinSiftTheme
 

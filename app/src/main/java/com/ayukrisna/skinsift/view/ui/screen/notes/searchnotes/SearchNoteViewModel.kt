@@ -2,7 +2,6 @@ package com.ayukrisna.skinsift.view.ui.screen.notes.searchnotes
 
 import android.util.Log
 import androidx.lifecycle.ViewModel
-import androidx.lifecycle.viewModelScope
 import com.ayukrisna.skinsift.data.remote.response.ingredients.IngredientListItem
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow

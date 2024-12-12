@@ -5,11 +5,9 @@ import android.net.Uri
 import android.util.Log
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.horizontalScroll
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.IntrinsicSize
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -23,18 +21,12 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
-import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.automirrored.filled.ArrowForward
 import androidx.compose.material.icons.automirrored.filled.KeyboardArrowRight
-import androidx.compose.material.icons.filled.Notifications
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
-import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
@@ -61,9 +53,7 @@ import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
 import com.ayukrisna.skinsift.R
 import com.ayukrisna.skinsift.data.remote.response.article.NewsResultsItem
-import com.ayukrisna.skinsift.data.remote.response.product.ProductListItem
 import com.ayukrisna.skinsift.util.Result
-import com.ayukrisna.skinsift.view.ui.component.ErrorLayout
 import com.ayukrisna.skinsift.view.ui.component.LoadingProgress
 import org.koin.androidx.compose.koinViewModel
 
@@ -79,7 +69,7 @@ fun HomeScreen(
     val articleState by viewModel.articleState.collectAsState()
     val context = LocalContext.current
 
-    LaunchedEffect(Unit) {
+        LaunchedEffect(Unit) {
         viewModel.fetchArticle()
     }
 
@@ -172,25 +162,24 @@ fun HomeScreen(
                     }
                 }
                 is Result.Error -> {
-                    val error = (articleState as Result.Error).error
-                    item { ErrorLayout(error = error) }
+//                    val error = (articleState as Result.Error).error
+//                    item { ErrorLayout(error = error) }
+                    items(newsResults) { article ->
+                        article.let {
+                            LongArticleCard(
+                                title = it.title.orEmpty(),
+                                source = it.source.orEmpty(),
+                                date = it.date.orEmpty(),
+                                snippet = it.snippet.orEmpty(),
+                                thumbnailUrl = it.thumbnail.orEmpty(),
+                                link = it.link.orEmpty()
+                            )
+                            Spacer(modifier = Modifier.height(8.dp))
+                        }
+                    }
                 }
             }
         }
-    }
-}
-
-@Composable
-fun NotificationButton(modifier: Modifier = Modifier) {
-    IconButton(
-        onClick = { /* Handle button click */ },
-        modifier = Modifier.size(48.dp)
-    ) {
-        Icon(
-            imageVector = Icons.Default.Notifications,
-            contentDescription = "Favorite",
-            tint = MaterialTheme.colorScheme.primary
-        )
     }
 }
 
@@ -273,72 +262,6 @@ fun TitleHome(
 }
 
 @Composable
-fun ReminderCard(modifier: Modifier = Modifier) {
-    Card(
-        shape = RoundedCornerShape(16.dp),
-        modifier = Modifier
-            .fillMaxWidth(),
-        elevation = CardDefaults.cardElevation(1.dp)
-    ) {
-        Box(
-            modifier = Modifier.fillMaxWidth(),
-            contentAlignment = Alignment.Center
-        ) {
-
-            Image(
-                painter = painterResource(id = R.drawable.card_background),
-                contentDescription = null,
-                contentScale = ContentScale.Crop,
-                modifier = Modifier.matchParentSize()
-            )
-
-            Column(
-                modifier = Modifier
-                    .padding(16.dp)
-            ) {
-                Text(
-                    text = "Reminder",
-                    style = MaterialTheme.typography.bodySmall,
-                    color = MaterialTheme.colorScheme.onPrimaryContainer
-                )
-                Spacer(modifier = Modifier.height(8.dp))
-                Row(
-                    horizontalArrangement = Arrangement.SpaceBetween,
-                    verticalAlignment = Alignment.CenterVertically,
-                    modifier = Modifier.fillMaxWidth()
-                ) {
-                    Row(verticalAlignment = Alignment.CenterVertically) {
-                        Text("☀️", style = MaterialTheme.typography.titleLarge)
-                        Spacer(modifier = Modifier.width(8.dp))
-                        Text(
-                            text = "Morning Skincare Routine",
-                            style = MaterialTheme.typography.titleMedium,
-                            fontWeight = FontWeight.Medium,
-                            color = MaterialTheme.colorScheme.onPrimaryContainer
-                        )
-                    }
-                    Icon(
-                        imageVector = Icons.AutoMirrored.Filled.ArrowForward,
-                        contentDescription = "Next",
-                        tint = MaterialTheme.colorScheme.onPrimaryContainer
-                    )
-                }
-
-                Spacer(modifier = Modifier.height(4.dp))
-
-                Text(
-                    text = "08.00 - 08.15",
-                    style = MaterialTheme.typography.titleLarge,
-                    fontWeight = FontWeight.Bold,
-                    color = MaterialTheme.colorScheme.onPrimaryContainer
-                )
-            }
-        }
-    }
-}
-
-@OptIn(ExperimentalMaterial3Api::class)
-@Composable
 fun ScannerHistoryItem(
     title: String,
     ingredients: String,
@@ -381,23 +304,6 @@ fun ScannerHistoryItem(
                 tint = MaterialTheme.colorScheme.primary
             )
         }
-    }
-}
-
-@Composable
-fun ArticleCardList(modifier: Modifier = Modifier) {
-    Row(
-        modifier = Modifier
-            .horizontalScroll(rememberScrollState())
-    ) {
-        ArticleCard(
-            "Is My Skin Purging or Breaking Out?",
-            "Some chalk this up as their skin getting worse before it gets better, but what’s really going on?"
-        )
-        ArticleCard(
-            "Is My Skin Purging or Breaking Out?",
-            "Some chalk this up as their skin getting worse before it gets better, but what’s really going on?"
-        )
     }
 }
 
@@ -456,12 +362,6 @@ fun ArticleCard(
         }
     }
 }
-
-//@Preview(showBackground = true)
-//@Composable
-//fun ScannerRowPreview() {
-//    ScannerRow()
-//}
 
 @Composable
 fun ScannerRow(assessment: () -> Unit, ocr: () -> Unit, modifier: Modifier = Modifier) {
@@ -564,63 +464,6 @@ fun SquareCard(
     }
 }
 
-/***
- * PREVIEW
- */
-
-//@Preview(showBackground = true)
-//@Composable
-//fun SkincareScannerCardPreview() {
-//    SkincareScannerCard()
-//}
-//
-//@Preview(showBackground = true)
-//@Composable
-//fun PersonalizedCardPreview() {
-//    PersonalizedCard()
-//}
-
-@Preview(showBackground = true)
-@Composable
-fun HomeTopBarPreview() {
-    HomeTopBar(modifier = Modifier)
-}
-
-@Preview(showBackground = true)
-@Composable
-fun NotificationButtonPreview() {
-    NotificationButton()
-}
-
-//@Preview(showBackground = true)
-//@Composable
-//fun HomeScreenPreview() {
-//    SkinSiftTheme {
-//        HomeScreen(paddingValues = PaddingValues(horizontal = 16.dp, vertical = 42.dp))
-//    }
-//}
-
-@Preview(showBackground = true)
-@Composable
-fun ReminderCardPreview() {
-    ReminderCard()
-}
-
-//@Preview(showBackground = true)
-//@Composable
-//fun ScannerCardPreview() {
-//    ScannerCard()
-//}
-
-//@Preview(showBackground = true)
-//@Composable
-//fun ScannerHistoryItemPreview(modifier: Modifier = Modifier) {
-//    ScannerHistoryItem(
-//        "Wajib Dihindari ☠",
-//        "Polyacrylamide, PTFE, Petrolatum"
-//    )
-//}
-
 @Preview(showBackground = true)
 @Composable
 fun ArticleCardPreview(modifier: Modifier = Modifier) {
@@ -629,14 +472,6 @@ fun ArticleCardPreview(modifier: Modifier = Modifier) {
         "Some chalk this up as their skin getting worse before it gets better, but what’s really going on?"
     )
 }
-
-@Preview(showBackground = true)
-@Composable
-fun ArticleCardListPreview(modifier: Modifier = Modifier) {
-    ArticleCardList()
-}
-
-
 
 @Composable
 fun LongArticleCard(
@@ -725,3 +560,62 @@ fun PreviewLongArticleCard() {
         link = "https://www.fimela.com/beauty/read/5826704/pelembap-anti-aging-super-ringan-yang-sempurna-untuk-iklim-tropis"
     )
 }
+
+// If ran out of API calls, use this isntead
+val newsResults = listOf(
+    NewsResultsItem(
+        date = "3 hari lalu",
+        snippet = "Meski lebih sering mendung, tubuh tetap memerlukan sunscreen saat musim hujan, simak penjelasannya.",
+        thumbnail = "https://serpapi.com/searches/675af5b07801ba80cdbfbcac/images/87ca06d65bc80704f5a03785effdb32f415d79dc84562ba3931365cd58af25a5.jpeg",
+        link = "https://health.tribunnews.com/2024/12/09/6-tips-jaga-kesehatan-kulit-di-musim-hujan-sunscreen-dan-skincare-berikut-tetap-penting-digunakan",
+        position = 1,
+        source = "TribunHealth.com",
+        title = "6 Tips Jaga Kesehatan Kulit di Musim Hujan, Sunscreen dan Skincare Berikut Tetap Penting Digunakan"
+    ),
+    NewsResultsItem(
+        date = "4 hari lalu",
+        snippet = "Cari : Niacinamide, hyaluronic acid, ceramide, dan panthenol. Bahan ini dikenal menenangkan kulit dan membantu menjaga kelembapan.",
+        thumbnail = "https://serpapi.com/searches/675af5b07801ba80cdbfbcac/images/87ca06d65bc80704a70e632b4ac19b0b3eee25cd042532c7613dd203a5493a40.jpeg",
+        link = "https://www.rri.co.id/lampung/hobi/1175395/tips-memilih-skincare-aman-untuk-kulit-sensitif",
+        position = 2,
+        source = "RRI.co.id",
+        title = "Tips Memilih Skincare Aman untuk Kulit Sensitif"
+    ),
+    NewsResultsItem(
+        date = "2 hari lalu",
+        snippet = "Tak selalu harus dengan skincare mahal, dr Zaidul Akbar punya laternatif lain yang bisa buat kulit wajah terlihat sehat dan glowing.",
+        thumbnail = "https://serpapi.com/searches/675af5b07801ba80cdbfbcac/images/87ca06d65bc80704aa09c794471cbe70e7ce2a902dcad109309c99b9aef478a0.jpeg",
+        link = "https://www.tvonenews.com/lifestyle/kesehatan/276569-rahasia-alami-wajah-glowing-tanpa-skincare-dr-zaidul-akbar-bagikan-tips-mudahnya-cukup-ganti-pola-makan-dengan",
+        position = 3,
+        source = "TvOneNews",
+        title = "Rahasia Alami Wajah Glowing Tanpa Skincare, dr Zaidul Akbar Bagikan Tips Mudahnya, Cukup Ganti Pola Makan dengan..."
+    ),
+    NewsResultsItem(
+        date = "2 minggu lalu",
+        snippet = "Pelajari tips skincare lengkap untuk merawat kulit sehat dan bercahaya. Dari rutinitas dasar hingga perawatan khusus, temukan rahasia kulit...",
+        thumbnail = "https://serpapi.com/searches/675af5b07801ba80cdbfbcac/images/87ca06d65bc80704a7e921280d59065163b9eec1750aaf2a2199ed680856b911.jpeg",
+        link = "https://www.liputan6.com/feeds/read/5796694/tips-skincare-panduan-lengkap-merawat-kulit-sehat-dan-bercahaya",
+        position = 4,
+        source = "Liputan6.com",
+        title = "Tips Skincare: Panduan Lengkap Merawat Kulit Sehat dan Bercahaya"
+    ),
+    NewsResultsItem(
+        date = "2 minggu lalu",
+        snippet = "Ketika hujan datang, kelembapan meningkat, dan udara yang lebih lembab bisa menimbulkan berbagai tantangan untuk kulit kita.",
+        thumbnail = "https://serpapi.com/searches/675af5b07801ba80cdbfbcac/images/87ca06d65bc80704892b109a8c9baeed4c2cfd5b731c659f70d936fbb8499956.jpeg",
+        link = "https://highend-magazine.okezone.com/read/ini-5-tips-skincare-untuk-jaga-kulit-tetap-sehat-dan-bersinar-di-musim-hujan-8P2EU2",
+        position = 5,
+        source = "Highend Magazine",
+        title = "Ini 5 Tips Skincare Untuk Jaga Kulit Tetap Sehat Dan Bersinar Di Musim Hujan!"
+    ),
+    NewsResultsItem(
+        date = "1 minggu lalu",
+        snippet = "Bagi Marsha Timothy, menjaga kesehatan kulit tak bisa hanya dengan skincare. Butuh asupan sehat untuk membantu menjaganya dari dalam.",
+        thumbnail = "https://serpapi.com/searches/675af5b07801ba80cdbfbcac/images/87ca06d65bc807048e959ff930031adfe4397a2315cd1b70f8c88934a6ae7289.jpeg",
+        link = "https://lifestyle.kompas.com/read/2024/12/03/121019820/tips-menjaga-kesehatan-kulit-ala-marsha-timothy-skincare-saja-tak-cukup",
+        position = 6,
+        source = "Kompas.com",
+        title = "Tips Menjaga Kesehatan Kulit ala Marsha Timothy, Skincare Saja Tak Cukup"
+    )
+)
+

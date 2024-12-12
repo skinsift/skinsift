@@ -12,14 +12,8 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
-import com.ayukrisna.skinsift.navigation.AuthScreen
 import com.ayukrisna.skinsift.navigation.BottomNavigationBar
 import com.ayukrisna.skinsift.navigation.NavGraph
-import androidx.navigation.NavDestination.Companion.hasRoute
-import com.ayukrisna.skinsift.navigation.AssessmentScreen
-import com.ayukrisna.skinsift.navigation.DictionaryScreen
-import com.ayukrisna.skinsift.navigation.NotesScreen
-import com.ayukrisna.skinsift.navigation.ProductScreen
 
 @Preview
 @Composable

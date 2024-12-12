@@ -18,7 +18,6 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
-import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.RadioButton
@@ -28,16 +27,12 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalLayoutDirection
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
-import com.ayukrisna.skinsift.data.remote.response.ingredients.Ingredient
 import com.ayukrisna.skinsift.data.remote.response.ingredients.IngredientListItem
 import com.ayukrisna.skinsift.util.Result
 import com.ayukrisna.skinsift.view.ui.component.CenterAppBar
@@ -46,7 +41,6 @@ import com.ayukrisna.skinsift.view.ui.component.LoadingProgress
 import com.ayukrisna.skinsift.view.ui.component.getRatingColor
 import com.ayukrisna.skinsift.view.ui.screen.dictionary.listdictionary.DictionaryViewModel
 import com.ayukrisna.skinsift.view.ui.screen.dictionary.listdictionary.SearchBar
-import com.ayukrisna.skinsift.view.ui.screen.notes.addnotes.SavePreferenceFab
 import org.koin.androidx.compose.koinViewModel
 
 @Composable
@@ -206,7 +200,6 @@ fun ChooseIngredient(ingredientList: List<IngredientListItem>,
     }
 }
 
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun SearchNoteAppBar(title: String, onBackClick: () -> Unit, ) {
     CenterAppBar(

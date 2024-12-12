@@ -17,6 +17,6 @@ interface SerpApiService {
         @Query("tbs") tbs: String = "tips",
         @Query("safe") safe: String = "active",
         @Query("tbm") tbm: String = "nws",
-        @Query("api_key") apiKey: String = "6234143e5082e2016d52fef5dd747573ff927f2b8e4cae69434630183ac18d16"
+        @Query("api_key") apiKey: String = "11ab9e3be390769a83a900f98c62206f1a278e941b0b0596ceff855a2962ee77"
     ): Response<SerpResponse>
 }

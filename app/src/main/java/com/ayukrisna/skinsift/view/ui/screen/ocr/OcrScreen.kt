@@ -1,12 +1,10 @@
 package com.ayukrisna.skinsift.view.ui.screen.ocr
 
 import android.Manifest
-import android.app.Activity
 import android.net.Uri
 import android.util.Log
 import android.widget.Toast
 import androidx.activity.compose.rememberLauncherForActivityResult
-import androidx.activity.result.PickVisualMediaRequest
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
@@ -43,7 +41,6 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -58,29 +55,23 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.SpanStyle
 import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.withStyle
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
 import com.ayukrisna.skinsift.R
 import com.ayukrisna.skinsift.data.remote.response.ml.MatchedIngredientsItem
 import com.ayukrisna.skinsift.data.remote.response.ml.OcrResponse
 import com.ayukrisna.skinsift.data.remote.response.ml.WarningsItem
-import com.ayukrisna.skinsift.util.CameraHelper
-import com.ayukrisna.skinsift.view.ui.component.CenterAppBar
-import com.ayukrisna.skinsift.view.ui.component.getRatingColor
-import com.ayukrisna.skinsift.view.ui.screen.assessment.PhotoModalBottomSheet
-import org.koin.androidx.compose.koinViewModel
 import com.ayukrisna.skinsift.util.Result
+import com.ayukrisna.skinsift.view.ui.component.CenterAppBar
 import com.ayukrisna.skinsift.view.ui.component.ErrorLayout
 import com.ayukrisna.skinsift.view.ui.component.LoadingProgress
+import com.ayukrisna.skinsift.view.ui.component.getRatingColor
 import com.ayukrisna.skinsift.view.ui.screen.home.TitleHome
-import com.canhub.cropper.CropImage
 import com.canhub.cropper.CropImageContract
 import com.canhub.cropper.CropImageContractOptions
 import com.canhub.cropper.CropImageOptions
-import com.canhub.cropper.CropImageView
+import org.koin.androidx.compose.koinViewModel
 
 @Composable
 fun OcrScreen (
@@ -111,18 +102,6 @@ fun OcrScreen (
         viewModel.setSelectedUri(newUri)
     }
 
-//    val imagePicker = rememberLauncherForActivityResult(
-//        contract = ActivityResultContracts.PickVisualMedia(),
-//        onResult = { uri ->
-//            uri?.let(onSetUri)
-//        }
-//    )
-//
-//    val takePhotoLauncher = rememberLauncherForActivityResult(
-//        contract = ActivityResultContracts.TakePicture(),
-//        onResult = { isSaved -> if (isSaved) tempUri.value?.let(onSetUri) }
-//    )
-//
     /**
      * testing android image cropper
      */
@@ -148,29 +127,6 @@ fun OcrScreen (
             Toast.makeText(context, "Camera permission is required to take photos.", Toast.LENGTH_LONG).show()
         }
     }
-
-
-//    var showBottomSheet by remember { mutableStateOf(false) }
-//
-//    if (showBottomSheet) {
-//        PhotoModalBottomSheet(
-//            onDismiss = { showBottomSheet = false },
-//            onTakePhotoClick = {
-//                showBottomSheet = false
-//                cameraHelper.requestCameraPermission(cameraPermissionLauncher) {
-//                    tempUri.value = cameraHelper.getTempUri()
-//                    tempUri.value?.let { takePhotoLauncher.launch(it) }
-//                }
-//            },
-//            onPhotoGalleryClick = {
-//                showBottomSheet = false
-////                imagePicker.launch(
-////                    PickVisualMediaRequest(ActivityResultContracts.PickVisualMedia.ImageOnly))
-//                val cropOption = CropImageContractOptions(uri = null, CropImageOptions())
-//                imageCropLauncher.launch(cropOption)
-//            },
-//        )
-//    }
 
     Scaffold(
         topBar = {

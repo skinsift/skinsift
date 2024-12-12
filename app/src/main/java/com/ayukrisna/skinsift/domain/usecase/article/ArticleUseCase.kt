@@ -1,7 +1,6 @@
 package com.ayukrisna.skinsift.domain.usecase.article
 
 import com.ayukrisna.skinsift.data.remote.response.article.NewsResultsItem
-import com.ayukrisna.skinsift.data.remote.response.article.SerpResponse
 import com.ayukrisna.skinsift.domain.repository.ArticleRepository
 import com.ayukrisna.skinsift.util.Result
 

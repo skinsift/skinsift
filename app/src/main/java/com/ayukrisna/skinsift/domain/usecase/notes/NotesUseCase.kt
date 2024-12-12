@@ -1,7 +1,6 @@
 package com.ayukrisna.skinsift.domain.usecase.notes
 
 import com.ayukrisna.skinsift.data.remote.response.notes.Note
-import com.ayukrisna.skinsift.data.remote.response.product.ProductListItem
 import com.ayukrisna.skinsift.domain.repository.NotesRepository
 import com.ayukrisna.skinsift.util.Result
 

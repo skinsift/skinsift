@@ -50,7 +50,6 @@ fun ProductFilterScreen(
     modifier: Modifier = Modifier
 ) {
     val filterState by viewModel.filterState.collectAsState()
-    val context = LocalContext.current
 
     LaunchedEffect(Unit) {
         viewModel.fetchFilter()
@@ -197,7 +196,6 @@ fun SaveFilterFab(onClick: () -> Unit) {
     }
 }
 
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun DictFilterAppBar(title: String, onBackClick: () -> Unit, ) {
     CenterAppBar(

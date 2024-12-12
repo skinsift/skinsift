@@ -33,10 +33,4 @@ class ProfileViewModel(private val profileUseCase: ProfileUseCase) : ViewModel()
             profileUseCase.logout()
         }
     }
-
-    fun deleteAccount(password: String) {
-        viewModelScope.launch {
-            profileUseCase.deleteAccount(password)
-        }
-    }
 }

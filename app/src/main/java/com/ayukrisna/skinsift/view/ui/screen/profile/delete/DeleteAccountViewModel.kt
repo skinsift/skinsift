@@ -11,10 +11,7 @@ import com.ayukrisna.skinsift.data.remote.response.auth.DeleteUserResponse
 import com.ayukrisna.skinsift.domain.usecase.auth.ProfileUseCase
 import com.ayukrisna.skinsift.domain.usecase.validation.ValidatePasswordUseCase
 import com.ayukrisna.skinsift.util.Result
-import com.ayukrisna.skinsift.view.ui.screen.auth.login.LoginEvent
 import com.ayukrisna.skinsift.view.ui.screen.auth.login.LoginState
-import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
 
 class DeleteAccountViewModel(
@@ -26,9 +23,6 @@ class DeleteAccountViewModel(
 
     private val _deleteState = MutableLiveData<Result<DeleteUserResponse>>(Result.Idle)
     val deleteState: LiveData<Result<DeleteUserResponse>> = _deleteState
-
-    private val _errorState = MutableStateFlow<String?>(null)
-    val errorState: StateFlow<String?> = _errorState
 
     fun onEvent(event: DeleteEvent) {
         when (event) {

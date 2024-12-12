@@ -5,7 +5,6 @@ import android.net.Uri
 import android.util.Log
 import android.widget.Toast
 import androidx.activity.compose.rememberLauncherForActivityResult
-import androidx.activity.result.PickVisualMediaRequest
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
@@ -34,13 +33,6 @@ import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.ModalBottomSheet
-import androidx.compose.ui.Modifier
-import androidx.compose.ui.platform.LocalLayoutDirection
-import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.unit.dp
-import com.ayukrisna.skinsift.R
-import com.ayukrisna.skinsift.view.ui.component.AssessmentNavButton
-import com.ayukrisna.skinsift.view.ui.component.AssessmentQuestion
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -48,28 +40,30 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
+import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.platform.LocalLayoutDirection
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
-import com.ayukrisna.skinsift.data.remote.response.ingredients.Filter
+import com.ayukrisna.skinsift.R
 import com.ayukrisna.skinsift.data.remote.response.ml.AssessmentResponse
 import com.ayukrisna.skinsift.data.remote.response.product.ProductListItem
-import com.ayukrisna.skinsift.util.CameraHelper
-import com.ayukrisna.skinsift.view.ui.component.AssessmentSelector
-import org.koin.androidx.compose.koinViewModel
 import com.ayukrisna.skinsift.util.Result
+import com.ayukrisna.skinsift.view.ui.component.AssessmentNavButton
+import com.ayukrisna.skinsift.view.ui.component.AssessmentQuestion
+import com.ayukrisna.skinsift.view.ui.component.AssessmentSelector
 import com.ayukrisna.skinsift.view.ui.component.LoadingProgress
 import com.canhub.cropper.CropImageContract
 import com.canhub.cropper.CropImageContractOptions
 import com.canhub.cropper.CropImageOptions
+import org.koin.androidx.compose.koinViewModel
 
 @Composable
 fun AssessmentScreen (
@@ -132,16 +126,6 @@ fun AssessmentScreen (
         }
     }
 
-//    val imagePicker = rememberLauncherForActivityResult(
-//        contract = ActivityResultContracts.PickVisualMedia(),
-//        onResult = { uri -> uri?.let(onSetUri) }
-//    )
-//
-//    val takePhotoLauncher = rememberLauncherForActivityResult(
-//        contract = ActivityResultContracts.TakePicture(),
-//        onResult = { isSaved -> if (isSaved) tempUri.value?.let(onSetUri) }
-//    )
-//
     val cameraPermissionLauncher = rememberLauncherForActivityResult(
         contract = ActivityResultContracts.RequestPermission()
     ) { isGranted ->
@@ -151,25 +135,6 @@ fun AssessmentScreen (
             Toast.makeText(context, "Camera permission is required to take photos.", Toast.LENGTH_LONG).show()
         }
     }
-
-//    var showBottomSheet by remember { mutableStateOf(false) }
-//
-//    if (showBottomSheet) {
-//        PhotoModalBottomSheet(
-//            onDismiss = { showBottomSheet = false },
-//            onTakePhotoClick = {
-//                showBottomSheet = false
-//                cameraHelper.requestCameraPermission(cameraPermissionLauncher) {
-//                    tempUri.value = cameraHelper.getTempUri()
-//                    tempUri.value?.let { takePhotoLauncher.launch(it) }
-//                }
-//            },
-//            onPhotoGalleryClick = {
-//                showBottomSheet = false
-//                imagePicker.launch(PickVisualMediaRequest(ActivityResultContracts.PickVisualMedia.ImageOnly))
-//            },
-//        )
-//    }
 
     Scaffold(
     topBar = {
@@ -409,6 +374,7 @@ fun ScannerCard(
     }
 }
 
+// NOT USED FOR NOW
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun PhotoModalBottomSheet(

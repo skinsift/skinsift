@@ -1,6 +1,5 @@
 package com.ayukrisna.skinsift.view.ui.screen.dictionary.detaildictionary
 
-import android.widget.Toast
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
@@ -16,7 +15,6 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
-import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
@@ -34,12 +32,12 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import com.ayukrisna.skinsift.R
 import com.ayukrisna.skinsift.data.remote.response.ingredients.Ingredient
-import com.ayukrisna.skinsift.view.ui.component.CenterAppBar
-import org.koin.androidx.compose.koinViewModel
 import com.ayukrisna.skinsift.util.Result
+import com.ayukrisna.skinsift.view.ui.component.CenterAppBar
 import com.ayukrisna.skinsift.view.ui.component.ErrorLayout
 import com.ayukrisna.skinsift.view.ui.component.LoadingProgress
 import com.ayukrisna.skinsift.view.ui.component.getRatingColor
+import org.koin.androidx.compose.koinViewModel
 
 @Composable
 fun DictDetailScreen(
@@ -233,30 +231,10 @@ fun IngredientsOverviewItem(title: String, description: String, color : Color = 
     }
 }
 
-//@Preview(showBackground = true)
-//@Composable
-//fun DetailIngredientPreview() {
-//    SkinSiftTheme {
-//        DictDetailScreen(
-//
-//        )
-//    }
-//}
-
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun DetailIngredientAppBar(title: String, onBackClick: () -> Unit,) {
     CenterAppBar(
         title = title,
         onBackClick = {onBackClick()})
 }
-
-//@Preview(showBackground = true)
-//@Composable
-//fun PreviewAppBar() {
-//    SkinSiftTheme {
-//        DetailIngredientAppBar("Detail Ingredients")
-//    }
-//}
-
 

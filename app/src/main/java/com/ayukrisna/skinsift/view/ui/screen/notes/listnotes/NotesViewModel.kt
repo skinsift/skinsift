@@ -2,7 +2,6 @@ package com.ayukrisna.skinsift.view.ui.screen.notes.listnotes
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.ayukrisna.skinsift.data.remote.response.ingredients.Ingredient
 import com.ayukrisna.skinsift.data.remote.response.notes.DeleteNoteResponse
 import com.ayukrisna.skinsift.data.remote.response.notes.Note
 import com.ayukrisna.skinsift.domain.usecase.notes.DeleteNoteUseCase

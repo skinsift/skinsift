@@ -13,8 +13,6 @@ import com.ayukrisna.skinsift.domain.usecase.validation.ValidateEmailUseCase
 import com.ayukrisna.skinsift.domain.usecase.validation.ValidatePasswordUseCase
 import com.ayukrisna.skinsift.domain.usecase.validation.ValidateUnameOrEmailUseCase
 import com.ayukrisna.skinsift.util.Result
-import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
 
 class SignupViewModel(private val registerUseCase: RegisterUseCase) : ViewModel() {
@@ -26,9 +24,6 @@ class SignupViewModel(private val registerUseCase: RegisterUseCase) : ViewModel(
 
     private val _signUpState = MutableLiveData<Result<RegisterResponse>>(Result.Idle)
     val signUpState: LiveData<Result<RegisterResponse>> = _signUpState
-
-    private val _errorState = MutableStateFlow<String?>(null)
-    val errorState: StateFlow<String?> = _errorState
 
     fun onEvent(event: SignupEvent) {
         when (event) {

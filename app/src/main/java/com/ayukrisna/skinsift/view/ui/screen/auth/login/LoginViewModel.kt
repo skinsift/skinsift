@@ -10,10 +10,8 @@ import androidx.lifecycle.viewModelScope
 import com.ayukrisna.skinsift.domain.usecase.auth.LoginUseCase
 import com.ayukrisna.skinsift.domain.usecase.validation.ValidatePasswordUseCase
 import com.ayukrisna.skinsift.domain.usecase.validation.ValidateUnameOrEmailUseCase
-import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.launch
 import com.ayukrisna.skinsift.util.Result
+import kotlinx.coroutines.launch
 
 
 class LoginViewModel(
@@ -26,9 +24,6 @@ class LoginViewModel(
 
     private val _loginState = MutableLiveData<Result<Unit>>(Result.Idle)
     val loginState: LiveData<Result<Unit>> = _loginState
-
-    private val _errorState = MutableStateFlow<String?>(null)
-    val errorState: StateFlow<String?> = _errorState
 
     fun onEvent(event: LoginEvent) {
         when (event) {
