@@ -57,7 +57,7 @@ Follow these steps to install and run the SkinSift Android application:
 
 ### 1. Download the APK File
 
-- Download the latest APK file for the SkinSift app from the [releases page](https://link-to-your-apk-file).
+- Download the latest APK file for the SkinSift app from the [releases page]([https://link-to-your-apk-file](https://storage.googleapis.com/skinsift/application/SkinSift-v1.0.apk)).
 - After downloading the APK, open it and follow the on-screen instructions to install the app on your Android device.
 
 > **Note:** Make sure to enable "Install from unknown sources" in your device settings if prompted.
@@ -73,7 +73,6 @@ If you prefer to build the app from source, follow these steps:
 1. Clone this repository:
     ```bash
     git clone https://github.com/skinsift/skinsift.git
-    cd skinsift
     ```
 
 2. Open the project in **Android Studio**.
